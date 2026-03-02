@@ -1,62 +1,82 @@
-# nana-permission-ids-v5 — AI Reference
+# nana-permission-ids-v5
 
 ## Purpose
 
-Defines all permission ID constants used across the Juicebox V5 ecosystem. These `uint8` values are passed to `JBPermissions.setPermissionsFor()` to grant scoped access to protocol functions.
+Defines all `uint8` permission ID constants used across the Juicebox V5 ecosystem, passed to `JBPermissions.setPermissionsFor()` to grant scoped access to protocol functions.
 
 ## Contracts
 
-### JBPermissionIds (src/JBPermissionIds.sol)
-Solidity library. No state, no functions -- only `uint8 internal constant` declarations. Pragma `^0.8.0` for maximum compatibility.
+| Contract | Role |
+|----------|------|
+| `JBPermissionIds` | Constants-only library. No state, no functions. Pragma `^0.8.0` for maximum compatibility. |
 
-## Entry Points
+## Key Functions
 
 N/A -- this is a constants-only library with no callable functions.
 
 ## All Permission IDs
 
-```solidity
-uint8 ROOT = 1;                         // All permissions. Dangerous.
-uint8 QUEUE_RULESETS = 2;               // JBController.queueRulesetsOf, launchRulesetsFor
-uint8 CASH_OUT_TOKENS = 3;             // JBMultiTerminal.cashOutTokensOf
-uint8 SEND_PAYOUTS = 4;                // JBMultiTerminal.sendPayoutsOf
-uint8 MIGRATE_TERMINAL = 5;            // JBMultiTerminal.migrateBalanceOf
-uint8 SET_PROJECT_URI = 6;             // JBController.setUriOf
-uint8 DEPLOY_ERC20 = 7;                // JBController.deployERC20For
-uint8 SET_TOKEN = 8;                   // JBController.setTokenFor
-uint8 MINT_TOKENS = 9;                 // JBController.mintTokensOf
-uint8 BURN_TOKENS = 10;                // JBController.burnTokensOf
-uint8 CLAIM_TOKENS = 11;               // JBController.claimTokensFor
-uint8 TRANSFER_CREDITS = 12;           // JBController.transferCreditsFrom
-uint8 SET_CONTROLLER = 13;             // JBDirectory.setControllerOf
-uint8 SET_TERMINALS = 14;              // JBDirectory.setTerminalsOf
-uint8 SET_PRIMARY_TERMINAL = 15;       // JBDirectory.setPrimaryTerminalOf
-uint8 USE_ALLOWANCE = 16;              // JBMultiTerminal.useAllowanceOf
-uint8 SET_SPLIT_GROUPS = 17;           // JBController.setSplitGroupsOf
-uint8 ADD_PRICE_FEED = 18;             // JBPrices.addPriceFeedFor
-uint8 ADD_ACCOUNTING_CONTEXTS = 19;    // JBMultiTerminal.addAccountingContextsFor
-uint8 ADJUST_721_TIERS = 20;           // JB721TiersHook.adjustTiers
-uint8 SET_721_METADATA = 21;           // JB721TiersHook.setMetadata
-uint8 MINT_721 = 22;                   // JB721TiersHook.mintFor
-uint8 SET_721_DISCOUNT_PERCENT = 23;   // JB721TiersHook.setDiscountPercentOf
-uint8 SET_BUYBACK_TWAP = 24;           // JBBuybackHook.setTwapWindowOf, setTwapSlippageToleranceOf
-uint8 SET_BUYBACK_POOL = 25;           // JBBuybackHook.setPoolFor
-uint8 ADD_SWAP_TERMINAL_POOL = 26;     // JBSwapTerminal.addDefaultPool
-uint8 ADD_SWAP_TERMINAL_TWAP_PARAMS = 27; // JBSwapTerminal.addTwapParamsFor
-uint8 MAP_SUCKER_TOKEN = 28;           // BPSucker.mapToken
-uint8 DEPLOY_SUCKERS = 29;             // BPSuckerRegistry.deploySuckersFor
-uint8 SUCKER_SAFETY = 30;              // BPSucker.enableEmergencyHatchFor, setDeprecation
-```
+| ID | Name | Grants access to |
+|----|------|-----------------|
+| 1 | `ROOT` | All permissions across every contract. |
+| 2 | `QUEUE_RULESETS` | `JBController.queueRulesetsOf`, `launchRulesetsFor` |
+| 3 | `CASH_OUT_TOKENS` | `JBMultiTerminal.cashOutTokensOf` |
+| 4 | `SEND_PAYOUTS` | `JBMultiTerminal.sendPayoutsOf` |
+| 5 | `MIGRATE_TERMINAL` | `JBMultiTerminal.migrateBalanceOf` |
+| 6 | `SET_PROJECT_URI` | `JBController.setUriOf` |
+| 7 | `DEPLOY_ERC20` | `JBController.deployERC20For` |
+| 8 | `SET_TOKEN` | `JBController.setTokenFor` |
+| 9 | `MINT_TOKENS` | `JBController.mintTokensOf` |
+| 10 | `BURN_TOKENS` | `JBController.burnTokensOf` |
+| 11 | `CLAIM_TOKENS` | `JBController.claimTokensFor` |
+| 12 | `TRANSFER_CREDITS` | `JBController.transferCreditsFrom` |
+| 13 | `SET_CONTROLLER` | `JBDirectory.setControllerOf` |
+| 14 | `SET_TERMINALS` | `JBDirectory.setTerminalsOf` |
+| 15 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` |
+| 16 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` |
+| 17 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` |
+| 18 | `ADD_PRICE_FEED` | `JBPrices.addPriceFeedFor` |
+| 19 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` |
+| 20 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` |
+| 21 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` |
+| 22 | `MINT_721` | `JB721TiersHook.mintFor` |
+| 23 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` |
+| 24 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf`, `setTwapSlippageToleranceOf` |
+| 25 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor` |
+| 26 | `ADD_SWAP_TERMINAL_POOL` | `JBSwapTerminal.addDefaultPool` |
+| 27 | `ADD_SWAP_TERMINAL_TWAP_PARAMS` | `JBSwapTerminal.addTwapParamsFor` |
+| 28 | `MAP_SUCKER_TOKEN` | `BPSucker.mapToken` |
+| 29 | `DEPLOY_SUCKERS` | `BPSuckerRegistry.deploySuckersFor` |
+| 30 | `SUCKER_SAFETY` | `BPSucker.enableEmergencyHatchFor`, `setDeprecation` |
 
 ## Integration Points
 
-- **JBPermissions**: The core contract that stores permission grants. Operators check `hasPermission(operator, account, projectId, permissionId)`.
-- **JBPermissioned**: Abstract modifier base. Contracts inherit this and call `_requirePermissionFrom(account, projectId, permissionId)`.
-- **Every Juicebox V5 contract**: All permission-gated functions reference these constants.
+| Dependency | Import | Used For |
+|------------|--------|----------|
+| None | -- | This library has no dependencies. It is imported by all permission-gated Juicebox contracts. |
 
-## Key Patterns
+## Key Types
 
-- **ROOT (1) is special**: Grants all permissions across every contract. Must be granted with extreme care.
-- **Scoped by project**: Permissions are granted per `(operator, account, projectId)` tuple. A permission for project 5 does not apply to project 6.
-- **Wildcard projectId=0**: Granting a permission with `projectId=0` makes it apply to all projects for that account.
-- **uint8 range**: Maximum of 256 permission IDs (0-255). Currently 30 are defined.
+N/A -- no structs or enums.
+
+## Gotchas
+
+- `ROOT` (ID 1) grants all permissions across every contract. Must be granted with extreme care.
+- `SET_TERMINALS` (ID 14) can be used to remove the primary terminal -- the comment in the source warns about this.
+- Permissions are scoped by `(operator, account, projectId)` tuple. Granting with `projectId=0` is a wildcard that applies to all projects for that account.
+- The `uint8` type limits IDs to 0--255. Currently 30 are defined (1--30).
+
+## Example Integration
+
+```solidity
+import {JBPermissionIds} from "@bananapus/permission-ids-v5/src/JBPermissionIds.sol";
+
+// Grant an operator permission to queue rulesets for project 5
+uint8[] memory permissionIds = new uint8[](1);
+permissionIds[0] = JBPermissionIds.QUEUE_RULESETS;
+permissions.setPermissionsFor(account, JBPermissionsData({
+    operator: operatorAddress,
+    projectId: 5,
+    permissionIds: permissionIds
+}));
+```
