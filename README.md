@@ -6,7 +6,7 @@ Library of `uint8` constants defining all permission IDs used with `JBPermission
 
 | Contract | Description |
 |----------|-------------|
-| `JBPermissionIds` | Solidity library with 30 `uint8 internal constant` permission IDs. No state, no functions. |
+| `JBPermissionIds` | Solidity library with 34 `uint8 internal constant` permission IDs. No state, no functions. |
 
 ### Permission ID Ranges
 
@@ -18,6 +18,10 @@ Library of `uint8` constants defining all permission IDs used with `JBPermission
 | 24--25 | nana-buyback-hook-v6 | `SET_BUYBACK_TWAP`, `SET_BUYBACK_POOL` |
 | 26--27 | nana-swap-terminal-v6 | `ADD_SWAP_TERMINAL_POOL`, `ADD_SWAP_TERMINAL_TWAP_PARAMS` |
 | 28--30 | nana-suckers-v6 | `MAP_SUCKER_TOKEN`, `DEPLOY_SUCKERS`, `SUCKER_SAFETY` |
+| 31 | nana-buyback-hook-v6 | `SET_BUYBACK_HOOK` |
+| 32 | nana-swap-terminal-v6 | `SET_SWAP_TERMINAL` |
+| 33 | nana-suckers-v6 | `SET_SUCKER_DEPRECATION` |
+| 34 | nana-core-v6 | `LAUNCH_RULESETS` |
 
 ## Install
 

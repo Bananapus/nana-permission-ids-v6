@@ -10,8 +10,7 @@ library JBPermissionIds {
     uint8 internal constant ROOT = 1; // All permissions across every contract. Very dangerous. BE CAREFUL!
 
     /* Used by `nana-core`: https://github.com/Bananapus/nana-core */
-    uint8 internal constant QUEUE_RULESETS = 2; // Permission to call `JBController.queueRulesetsOf` and
-        // `JBController.launchRulesetsFor`.
+    uint8 internal constant QUEUE_RULESETS = 2; // Permission to call `JBController.queueRulesetsOf`.
     uint8 internal constant CASH_OUT_TOKENS = 3; // Permission to call `JBMultiTerminal.cashOutTokensOf`.
     uint8 internal constant SEND_PAYOUTS = 4; // Permission to call `JBMultiTerminal.sendPayoutsOf`.
     uint8 internal constant MIGRATE_TERMINAL = 5; // Permission to call `JBMultiTerminal.migrateBalanceOf`.
@@ -31,6 +30,7 @@ library JBPermissionIds {
     uint8 internal constant ADD_PRICE_FEED = 18; // Permission to call `JBPrices.addPriceFeedFor`.
     uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 19; // Permission to call
         // `JBMultiTerminal.addAccountingContextsFor`.
+    uint8 internal constant LAUNCH_RULESETS = 34; // Permission to call `JBController.launchRulesetsFor`.
 
     /* Used by `nana-721-hook`: https://github.com/Bananapus/nana-721-hook */
     uint8 internal constant ADJUST_721_TIERS = 20; // Permission to call `JB721TiersHook.adjustTiers`.
@@ -39,18 +39,21 @@ library JBPermissionIds {
     uint8 internal constant SET_721_DISCOUNT_PERCENT = 23; // Permission to call `JB721TiersHook.setDiscountPercentOf`.
 
     /* Used by `nana-buyback-hook`: https://github.com/Bananapus/nana-buyback-hook */
-    uint8 internal constant SET_BUYBACK_TWAP = 24; // Permission to call `JBBuybackHook.setTwapWindowOf` and
-        // `JBBuybackHook.setTwapSlippageToleranceOf`.
+    uint8 internal constant SET_BUYBACK_TWAP = 24; // Permission to call `JBBuybackHook.setTwapWindowOf`.
     uint8 internal constant SET_BUYBACK_POOL = 25; // Permission to call `JBBuybackHook.setPoolFor`.
+    uint8 internal constant SET_BUYBACK_HOOK = 31; // Permission to call `JBBuybackHookRegistry.setHookFor` and
+        // `JBBuybackHookRegistry.lockHookFor`.
 
     /* Used by `nana-swap-terminal`: https://github.com/Bananapus/nana-swap-terminal */
     uint8 internal constant ADD_SWAP_TERMINAL_POOL = 26; // Permission to call `JBSwapTerminal.addDefaultPool`.
     uint8 internal constant ADD_SWAP_TERMINAL_TWAP_PARAMS = 27; // Permission to call
         // `JBSwapTerminal.addTwapParamsFor`.
+    uint8 internal constant SET_SWAP_TERMINAL = 32; // Permission to call `JBSwapTerminalRegistry.setTerminalFor` and
+        // `JBSwapTerminalRegistry.lockTerminalFor`.
 
     /* Used by `nana-suckers`: https://github.com/Bananapus/nana-suckers */
     uint8 internal constant MAP_SUCKER_TOKEN = 28; // Permission to call `JBSucker.mapToken`.
     uint8 internal constant DEPLOY_SUCKERS = 29; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
-    uint8 internal constant SUCKER_SAFETY = 30; // Permission to call `JBSucker.enableEmergencyHatchFor` and
-        // `JBSucker.setDeprecation`.
+    uint8 internal constant SUCKER_SAFETY = 30; // Permission to call `JBSucker.enableEmergencyHatchFor`.
+    uint8 internal constant SET_SUCKER_DEPRECATION = 33; // Permission to call `JBSucker.setDeprecation`.
 }
