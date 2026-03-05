@@ -30,7 +30,7 @@ library JBPermissionIds {
     uint8 internal constant SET_SPLIT_GROUPS = 18; // Permission to call `JBController.setSplitGroupsOf`.
     uint8 internal constant ADD_PRICE_FEED = 19; // Permission to call `JBPrices.addPriceFeedFor`.
     uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 20; // Permission to call
-        // `JBMultiTerminal.addAccountingContextsFor`.
+    // `JBMultiTerminal.addAccountingContextsFor`.
 
     /* Used by `nana-721-hook`: https://github.com/Bananapus/nana-721-hook */
     uint8 internal constant ADJUST_721_TIERS = 21; // Permission to call `JB721TiersHook.adjustTiers`.
@@ -42,14 +42,14 @@ library JBPermissionIds {
     uint8 internal constant SET_BUYBACK_TWAP = 25; // Permission to call `JBBuybackHook.setTwapWindowOf`.
     uint8 internal constant SET_BUYBACK_POOL = 26; // Permission to call `JBBuybackHook.setPoolFor`.
     uint8 internal constant SET_BUYBACK_HOOK = 27; // Permission to call `JBBuybackHookRegistry.setHookFor` and
-        // `JBBuybackHookRegistry.lockHookFor`.
+    // `JBBuybackHookRegistry.lockHookFor`.
 
     /* Used by `nana-swap-terminal`: https://github.com/Bananapus/nana-swap-terminal */
     uint8 internal constant ADD_SWAP_TERMINAL_POOL = 28; // Permission to call `JBSwapTerminal.addDefaultPool`.
     uint8 internal constant ADD_SWAP_TERMINAL_TWAP_PARAMS = 29; // Permission to call
-        // `JBSwapTerminal.addTwapParamsFor`.
+    // `JBSwapTerminal.addTwapParamsFor`.
     uint8 internal constant SET_SWAP_TERMINAL = 30; // Permission to call `JBSwapTerminalRegistry.setTerminalFor` and
-        // `JBSwapTerminalRegistry.lockTerminalFor`.
+    // `JBSwapTerminalRegistry.lockTerminalFor`.
 
     /* Used by `nana-suckers`: https://github.com/Bananapus/nana-suckers */
     uint8 internal constant MAP_SUCKER_TOKEN = 31; // Permission to call `JBSucker.mapToken`.
