@@ -11,6 +11,7 @@ library JBPermissionIds {
 
     /* Used by `nana-core`: https://github.com/Bananapus/nana-core */
     uint8 internal constant QUEUE_RULESETS = 2; // Permission to call `JBController.queueRulesetsOf`.
+    uint8 internal constant LAUNCH_RULESETS = 34; // Permission to call `JBController.launchRulesetsFor`.
     uint8 internal constant CASH_OUT_TOKENS = 3; // Permission to call `JBMultiTerminal.cashOutTokensOf`.
     uint8 internal constant SEND_PAYOUTS = 4; // Permission to call `JBMultiTerminal.sendPayoutsOf`.
     uint8 internal constant MIGRATE_TERMINAL = 5; // Permission to call `JBMultiTerminal.migrateBalanceOf`.
@@ -30,7 +31,6 @@ library JBPermissionIds {
     uint8 internal constant ADD_PRICE_FEED = 18; // Permission to call `JBPrices.addPriceFeedFor`.
     uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 19; // Permission to call
         // `JBMultiTerminal.addAccountingContextsFor`.
-    uint8 internal constant LAUNCH_RULESETS = 34; // Permission to call `JBController.launchRulesetsFor`.
 
     /* Used by `nana-721-hook`: https://github.com/Bananapus/nana-721-hook */
     uint8 internal constant ADJUST_721_TIERS = 20; // Permission to call `JB721TiersHook.adjustTiers`.
