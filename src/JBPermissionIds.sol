@@ -44,18 +44,13 @@ library JBPermissionIds {
     uint8 internal constant SET_BUYBACK_HOOK = 27; // Permission to call `JBBuybackHookRegistry.setHookFor` and
     // `JBBuybackHookRegistry.lockHookFor`.
 
-    /* Used by `nana-swap-terminal`: https://github.com/Bananapus/nana-swap-terminal */
-    uint8 internal constant ADD_SWAP_TERMINAL_POOL = 28; // Permission to call `JBSwapTerminal.addDefaultPool`.
-    uint8 internal constant ADD_SWAP_TERMINAL_TWAP_PARAMS = 29; // Permission to call
-    // `JBSwapTerminal.addTwapParamsFor`.
-
     /* Used by `nana-router-terminal`: https://github.com/Bananapus/nana-router-terminal-v6 */
-    uint8 internal constant SET_ROUTER_TERMINAL = 30; // Permission to call
+    uint8 internal constant SET_ROUTER_TERMINAL = 28; // Permission to call
     // `JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`.
 
     /* Used by `nana-suckers`: https://github.com/Bananapus/nana-suckers */
-    uint8 internal constant MAP_SUCKER_TOKEN = 31; // Permission to call `JBSucker.mapToken`.
-    uint8 internal constant DEPLOY_SUCKERS = 32; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
-    uint8 internal constant SUCKER_SAFETY = 33; // Permission to call `JBSucker.enableEmergencyHatchFor`.
-    uint8 internal constant SET_SUCKER_DEPRECATION = 34; // Permission to call `JBSucker.setDeprecation`.
+    uint8 internal constant MAP_SUCKER_TOKEN = 29; // Permission to call `JBSucker.mapToken`.
+    uint8 internal constant DEPLOY_SUCKERS = 30; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
+    uint8 internal constant SUCKER_SAFETY = 31; // Permission to call `JBSucker.enableEmergencyHatchFor`.
+    uint8 internal constant SET_SUCKER_DEPRECATION = 32; // Permission to call `JBSucker.setDeprecation`.
 }
