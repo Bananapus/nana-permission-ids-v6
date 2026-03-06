@@ -48,8 +48,10 @@ library JBPermissionIds {
     uint8 internal constant ADD_SWAP_TERMINAL_POOL = 28; // Permission to call `JBSwapTerminal.addDefaultPool`.
     uint8 internal constant ADD_SWAP_TERMINAL_TWAP_PARAMS = 29; // Permission to call
     // `JBSwapTerminal.addTwapParamsFor`.
-    uint8 internal constant SET_SWAP_TERMINAL = 30; // Permission to call `JBSwapTerminalRegistry.setTerminalFor` and
-    // `JBSwapTerminalRegistry.lockTerminalFor`.
+
+    /* Used by `nana-router-terminal`: https://github.com/Bananapus/nana-router-terminal-v6 */
+    uint8 internal constant SET_ROUTER_TERMINAL = 30; // Permission to call
+    // `JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`.
 
     /* Used by `nana-suckers`: https://github.com/Bananapus/nana-suckers */
     uint8 internal constant MAP_SUCKER_TOKEN = 31; // Permission to call `JBSucker.mapToken`.
