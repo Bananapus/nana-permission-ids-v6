@@ -1,4 +1,4 @@
-# nana-permission-ids-v6
+# Juicebox Permission IDs
 
 The single source of truth for access control across the Juicebox V6 ecosystem. This library defines 32 `uint8` constants -- one for each permission ID used with [`JBPermissions`](https://github.com/Bananapus/nana-core-v6/blob/main/src/JBPermissions.sol) -- ensuring every contract references the same IDs.
 

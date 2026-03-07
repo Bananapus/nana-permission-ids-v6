@@ -1,4 +1,4 @@
-# nana-permission-ids-v6
+# Juicebox Permission IDs
 
 ## Purpose
 
