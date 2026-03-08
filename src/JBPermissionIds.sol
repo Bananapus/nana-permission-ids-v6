@@ -41,10 +41,19 @@ library JBPermissionIds {
     /* Used by `nana-buyback-hook`: https://github.com/Bananapus/nana-buyback-hook */
     uint8 internal constant SET_BUYBACK_TWAP = 25; // Permission to call `JBBuybackHook.setTwapWindowOf`.
     uint8 internal constant SET_BUYBACK_POOL = 26; // Permission to call `JBBuybackHook.setPoolFor`.
+    /// @dev This single ID intentionally gates both setting and locking the buyback hook as a simplification.
+    /// Granting this permission allows the operator to call both `JBBuybackHookRegistry.setHookFor` (to configure the
+    /// hook) and `JBBuybackHookRegistry.lockHookFor` (to permanently lock the hook configuration). Project owners
+    /// should be aware that an operator with this permission can lock the hook, preventing future changes.
     uint8 internal constant SET_BUYBACK_HOOK = 27; // Permission to call `JBBuybackHookRegistry.setHookFor` and
     // `JBBuybackHookRegistry.lockHookFor`.
 
     /* Used by `nana-router-terminal`: https://github.com/Bananapus/nana-router-terminal-v6 */
+    /// @dev This single ID intentionally gates both setting and locking the router terminal as a simplification.
+    /// Granting this permission allows the operator to call both `JBRouterTerminalRegistry.setTerminalFor` (to
+    /// configure the terminal) and `JBRouterTerminalRegistry.lockTerminalFor` (to permanently lock the terminal
+    /// configuration). Project owners should be aware that an operator with this permission can lock the terminal,
+    /// preventing future changes.
     uint8 internal constant SET_ROUTER_TERMINAL = 28; // Permission to call
     // `JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`.
 
