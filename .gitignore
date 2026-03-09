@@ -25,3 +25,4 @@ workspace.code-workspace
 
 backup/
 .secret
+.claude/
