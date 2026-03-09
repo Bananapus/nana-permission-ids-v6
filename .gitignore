@@ -25,6 +25,9 @@ workspace.code-workspace
 
 backup/
 .secret
+
+.claude/
+
 # Audit/nemesis output
 .audit/
 .audit-logs/
