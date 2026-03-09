@@ -1,0 +1,53 @@
+# nana-permission-ids-v6 — Architecture
+
+## Purpose
+
+Constants library defining permission IDs used throughout the Juicebox V6 ecosystem. These IDs are used with `JBPermissions` to control access to protocol functions.
+
+## Contract Map
+
+```
+src/
+└── JBPermissionIds.sol — Library of uint8 permission ID constants
+```
+
+## Permission ID Registry
+
+| ID | Name | Used By | Gated Function |
+|----|------|---------|----------------|
+| 1 | `ROOT` | nana-core | All permissions (dangerous) |
+| 2 | `QUEUE_RULESETS` | nana-core | `JBController.queueRulesetsOf` |
+| 3 | `LAUNCH_RULESETS` | nana-core | `JBController.launchRulesetsFor` |
+| 4 | `CASH_OUT_TOKENS` | nana-core | `JBMultiTerminal.cashOutTokensOf` |
+| 5 | `SEND_PAYOUTS` | nana-core | `JBMultiTerminal.sendPayoutsOf` |
+| 6 | `MIGRATE_TERMINAL` | nana-core | `JBMultiTerminal.migrateBalanceOf` |
+| 7 | `SET_PROJECT_URI` | nana-core | `JBController.setUriOf` |
+| 8 | `DEPLOY_ERC20` | nana-core | `JBController.deployERC20For` |
+| 9 | `SET_TOKEN` | nana-core | `JBController.setTokenFor` |
+| 10 | `MINT_TOKENS` | nana-core | `JBController.mintTokensOf` |
+| 11 | `BURN_TOKENS` | nana-core | `JBController.burnTokensOf` |
+| 12 | `CLAIM_TOKENS` | nana-core | `JBController.claimTokensFor` |
+| 13 | `TRANSFER_CREDITS` | nana-core | `JBController.transferCreditsFrom` |
+| 14 | `SET_CONTROLLER` | nana-core | `JBDirectory.setControllerOf` |
+| 15 | `SET_TERMINALS` | nana-core | `JBDirectory.setTerminalsOf` |
+| 16 | `SET_PRIMARY_TERMINAL` | nana-core | `JBDirectory.setPrimaryTerminalOf` |
+| 17 | `USE_ALLOWANCE` | nana-core | `JBMultiTerminal.useAllowanceOf` |
+| 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` |
+| 19 | `ADD_PRICE_FEED` | nana-core | `JBPrices.addPriceFeedFor` |
+| 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` |
+| 21 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
+| 22 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` |
+| 23 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` |
+| 24 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` |
+| 25 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` |
+| 26 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` |
+| 27 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` |
+| 28 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` |
+| 29 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` |
+| 30 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` |
+| 31 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` |
+| 32 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` |
+
+## Dependencies
+
+None — this is a leaf dependency with no imports.
