@@ -35,18 +35,19 @@ src/
 | 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` |
 | 19 | `ADD_PRICE_FEED` | nana-core | `JBPrices.addPriceFeedFor` |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` |
-| 21 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
-| 22 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` |
-| 23 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` |
-| 24 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` |
-| 25 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` |
-| 26 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` |
-| 27 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` |
-| 28 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` |
-| 29 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` |
-| 30 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` |
-| 31 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` |
-| 32 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` |
+| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenNameAndSymbolOf` |
+| 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
+| 23 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` |
+| 24 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` |
+| 25 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` |
+| 26 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` |
+| 27 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` |
+| 28 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` |
+| 29 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` |
+| 30 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` |
+| 31 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` |
+| 32 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` |
+| 33 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` |
 
 ## Dependencies
 

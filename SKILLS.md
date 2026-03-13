@@ -8,7 +8,7 @@ Defines all `uint8` permission ID constants used across the Juicebox V6 ecosyste
 
 | Contract | Role |
 |----------|------|
-| `JBPermissionIds` | Constants-only library. 32 `uint8 internal constant` values (1--32). Pragma `^0.8.0` for maximum compatibility across all Juicebox contracts. |
+| `JBPermissionIds` | Constants-only library. 33 `uint8 internal constant` values (1--33). Pragma `^0.8.0` for maximum compatibility across all Juicebox contracts. |
 
 ## Key Functions
 
@@ -58,38 +58,39 @@ When a permissioned function is called, the contract checks whether the caller e
 | 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set how payouts and reserved tokens are distributed. Checked against project owner. |
 | 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeed` | Add a price feed for a project. The controller checks this permission, then calls `JBPrices.addPriceFeedFor` internally. Checked against project owner. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accepted token accounting contexts to a terminal. Checked against project owner. |
+| 21 | `SET_TOKEN_METADATA` | `JBController.setTokenNameAndSymbolOf` | Set a project token's name and symbol. Checked against project owner. |
 
 ### nana-721-hook-v6
 
 | ID | Name | Checked in | Permission scope |
 |----|------|------------|-----------------|
-| 21 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Add or remove NFT tiers. Checked against `owner()` (the project's controller). Also used by `CTPublisher`, `CTProjectOwner`, and `REVDeployer`. |
-| 22 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` | Set base URI, contract URI, or token URI resolver. Checked against `owner()`. |
-| 23 | `MINT_721` | `JB721TiersHook.mintFor` | Manually mint NFTs from specific tiers. Checked against `owner()`. |
-| 24 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` | Set the discount percent for NFT tiers. Checked against `owner()`. Called twice in the function for two separate code paths. |
+| 22 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Add or remove NFT tiers. Checked against `owner()` (the project's controller). Also used by `CTPublisher`, `CTProjectOwner`, and `REVDeployer`. |
+| 23 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` | Set base URI, contract URI, or token URI resolver. Checked against `owner()`. |
+| 24 | `MINT_721` | `JB721TiersHook.mintFor` | Manually mint NFTs from specific tiers. Checked against `owner()`. |
+| 25 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` | Set the discount percent for NFT tiers. Checked against `owner()`. Called twice in the function for two separate code paths. |
 
 ### nana-buyback-hook-v6
 
 | ID | Name | Checked in | Permission scope |
 |----|------|------------|-----------------|
-| 25 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Set the TWAP oracle window duration. Checked against project owner. |
-| 26 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set the Uniswap pool for a project's buyback. Also guards setting and locking the hook in `JBBuybackHookRegistry`. Checked against project owner. |
-| 27 | `SET_BUYBACK_HOOK` | *Currently unused in buyback hook code* | Defined for `JBBuybackHookRegistry.setHookFor` and `lockHookFor` per the source comment, but the registry actually checks `SET_BUYBACK_POOL` (ID 26) for those functions. Referenced by `REVDeployer` in revnet-core-v6 as an operator permission grant. |
+| 26 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Set the TWAP oracle window duration. Checked against project owner. |
+| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set the Uniswap pool for a project's buyback. Also guards setting and locking the hook in `JBBuybackHookRegistry`. Checked against project owner. |
+| 28 | `SET_BUYBACK_HOOK` | *Currently unused in buyback hook code* | Defined for `JBBuybackHookRegistry.setHookFor` and `lockHookFor` per the source comment, but the registry actually checks `SET_BUYBACK_POOL` (ID 27) for those functions. Referenced by `REVDeployer` in revnet-core-v6 as an operator permission grant. |
 
 ### nana-router-terminal-v6
 
 | ID | Name | Checked in | Permission scope |
 |----|------|------------|-----------------|
-| 28 | `SET_ROUTER_TERMINAL` | `JBRouterTerminalRegistry.setTerminalFor`, `JBRouterTerminalRegistry.lockTerminalFor` | Set or lock the router terminal for a project. Checked against project owner. |
+| 29 | `SET_ROUTER_TERMINAL` | `JBRouterTerminalRegistry.setTerminalFor`, `JBRouterTerminalRegistry.lockTerminalFor` | Set or lock the router terminal for a project. Checked against project owner. |
 
 ### nana-suckers-v6
 
 | ID | Name | Checked in | Permission scope |
 |----|------|------------|-----------------|
-| 29 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` | Map an ERC-20 token to its remote chain counterpart. Immutable once the outbox merkle tree has entries. Checked against project owner. |
-| 30 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` | Deploy sucker contracts for cross-chain bridging. Checked against project owner. Also checked by `JBOmnichainDeployer` and `CTDeployer`. |
-| 31 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Enable the emergency hatch to recover stuck tokens. Checked against project owner. |
-| 32 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Move a sucker through the deprecation lifecycle (ENABLED -> DEPRECATION_PENDING -> SENDING_DISABLED -> DEPRECATED). Checked against project owner. |
+| 30 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` | Map an ERC-20 token to its remote chain counterpart. Immutable once the outbox merkle tree has entries. Checked against project owner. |
+| 31 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` | Deploy sucker contracts for cross-chain bridging. Checked against project owner. Also checked by `JBOmnichainDeployer` and `CTDeployer`. |
+| 32 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Enable the emergency hatch to recover stuck tokens. Checked against project owner. |
+| 33 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Move a sucker through the deprecation lifecycle (ENABLED -> DEPRECATION_PENDING -> SENDING_DISABLED -> DEPRECATED). Checked against project owner. |
 
 ## Integration Points
 
@@ -126,7 +127,7 @@ N/A -- no structs or enums. All values are `uint8 internal constant`.
 - **Holder-scoped permissions.** IDs 4 (`CASH_OUT_TOKENS`), 11 (`BURN_TOKENS`), 12 (`CLAIM_TOKENS`), and 13 (`TRANSFER_CREDITS`) are checked against the **token holder**, not the project owner. This means a holder grants an operator permission to act on the holder's own tokens.
 - **SET_BUYBACK_HOOK (ID 27) mismatch.** The source comment says it guards `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but those functions actually check `SET_BUYBACK_POOL` (ID 26). The ID is still granted by `REVDeployer` as an operator permission.
 - **ADD_PRICE_FEED (ID 19) is checked on JBController, not JBPrices.** The permission gate is on `JBController.addPriceFeed`, which then calls `JBPrices.addPriceFeedFor` internally.
-- **uint8 range.** IDs are `uint8` (0--255) but the packed storage is `uint256`, so the system supports up to 256 permission bits. Currently 32 are defined (1--32).
+- **uint8 range.** IDs are `uint8` (0--255) but the packed storage is `uint256`, so the system supports up to 256 permission bits. Currently 33 are defined (1--33).
 
 ## Example Integration
 

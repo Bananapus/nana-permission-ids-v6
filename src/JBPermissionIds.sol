@@ -31,21 +31,23 @@ library JBPermissionIds {
     uint8 internal constant ADD_PRICE_FEED = 19; // Permission to call `JBPrices.addPriceFeedFor`.
     uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 20; // Permission to call
     // `JBMultiTerminal.addAccountingContextsFor`.
+    uint8 internal constant SET_TOKEN_METADATA = 21; // Permission to call
+    // `JBController.setTokenNameAndSymbolOf`.
 
     /* Used by `nana-721-hook`: https://github.com/Bananapus/nana-721-hook */
-    uint8 internal constant ADJUST_721_TIERS = 21; // Permission to call `JB721TiersHook.adjustTiers`.
-    uint8 internal constant SET_721_METADATA = 22; // Permission to call `JB721TiersHook.setMetadata`.
-    uint8 internal constant MINT_721 = 23; // Permission to call `JB721TiersHook.mintFor`.
-    uint8 internal constant SET_721_DISCOUNT_PERCENT = 24; // Permission to call `JB721TiersHook.setDiscountPercentOf`.
+    uint8 internal constant ADJUST_721_TIERS = 22; // Permission to call `JB721TiersHook.adjustTiers`.
+    uint8 internal constant SET_721_METADATA = 23; // Permission to call `JB721TiersHook.setMetadata`.
+    uint8 internal constant MINT_721 = 24; // Permission to call `JB721TiersHook.mintFor`.
+    uint8 internal constant SET_721_DISCOUNT_PERCENT = 25; // Permission to call `JB721TiersHook.setDiscountPercentOf`.
 
     /* Used by `nana-buyback-hook`: https://github.com/Bananapus/nana-buyback-hook */
-    uint8 internal constant SET_BUYBACK_TWAP = 25; // Permission to call `JBBuybackHook.setTwapWindowOf`.
-    uint8 internal constant SET_BUYBACK_POOL = 26; // Permission to call `JBBuybackHook.setPoolFor`.
+    uint8 internal constant SET_BUYBACK_TWAP = 26; // Permission to call `JBBuybackHook.setTwapWindowOf`.
+    uint8 internal constant SET_BUYBACK_POOL = 27; // Permission to call `JBBuybackHook.setPoolFor`.
     /// @dev This single ID intentionally gates both setting and locking the buyback hook as a simplification.
     /// Granting this permission allows the operator to call both `JBBuybackHookRegistry.setHookFor` (to configure the
     /// hook) and `JBBuybackHookRegistry.lockHookFor` (to permanently lock the hook configuration). Project owners
     /// should be aware that an operator with this permission can lock the hook, preventing future changes.
-    uint8 internal constant SET_BUYBACK_HOOK = 27; // Permission to call `JBBuybackHookRegistry.setHookFor` and
+    uint8 internal constant SET_BUYBACK_HOOK = 28; // Permission to call `JBBuybackHookRegistry.setHookFor` and
     // `JBBuybackHookRegistry.lockHookFor`.
 
     /* Used by `nana-router-terminal`: https://github.com/Bananapus/nana-router-terminal-v6 */
@@ -54,12 +56,12 @@ library JBPermissionIds {
     /// configure the terminal) and `JBRouterTerminalRegistry.lockTerminalFor` (to permanently lock the terminal
     /// configuration). Project owners should be aware that an operator with this permission can lock the terminal,
     /// preventing future changes.
-    uint8 internal constant SET_ROUTER_TERMINAL = 28; // Permission to call
+    uint8 internal constant SET_ROUTER_TERMINAL = 29; // Permission to call
     // `JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`.
 
     /* Used by `nana-suckers`: https://github.com/Bananapus/nana-suckers */
-    uint8 internal constant MAP_SUCKER_TOKEN = 29; // Permission to call `JBSucker.mapToken`.
-    uint8 internal constant DEPLOY_SUCKERS = 30; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
-    uint8 internal constant SUCKER_SAFETY = 31; // Permission to call `JBSucker.enableEmergencyHatchFor`.
-    uint8 internal constant SET_SUCKER_DEPRECATION = 32; // Permission to call `JBSucker.setDeprecation`.
+    uint8 internal constant MAP_SUCKER_TOKEN = 30; // Permission to call `JBSucker.mapToken`.
+    uint8 internal constant DEPLOY_SUCKERS = 31; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
+    uint8 internal constant SUCKER_SAFETY = 32; // Permission to call `JBSucker.enableEmergencyHatchFor`.
+    uint8 internal constant SET_SUCKER_DEPRECATION = 33; // Permission to call `JBSucker.setDeprecation`.
 }

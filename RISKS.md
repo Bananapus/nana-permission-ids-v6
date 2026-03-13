@@ -16,6 +16,6 @@ This is a constants-only library with no runtime behavior. The risk surface is l
 ## Design Notes
 
 - Permission 0 is reserved and cannot be set
-- IDs are `uint8` (0-255), with 1-32 currently assigned
-- IDs 33-255 are available for future ecosystem extensions
+- IDs are `uint8` (0-255), with 1-33 currently assigned
+- IDs 34-255 are available for future ecosystem extensions
 - This library has zero dependencies — it is the leaf of the dependency graph

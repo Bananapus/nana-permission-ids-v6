@@ -10,7 +10,7 @@ There are no ownable contracts, no upgrade mechanisms, and no mutable state. The
 
 ## Permission IDs
 
-All 32 defined permission IDs and what they control:
+All 33 defined permission IDs and what they control:
 
 | ID | Constant | Used By | What It Controls |
 |----|----------|---------|-----------------|
@@ -34,20 +34,21 @@ All 32 defined permission IDs and what they control:
 | 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` -- configure payout and reserved token splits. |
 | 19 | `ADD_PRICE_FEED` | nana-core | `JBPrices.addPriceFeedFor` (via `JBController.addPriceFeed`) -- add a price feed for a project. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` -- add accepted tokens to a terminal. |
-| 21 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
-| 22 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
-| 23 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
-| 24 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` -- set discount percent on NFT tiers. |
-| 25 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` -- configure the TWAP oracle window. |
-| 26 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` -- set the Uniswap pool for buybacks. |
-| 27 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` and `lockHookFor` -- configure and permanently lock the buyback hook. |
-| 28 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` and `lockTerminalFor` -- configure and permanently lock the router terminal. |
-| 29 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` -- map an ERC-20 to its remote chain counterpart. Immutable once the outbox tree has entries. |
-| 30 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
-| 31 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
-| 32 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
+| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenNameAndSymbolOf` -- set a project token's name and symbol. |
+| 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
+| 23 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
+| 24 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
+| 25 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` -- set discount percent on NFT tiers. |
+| 26 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` -- configure the TWAP oracle window. |
+| 27 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` -- set the Uniswap pool for buybacks. |
+| 28 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` and `lockHookFor` -- configure and permanently lock the buyback hook. |
+| 29 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` and `lockTerminalFor` -- configure and permanently lock the router terminal. |
+| 30 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` -- map an ERC-20 to its remote chain counterpart. Immutable once the outbox tree has entries. |
+| 31 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
+| 32 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
+| 33 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
 
-IDs 0 and 33-255 are unused. ID 0 is reserved and cannot be set. IDs 33-255 are available for future ecosystem extensions.
+IDs 0 and 34-255 are unused. ID 0 is reserved and cannot be set. IDs 34-255 are available for future ecosystem extensions.
 
 ## ROOT Permission
 
@@ -88,8 +89,8 @@ Some permissions warrant extra caution when granting:
 - **`ROOT` (1):** Full access to all gated functions for a project.
 - **`SET_TERMINALS` (15):** Can remove the primary terminal, breaking payments and cashouts.
 - **`USE_ALLOWANCE` (17):** Can send surplus funds to any address.
-- **`SET_BUYBACK_HOOK` (27):** Can permanently lock the buyback hook configuration.
-- **`SET_ROUTER_TERMINAL` (28):** Can permanently lock the router terminal configuration.
+- **`SET_BUYBACK_HOOK` (28):** Can permanently lock the buyback hook configuration.
+- **`SET_ROUTER_TERMINAL` (29):** Can permanently lock the router terminal configuration.
 - **`MINT_TOKENS` (10):** Can inflate token supply (subject to ruleset allowing owner minting).
 
 ## Holder vs. Owner Permissions
