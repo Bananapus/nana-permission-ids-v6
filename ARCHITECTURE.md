@@ -35,7 +35,7 @@ src/
 | 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` |
 | 19 | `ADD_PRICE_FEED` | nana-core | `JBPrices.addPriceFeedFor` |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` |
-| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenMetadataOf` |
+| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setMetadataOf` |
 | 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
 | 23 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` |
 | 24 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` |

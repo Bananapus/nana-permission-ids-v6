@@ -58,7 +58,7 @@ When a permissioned function is called, the contract checks whether the caller e
 | 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set how payouts and reserved tokens are distributed. Checked against project owner. |
 | 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeed` | Add a price feed for a project. The controller checks this permission, then calls `JBPrices.addPriceFeedFor` internally. Checked against project owner. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accepted token accounting contexts to a terminal. Checked against project owner. |
-| 21 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Set a project token's name and symbol. Checked against project owner. |
+| 21 | `SET_TOKEN_METADATA` | `JBController.setMetadataOf` | Set a project token's name and symbol. Checked against project owner. |
 
 ### nana-721-hook-v6
 
