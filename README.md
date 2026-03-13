@@ -49,7 +49,7 @@ permissionsOf[operator][account][projectId] => uint256 (packed bits)
 | 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set a project's split groups (how payouts and reserved tokens are distributed). |
 | 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeed` | Add a price feed for a project. The controller checks this permission before calling `JBPrices.addPriceFeedFor`. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accounting contexts (accepted tokens) to a terminal for a project. |
-| 21 | `SET_TOKEN_METADATA` | `JBController.setTokenNameAndSymbolOf` | Set a project token's name and symbol. Checked against the project owner. |
+| 21 | `SET_TOKEN_METADATA` | `JBController.setMetadataOf` | Set a project token's name and symbol. Checked against the project owner. |
 
 ### 721 Hook (IDs 22--25) -- [nana-721-hook-v6](https://github.com/Bananapus/nana-721-hook-v6)
 

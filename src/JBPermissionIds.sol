@@ -32,7 +32,7 @@ library JBPermissionIds {
     uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 20; // Permission to call
     // `JBMultiTerminal.addAccountingContextsFor`.
     uint8 internal constant SET_TOKEN_METADATA = 21; // Permission to call
-    // `JBController.setTokenNameAndSymbolOf`.
+    // `JBController.setMetadataOf`.
 
     /* Used by `nana-721-hook`: https://github.com/Bananapus/nana-721-hook */
     uint8 internal constant ADJUST_721_TIERS = 22; // Permission to call `JB721TiersHook.adjustTiers`.
