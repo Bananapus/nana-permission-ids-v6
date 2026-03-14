@@ -58,7 +58,7 @@ When a permissioned function is called, the contract checks whether the caller e
 | 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set how payouts and reserved tokens are distributed. Checked against project owner. |
 | 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeed` | Add a price feed for a project. The controller checks this permission, then calls `JBPrices.addPriceFeedFor` internally. Checked against project owner. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accepted token accounting contexts to a terminal. Checked against project owner. |
-| 21 | `SET_TOKEN_METADATA` | `JBController.setMetadataOf` | Set a project token's name and symbol. Checked against project owner. |
+| 21 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Set a project token's name and symbol. Checked against project owner. |
 
 ### nana-721-hook-v6
 
@@ -125,7 +125,7 @@ N/A -- no structs or enums. All values are `uint8 internal constant`.
 - **SET_TERMINALS (ID 15) can break a project.** Replacing the terminal list without including the current primary terminal will remove it, breaking payments and cashouts until a new primary is set.
 - **LAUNCH_RULESETS (ID 3) requires both IDs 3 and 15.** The function enforces two separate permission checks because it configures terminals in addition to launching rulesets.
 - **Holder-scoped permissions.** IDs 4 (`CASH_OUT_TOKENS`), 11 (`BURN_TOKENS`), 12 (`CLAIM_TOKENS`), and 13 (`TRANSFER_CREDITS`) are checked against the **token holder**, not the project owner. This means a holder grants an operator permission to act on the holder's own tokens.
-- **SET_BUYBACK_HOOK (ID 27) mismatch.** The source comment says it guards `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but those functions actually check `SET_BUYBACK_POOL` (ID 26). The ID is still granted by `REVDeployer` as an operator permission.
+- **SET_BUYBACK_HOOK (ID 28) mismatch.** The source comment says it guards `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but those functions actually check `SET_BUYBACK_POOL` (ID 27). The ID is still granted by `REVDeployer` as an operator permission.
 - **ADD_PRICE_FEED (ID 19) is checked on JBController, not JBPrices.** The permission gate is on `JBController.addPriceFeed`, which then calls `JBPrices.addPriceFeedFor` internally.
 - **uint8 range.** IDs are `uint8` (0--255) but the packed storage is `uint256`, so the system supports up to 256 permission bits. Currently 33 are defined (1--33).
 

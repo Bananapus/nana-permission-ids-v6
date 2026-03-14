@@ -32,9 +32,9 @@ All 33 defined permission IDs and what they control:
 | 16 | `SET_PRIMARY_TERMINAL` | nana-core | `JBDirectory.setPrimaryTerminalOf` -- set the primary terminal for a token. |
 | 17 | `USE_ALLOWANCE` | nana-core | `JBMultiTerminal.useAllowanceOf` -- spend surplus allowance to an arbitrary address. |
 | 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` -- configure payout and reserved token splits. |
-| 19 | `ADD_PRICE_FEED` | nana-core | `JBPrices.addPriceFeedFor` (via `JBController.addPriceFeed`) -- add a price feed for a project. |
+| 19 | `ADD_PRICE_FEED` | nana-core | `JBController.addPriceFeed` (which internally calls `JBPrices.addPriceFeedFor`) -- add a price feed for a project. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` -- add accepted tokens to a terminal. |
-| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setMetadataOf` -- set a project token's name and symbol. |
+| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenMetadataOf` -- set a project token's name and symbol. |
 | 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
 | 23 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
 | 24 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
