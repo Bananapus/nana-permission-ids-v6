@@ -1,21 +1,18 @@
-# nana-permission-ids-v6 — Risks
+# RISKS.md -- nana-permission-ids-v6
 
-## Trust Assumptions
+Constants-only library defining permission ID values used throughout the Bananapus ecosystem. Contains no logic, no state, and no external calls.
 
-This is a constants-only library with no runtime behavior. The risk surface is limited to the correctness of the ID assignments.
+## 1. Known Risks
 
-## Known Risks
+- **ROOT permission (ID 1).** ROOT grants all permissions across every contract. Any address granted ROOT can perform any permissioned operation on any project. Should never be granted to untrusted addresses.
+- **SET_BUYBACK_HOOK includes lock (ID 28).** Gates both `setHookFor` and `lockHookFor`. An operator with this permission can permanently lock the buyback hook configuration.
+- **SET_ROUTER_TERMINAL includes lock (ID 29).** Gates both `setTerminalFor` and `lockTerminalFor`. An operator can permanently lock the router terminal.
+- **ID collision risk.** Permission IDs are manually assigned sequential uint8 values. Adding new IDs requires coordination to avoid collision. Library is append-only.
+- **No runtime enforcement.** This library only defines constants. Enforcement happens in consuming contracts. A mismatch between the ID used here and the ID checked in a consumer would silently fail.
 
-| Risk | Description | Mitigation |
-|------|-------------|------------|
-| ID collision | If two repos use the same ID for different permissions, access control breaks | IDs are centrally managed in this single file |
-| ROOT scope | ROOT (ID 1) grants ALL permissions across all contracts | Cannot be set for wildcard projectId=0; ROOT operators cannot grant ROOT |
-| SET_TERMINALS scope | Includes ability to remove the primary terminal | Documented warning in source |
-| SET_BUYBACK_HOOK / SET_ROUTER_TERMINAL scope | Each gates both setting AND locking (permanent) | Documented in source; granting means operator can lock |
+## 2. Design Notes
 
-## Design Notes
-
-- Permission 0 is reserved and cannot be set
-- IDs are `uint8` (0-255), with 1-33 currently assigned
-- IDs 34-255 are available for future ecosystem extensions
-- This library has zero dependencies — it is the leaf of the dependency graph
+- Permission 0 is reserved and cannot be set.
+- IDs are `uint8` (0-255), with 1-33 currently assigned.
+- IDs 34-255 are available for future ecosystem extensions.
+- This library has zero dependencies -- it is the leaf of the dependency graph.
