@@ -75,7 +75,7 @@ permissionsOf[operator][account][projectId] => uint256 (one bit per permission I
 | 16 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` | Project owner |
 | 17 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` | Project owner |
 | 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Project owner |
-| 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeed` (not `JBPrices` directly) | Project owner |
+| 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeedFor` (not `JBPrices` directly) | Project owner |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Project owner |
 | 21 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Project owner |
 | 22 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Hook owner |
@@ -111,7 +111,7 @@ Each constant's doc comment claims it gates a specific function. Verify against 
 - **nana-router-terminal-v6**: ID 29 should match permission checks in `JBRouterTerminalRegistry`.
 - **nana-suckers-v6**: IDs 30-33 should match permission checks in `JBSucker` and `JBSuckerRegistry`.
 
-Known discrepancy to investigate: **SET_BUYBACK_HOOK (ID 28)** -- the source comment says it gates `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but those functions may actually check `SET_BUYBACK_POOL` (ID 27) instead. Verify which ID is actually checked in the registry code and whether this mismatch causes any practical issue.
+Verified: **SET_BUYBACK_HOOK (ID 28)** correctly gates both `JBBuybackHookRegistry.setHookFor` and `lockHookFor`. Both functions check `SET_BUYBACK_HOOK` (ID 28), not `SET_BUYBACK_POOL` (ID 27). The table above is accurate.
 
 ### 3. Holder-Scoped vs Owner-Scoped Permissions
 
