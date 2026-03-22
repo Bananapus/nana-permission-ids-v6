@@ -2,6 +2,33 @@
 
 You are auditing a constants-only library that defines all permission IDs used across the Juicebox V6 ecosystem. The library has no state, no functions, no constructors, and no dependencies. The entire audit surface is the correctness and consistency of 33 `uint8` constants. Read [RISKS.md](./RISKS.md) first -- it documents all known risks and trust assumptions. Then come back here.
 
+## Quick Verification
+
+Run this one-liner from the repo root to verify all 33 permission IDs are unique, sequential (1-33), and have no gaps or duplicates:
+
+```bash
+grep 'constant.*=' src/JBPermissionIds.sol | sed 's/.*= \([0-9]*\).*/\1/' | sort -n | diff - <(seq 1 33) && echo "PASS: All 33 IDs are unique and sequential (1-33)" || echo "FAIL: ID mismatch detected"
+```
+
+If `PASS` is printed, the constants are correctly assigned. If `FAIL` is printed, inspect the diff output to identify which IDs are missing, duplicated, or out of range.
+
+## Compiler and Version Info
+
+From `foundry.toml`:
+
+| Setting | Value |
+|---------|-------|
+| Solidity version | `0.8.26` |
+| EVM target | `cancun` |
+| Optimizer | Enabled, 200 runs |
+| Pragma in source | `^0.8.0` (flexible, compiled with 0.8.26) |
+
+Note: The library pragma is `^0.8.0` rather than a fixed version, since consuming contracts may compile it with their own Solidity version. The `foundry.toml` pins `0.8.26` for local builds.
+
+## Previous Audit Findings
+
+No prior formal audit with finding IDs has been conducted for `nana-permission-ids-v6`. This library has been reviewed informally as part of broader Juicebox V6 ecosystem reviews, but no standalone audit report exists.
+
 ## Scope
 
 **In scope:**
