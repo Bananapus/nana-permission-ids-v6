@@ -16,16 +16,7 @@ N/A -- this is a constants-only library with no callable functions.
 
 ## How permissions work
 
-Permissions are stored in `JBPermissions` as a 256-bit packed integer:
-
-```
-permissionsOf[operator][account][projectId] => uint256 (one bit per permission ID)
-```
-
-When a permissioned function is called, the contract checks whether the caller either **is** the account or **has** the required permission ID for that project. The check also considers:
-
-1. **ROOT override** -- if the operator has ROOT (ID 1) for the project (or wildcard), all permission checks pass.
-2. **Wildcard project ID** -- permissions granted with `projectId = 0` apply to all projects for that account.
+Permissions are stored as 256-bit packed integers in `JBPermissions`, keyed by `[operator][account][projectId]`. ROOT (ID 1) passes all checks; `projectId = 0` grants cross-project access. See `nana-core-v6/SKILLS.md` for full permissions mechanics.
 
 ## All Permission IDs
 
@@ -92,6 +83,20 @@ When a permissioned function is called, the contract checks whether the caller e
 | 32 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Enable the emergency hatch to recover stuck tokens. Checked against project owner. |
 | 33 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Move a sucker through the deprecation lifecycle (ENABLED -> DEPRECATION_PENDING -> SENDING_DISABLED -> DEPRECATED). Checked against project owner. |
 
+## Common Permission Bundles
+
+Typical combinations when granting operator access via `JBPermissions.setPermissionsFor`:
+
+| Bundle | IDs | Use case |
+|--------|-----|----------|
+| **Deployer operator** | `QUEUE_RULESETS` (2), `SET_SPLIT_GROUPS` (18), `SET_FUND_ACCESS_LIMITS` (not in this library -- set via ruleset config) | Operator that manages project rulesets and split configuration on behalf of the owner. |
+| **Token manager** | `MINT_TOKENS` (10), `BURN_TOKENS` (11), `SET_TOKEN_METADATA` (21) | Operator that manages token supply and metadata. |
+| **Treasury manager** | `SEND_PAYOUTS` (5), `USE_ALLOWANCE` (17), `ADD_ACCOUNTING_CONTEXTS` (20) | Operator that manages outflows from the project treasury. |
+| **Project admin** | `SET_PROJECT_URI` (7), `DEPLOY_ERC20` (8), `SET_CONTROLLER` (14), `SET_TERMINALS` (15), `SET_PRIMARY_TERMINAL` (16) | Broad administrative access without ROOT. |
+| **NFT manager** | `ADJUST_721_TIERS` (22), `SET_721_METADATA` (23), `MINT_721` (24), `SET_721_DISCOUNT_PERCENT` (25) | Full control over 721 tier configuration. |
+| **Cross-chain operator** | `DEPLOY_SUCKERS` (31), `MAP_SUCKER_TOKEN` (30), `SET_SUCKER_DEPRECATION` (33) | Manages cross-chain bridging lifecycle. |
+| **Launch bundle** | `LAUNCH_RULESETS` (3), `SET_TERMINALS` (15) | Both are required for `launchRulesetsFor` -- ID 3 alone is insufficient. |
+
 ## Integration Points
 
 | Dependency | Import | Used For |
@@ -125,7 +130,7 @@ N/A -- no structs or enums. All values are `uint8 internal constant`.
 - **SET_TERMINALS (ID 15) can break a project.** Replacing the terminal list without including the current primary terminal will remove it, breaking payments and cashouts until a new primary is set.
 - **LAUNCH_RULESETS (ID 3) requires both IDs 3 and 15.** The function enforces two separate permission checks because it configures terminals in addition to launching rulesets.
 - **Holder-scoped permissions.** IDs 4 (`CASH_OUT_TOKENS`), 11 (`BURN_TOKENS`), 12 (`CLAIM_TOKENS`), and 13 (`TRANSFER_CREDITS`) are checked against the **token holder**, not the project owner. This means a holder grants an operator permission to act on the holder's own tokens.
-- **SET_BUYBACK_HOOK (ID 28) mismatch.** The source comment says it guards `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but those functions actually check `SET_BUYBACK_POOL` (ID 27). The ID is still granted by `REVDeployer` as an operator permission.
+- **SET_BUYBACK_HOOK (ID 28) mismatch.** The source comment says it guards `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but those functions actually check `SET_BUYBACK_POOL` (ID 27). The ID is still granted by `REVDeployer` as an operator permission. **Use ID 27 (`SET_BUYBACK_POOL`) for current deployments; ID 28 is reserved and not checked by any deployed contract.**
 - **ADD_PRICE_FEED (ID 19) is checked on JBController, not JBPrices.** The permission gate is on `JBController.addPriceFeed`, which then calls `JBPrices.addPriceFeedFor` internally.
 - **uint8 range.** IDs are `uint8` (0--255) but the packed storage is `uint256`, so the system supports up to 256 permission bits. Currently 33 are defined (1--33).
 
