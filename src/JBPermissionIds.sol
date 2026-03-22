@@ -28,7 +28,7 @@ library JBPermissionIds {
     uint8 internal constant SET_PRIMARY_TERMINAL = 16; // Permission to call `JBDirectory.setPrimaryTerminalOf`.
     uint8 internal constant USE_ALLOWANCE = 17; // Permission to call `JBMultiTerminal.useAllowanceOf`.
     uint8 internal constant SET_SPLIT_GROUPS = 18; // Permission to call `JBController.setSplitGroupsOf`.
-    uint8 internal constant ADD_PRICE_FEED = 19; // Permission to call `JBController.addPriceFeed`.
+    uint8 internal constant ADD_PRICE_FEED = 19; // Permission to call `JBController.addPriceFeedFor`.
     uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 20; // Permission to call
     // `JBMultiTerminal.addAccountingContextsFor`.
     uint8 internal constant SET_TOKEN_METADATA = 21; // Permission to call
