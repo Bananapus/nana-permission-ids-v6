@@ -2,6 +2,15 @@
 
 This document describes all changes between `nana-permission-ids` (v5) and `nana-permission-ids-v6` (v6).
 
+## Summary
+
+- **All numeric IDs shifted** — the insertion of `LAUNCH_RULESETS` at ID 3 cascades through every subsequent permission. Any code using hardcoded numeric values will break.
+- **Two permissions split**: `QUEUE_RULESETS` → `QUEUE_RULESETS` + `LAUNCH_RULESETS`; `SUCKER_SAFETY` → `SUCKER_SAFETY` + `SET_SUCKER_DEPRECATION`.
+- **5 new permissions** added: `LAUNCH_RULESETS` (3), `SET_TOKEN_METADATA` (21), `SET_BUYBACK_HOOK` (28), `SET_ROUTER_TERMINAL` (29), `SET_SUCKER_DEPRECATION` (33).
+- **2 swap terminal permissions removed**: `ADD_SWAP_TERMINAL_POOL` and `ADD_SWAP_TERMINAL_TWAP_PARAMS` (swap terminal replaced by router terminal).
+
+> **⚠️ WARNING: All numeric permission IDs have shifted.** If your contracts, scripts, or frontends hardcode permission ID numbers (e.g., `permissions.setPermissionsFor(..., 3, ...)` for `CASH_OUT_TOKENS`), they MUST be updated. `CASH_OUT_TOKENS` moved from 3 → 4, `SEND_PAYOUTS` from 4 → 5, and so on. Always reference the named constants from `JBPermissionIds` rather than raw numbers.
+
 ---
 
 ## 1. Breaking Changes
@@ -48,6 +57,8 @@ In v5, `QUEUE_RULESETS` (2) granted permission to call both `JBController.queueR
 - `QUEUE_RULESETS` (2) -- only `JBController.queueRulesetsOf`
 - `LAUNCH_RULESETS` (3) -- only `JBController.launchRulesetsFor`
 
+> **Cross-repo impact**: `nana-core-v6` (`JBController.launchRulesetsFor`) now requires `LAUNCH_RULESETS` instead of `QUEUE_RULESETS`. `nana-omnichain-deployers-v6` and `revnet-core-v6` both use the new `LAUNCH_RULESETS` permission.
+
 ### `SUCKER_SAFETY` split into two permissions
 
 In v5, `SUCKER_SAFETY` (30) granted permission to call both `BPSucker.enableEmergencyHatchFor` and `BPSucker.setDeprecation`. In v6, these are separate:
@@ -63,6 +74,8 @@ The following permissions from `nana-swap-terminal` no longer exist in v6:
 |---|---|---|
 | `ADD_SWAP_TERMINAL_POOL` | 26 | Was for `JBSwapTerminal.addDefaultPool` |
 | `ADD_SWAP_TERMINAL_TWAP_PARAMS` | 27 | Was for `JBSwapTerminal.addTwapParamsFor` |
+
+> **Cross-repo impact**: `nana-router-terminal-v6` (the replacement for swap terminal) uses the new `SET_ROUTER_TERMINAL` (29) permission instead.
 
 ### Contract prefix rename (suckers)
 
