@@ -4,6 +4,18 @@
 
 Constants library defining permission IDs used throughout the Juicebox V6 ecosystem. These IDs are used with `JBPermissions` to control access to protocol functions.
 
+## How Permissions Work
+
+These IDs plug into `JBPermissions` in nana-core, which stores permissions as a 256-bit packed `uint256` — one bit per permission ID. Callers check access via `hasPermission(operator, account, projectId, permissionId)`. A project owner can grant any operator a set of permission IDs scoped to a specific project, or use `projectId = 0` as a wildcard to grant permissions across all projects.
+
+## Permission Guards
+
+`JBPermissions.setPermissionsFor` enforces three guard rules:
+
+- **Permission 0 is reserved.** Setting bit 0 always reverts (`JBPermissions_NoZeroPermission`). This prevents accidental misuse of an uninitialized permission ID.
+- **ROOT cannot be set via wildcard.** An operator with ROOT on a specific project cannot use `setPermissionsFor` with `projectId = 0` (wildcard). This prevents a single-project ROOT operator from escalating to all-project access (`JBPermissions_CantSetRootPermissionForWildcardProject`).
+- **ROOT operators cannot grant ROOT to others.** Only the account itself can include `ROOT` (ID 1) in a `setPermissionsFor` call. A ROOT operator calling on behalf of the account will revert if the new permission set includes ROOT.
+
 ## Contract Map
 
 ```
