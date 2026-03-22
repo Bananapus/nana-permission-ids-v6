@@ -65,8 +65,8 @@ permissionsOf[operator][account][projectId] => uint256 (packed bits)
 | ID | Name | Checked in | Description |
 |----|------|------------|-------------|
 | 26 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Set the TWAP (time-weighted average price) oracle window for a project's buyback hook. |
-| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set the Uniswap pool for a project's buyback. Also guards setting and locking the hook in `JBBuybackHookRegistry`. |
-| 28 | `SET_BUYBACK_HOOK` | *Reserved / revnet-core-v6* | Defined in `JBPermissionIds` for `JBBuybackHookRegistry.setHookFor` and `lockHookFor`, but the registry currently checks `SET_BUYBACK_POOL` (ID 27) for those functions. Used by `REVDeployer` in revnet-core-v6 as an operator permission grant. |
+| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHook.setTwapWindowOf`, `JBBuybackHookRegistry.setPoolFor`, `JBBuybackHookRegistry.lockPoolFor` | Set the Uniswap pool or TWAP window for a project's buyback hook. |
+| 28 | `SET_BUYBACK_HOOK` | `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set or lock the buyback hook in the registry. Also used by `REVDeployer` as an operator permission grant. |
 
 ### Router Terminal (ID 29) -- [nana-router-terminal-v6](https://github.com/Bananapus/nana-router-terminal-v6)
 
