@@ -14,39 +14,39 @@ All 33 defined permission IDs and what they control:
 
 | ID | Constant | Used By | What It Controls |
 |----|----------|---------|-----------------|
-| 1 | `ROOT` | All contracts | Grants every permission. See [ROOT Permission](#root-permission). |
-| 2 | `QUEUE_RULESETS` | nana-core | `JBController.queueRulesetsOf` -- queue new rulesets for a project. |
-| 3 | `LAUNCH_RULESETS` | nana-core | `JBController.launchRulesetsFor` -- launch a project's initial rulesets. Also requires `SET_TERMINALS` (ID 15). |
-| 4 | `CASH_OUT_TOKENS` | nana-core | `JBMultiTerminal.cashOutTokensOf` -- redeem tokens for surplus. Checked against the **token holder**, not the project owner. |
-| 5 | `SEND_PAYOUTS` | nana-core | `JBMultiTerminal.sendPayoutsOf` -- distribute payouts to splits. |
-| 6 | `MIGRATE_TERMINAL` | nana-core | `JBMultiTerminal.migrateBalanceOf` -- migrate a project's balance to another terminal. |
-| 7 | `SET_PROJECT_URI` | nana-core | `JBController.setUriOf` -- set project metadata URI. |
-| 8 | `DEPLOY_ERC20` | nana-core | `JBController.deployERC20For` -- deploy a new ERC-20 token for a project. |
-| 9 | `SET_TOKEN` | nana-core | `JBController.setTokenFor` -- set an existing ERC-20 token for a project. |
-| 10 | `MINT_TOKENS` | nana-core | `JBController.mintTokensOf` -- mint new project tokens. Only effective when the current ruleset allows owner minting. |
-| 11 | `BURN_TOKENS` | nana-core | `JBController.burnTokensOf` -- burn tokens. Checked against the **token holder**. |
-| 12 | `CLAIM_TOKENS` | nana-core | `JBController.claimTokensFor` -- claim internal credits as ERC-20. Checked against the **token holder**. |
-| 13 | `TRANSFER_CREDITS` | nana-core | `JBController.transferCreditsFrom` -- transfer internal credits. Checked against the **token holder**. |
-| 14 | `SET_CONTROLLER` | nana-core | `JBDirectory.setControllerOf` -- set a project's controller. |
-| 15 | `SET_TERMINALS` | nana-core | `JBDirectory.setTerminalsOf` -- set a project's terminals. **Warning:** can remove the primary terminal. |
-| 16 | `SET_PRIMARY_TERMINAL` | nana-core | `JBDirectory.setPrimaryTerminalOf` -- set the primary terminal for a token. |
-| 17 | `USE_ALLOWANCE` | nana-core | `JBMultiTerminal.useAllowanceOf` -- spend surplus allowance to an arbitrary address. |
-| 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` -- configure payout and reserved token splits. |
-| 19 | `ADD_PRICE_FEED` | nana-core | `JBController.addPriceFeed` (which internally calls `JBPrices.addPriceFeedFor`) -- add a price feed for a project. |
-| 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` -- add accepted tokens to a terminal. |
-| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenMetadataOf` -- set a project token's name and symbol. |
-| 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
-| 23 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
-| 24 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
-| 25 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` -- set discount percent on NFT tiers. |
-| 26 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` -- configure the TWAP oracle window. |
-| 27 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` -- set the Uniswap pool for buybacks. |
-| 28 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` and `lockHookFor` -- configure and permanently lock the buyback hook. |
-| 29 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` and `lockTerminalFor` -- configure and permanently lock the router terminal. |
-| 30 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` -- map an ERC-20 to its remote chain counterpart. Immutable once the outbox tree has entries. |
-| 31 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
-| 32 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
-| 33 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
+| 1 | `ROOT` | All contracts (via `JBPermissions`) | Grants every permission. See [ROOT Permission](#root-permission). |
+| 2 | `QUEUE_RULESETS` | nana-core (`JBController`) | `JBController.queueRulesetsOf` -- queue new rulesets for a project. |
+| 3 | `LAUNCH_RULESETS` | nana-core (`JBController`) | `JBController.launchRulesetsFor` -- launch a project's initial rulesets. Also requires `SET_TERMINALS` (ID 15). |
+| 4 | `CASH_OUT_TOKENS` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.cashOutTokensOf` -- redeem tokens for surplus. Checked against the **token holder**, not the project owner. |
+| 5 | `SEND_PAYOUTS` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.sendPayoutsOf` -- distribute payouts to splits. |
+| 6 | `MIGRATE_TERMINAL` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.migrateBalanceOf` -- migrate a project's balance to another terminal. |
+| 7 | `SET_PROJECT_URI` | nana-core (`JBController`) | `JBController.setUriOf` -- set project metadata URI. |
+| 8 | `DEPLOY_ERC20` | nana-core (`JBController`) | `JBController.deployERC20For` -- deploy a new ERC-20 token for a project. |
+| 9 | `SET_TOKEN` | nana-core (`JBController`) | `JBController.setTokenFor` -- set an existing ERC-20 token for a project. |
+| 10 | `MINT_TOKENS` | nana-core (`JBController`) | `JBController.mintTokensOf` -- mint new project tokens. Only effective when the current ruleset allows owner minting. |
+| 11 | `BURN_TOKENS` | nana-core (`JBController`) | `JBController.burnTokensOf` -- burn tokens. Checked against the **token holder**. |
+| 12 | `CLAIM_TOKENS` | nana-core (`JBController`) | `JBController.claimTokensFor` -- claim internal credits as ERC-20. Checked against the **token holder**. |
+| 13 | `TRANSFER_CREDITS` | nana-core (`JBController`) | `JBController.transferCreditsFrom` -- transfer internal credits. Checked against the **token holder**. |
+| 14 | `SET_CONTROLLER` | nana-core (`JBDirectory`) | `JBDirectory.setControllerOf` -- set a project's controller. |
+| 15 | `SET_TERMINALS` | nana-core (`JBDirectory`) | `JBDirectory.setTerminalsOf` -- set a project's terminals. **Warning:** can remove the primary terminal. |
+| 16 | `SET_PRIMARY_TERMINAL` | nana-core (`JBDirectory`) | `JBDirectory.setPrimaryTerminalOf` -- set the primary terminal for a token. |
+| 17 | `USE_ALLOWANCE` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.useAllowanceOf` -- spend surplus allowance to an arbitrary address. |
+| 18 | `SET_SPLIT_GROUPS` | nana-core (`JBController`) | `JBController.setSplitGroupsOf` -- configure payout and reserved token splits. |
+| 19 | `ADD_PRICE_FEED` | nana-core (`JBController`) | `JBController.addPriceFeed` (which internally calls `JBPrices.addPriceFeedFor`) -- add a price feed for a project. |
+| 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.addAccountingContextsFor` -- add accepted tokens to a terminal. |
+| 21 | `SET_TOKEN_METADATA` | nana-core (`JBController`) | `JBController.setTokenMetadataOf` -- set a project token's name and symbol. |
+| 22 | `ADJUST_721_TIERS` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
+| 23 | `SET_721_METADATA` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
+| 24 | `MINT_721` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
+| 25 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.setDiscountPercentOf` -- set discount percent on NFT tiers. |
+| 26 | `SET_BUYBACK_TWAP` | nana-buyback-hook (`JBBuybackHook`) | `JBBuybackHook.setTwapWindowOf` -- configure the TWAP oracle window. |
+| 27 | `SET_BUYBACK_POOL` | nana-buyback-hook (`JBBuybackHook`) | `JBBuybackHook.setPoolFor` -- set the Uniswap pool for buybacks. |
+| 28 | `SET_BUYBACK_HOOK` | nana-buyback-hook (`JBBuybackHookRegistry`) | `JBBuybackHookRegistry.setHookFor` and `lockHookFor` -- configure and permanently lock the buyback hook. |
+| 29 | `SET_ROUTER_TERMINAL` | nana-router-terminal (`JBRouterTerminalRegistry`) | `JBRouterTerminalRegistry.setTerminalFor` and `lockTerminalFor` -- configure and permanently lock the router terminal. |
+| 30 | `MAP_SUCKER_TOKEN` | nana-suckers (`JBSucker`) | `JBSucker.mapToken` -- map an ERC-20 to its remote chain counterpart. Immutable once the outbox tree has entries. |
+| 31 | `DEPLOY_SUCKERS` | nana-suckers (`JBSuckerRegistry`) | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
+| 32 | `SUCKER_SAFETY` | nana-suckers (`JBSucker`) | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
+| 33 | `SET_SUCKER_DEPRECATION` | nana-suckers (`JBSucker`) | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
 
 IDs 0 and 34-255 are unused. ID 0 is reserved and cannot be set. IDs 34-255 are available for future ecosystem extensions.
 
