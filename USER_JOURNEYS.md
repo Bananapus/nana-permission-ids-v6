@@ -177,8 +177,8 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 ## Journey 5: Locking a Buyback Hook or Router Terminal (Permanent Action)
 
 **Entry point (buyback hook)**:
-- `JBBuybackHookRegistry.setHookFor(uint256 projectId, IJBBuybackHook hook)` -- configures the hook
-- `JBBuybackHookRegistry.lockHookFor(uint256 projectId)` -- permanently locks the configuration
+- `JBBuybackHookRegistry.setHookFor(uint256 projectId, IJBRulesetDataHook hook)` -- configures the hook
+- `JBBuybackHookRegistry.lockHookFor(uint256 projectId, IJBRulesetDataHook expectedHook)` -- permanently locks the configuration
 
 **Who can call**: The project owner, or an address with the owner's `SET_BUYBACK_HOOK` (ID 28) permission for that project. A single permission ID gates both operations.
 
@@ -199,8 +199,8 @@ Since this is a constants-only library with no runtime behavior, these journeys 
    - No one can change the hook after locking -- not even the project owner
 
 **State changes**:
-1. `JBBuybackHookRegistry.hookOf[projectId]` -- set to the hook address (step 1)
-2. `JBBuybackHookRegistry.hookIsLockedFor[projectId]` -- set to `true` (step 2, irreversible)
+1. `JBBuybackHookRegistry._hookOf[projectId]` -- set to the hook address (step 1)
+2. `JBBuybackHookRegistry.hasLockedHook[projectId]` -- set to `true` (step 2, irreversible)
 
 **Events**: Events are emitted by `JBBuybackHookRegistry` (in nana-buyback-hook-v6), not this library.
 
@@ -220,33 +220,33 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 **Parameters** (vary by operation):
 - `projectId` -- The project managing cross-chain infrastructure
 - `configs` -- Sucker deployment configurations (for `deploySuckersFor`)
-- `localToken` / `remoteToken` -- Token mapping pair (for `mapToken`)
-- `token` -- Token address for emergency recovery (for `enableEmergencyHatchFor`)
-- `newState` -- Deprecation lifecycle state (for `setDeprecation`)
+- `map` -- A `JBTokenMapping` struct (for `mapToken`)
+- `tokens` -- Token addresses (`address[]`) for emergency recovery (for `enableEmergencyHatchFor`)
+- `timestamp` -- The timestamp after which the sucker is deprecated (for `setDeprecation`)
 
 ### Steps
 
-1. **Deploy suckers: `JBSuckerRegistry.deploySuckersFor(5, configs)`**
+1. **Deploy suckers: `JBSuckerRegistry.deploySuckersFor(5, salt, configs)`**
    - Permission: `DEPLOY_SUCKERS` (ID 31)
    - Creates sucker contracts for cross-chain bridging
 
-2. **Map tokens: `JBSucker.mapToken(localToken, remoteToken)`**
+2. **Map tokens: `JBSucker.mapToken(map)`** where `map` is a `JBTokenMapping` struct
    - Permission: `MAP_SUCKER_TOKEN` (ID 30)
    - Maps a local ERC-20 to its remote chain counterpart
    - CAUTION: once the outbox merkle tree has entries, the mapping is immutable (can only be disabled, not remapped)
 
-3. **Enable emergency hatch: `JBSucker.enableEmergencyHatchFor(token)`**
+3. **Enable emergency hatch: `JBSucker.enableEmergencyHatchFor(tokens)`**
    - Permission: `SUCKER_SAFETY` (ID 32)
    - Allows recovery of stuck tokens via the emergency hatch
 
-4. **Deprecate sucker: `JBSucker.setDeprecation(newState)`**
+4. **Deprecate sucker: `JBSucker.setDeprecation(timestamp)`**
    - Permission: `SET_SUCKER_DEPRECATION` (ID 33)
-   - Moves the sucker through its lifecycle: ENABLED -> DEPRECATION_PENDING -> SENDING_DISABLED -> DEPRECATED
+   - The timestamp after which the sucker is deprecated.
 
 **State changes** (per step):
 1. `JBSuckerRegistry` -- deploys new sucker contracts, registers them for the project
-2. `JBSucker._tokenMapping[localToken]` -- set to `remoteToken` (immutable once outbox tree populated)
-3. `JBSucker._emergencyHatchEnabled[token]` -- set to `true`
+2. `JBSucker._remoteTokenFor[localToken]` -- set to the remote token mapping (immutable once outbox tree populated)
+3. `JBSucker._remoteTokenFor[token].emergencyHatch` -- set to `true`
 4. `JBSucker._deprecationState` -- advanced to the next lifecycle stage
 
 **Events**: Events are emitted by `JBSuckerRegistry` and `JBSucker` (in nana-suckers-v6), not this library.
