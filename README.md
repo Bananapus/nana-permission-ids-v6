@@ -18,6 +18,15 @@ permissionsOf[operator][account][projectId] => uint256 (packed bits)
 |----------|-------------|
 | `JBPermissionIds` | Solidity library with 33 `uint8 internal constant` permission IDs (values 1--33). No state, no functions, no dependencies. Pragma `^0.8.0` for maximum compatibility. |
 
+## Repository Layout
+
+```
+src/
+└── JBPermissionIds.sol  ── 33 uint8 constants (the only source file)
+```
+
+No tests, interfaces, or deployment scripts -- this repo is a pure constant library.
+
 ## All permission IDs
 
 ### Global (ID 1)
