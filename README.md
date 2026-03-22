@@ -47,7 +47,7 @@ permissionsOf[operator][account][projectId] => uint256 (packed bits)
 | 16 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` | Set a project's primary terminal for a given token. |
 | 17 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` | Use a project's surplus allowance to send funds to an arbitrary address. |
 | 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set a project's split groups (how payouts and reserved tokens are distributed). |
-| 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeed` | Add a price feed for a project. The controller checks this permission before calling `JBPrices.addPriceFeedFor`. |
+| 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeedFor` | Add a price feed for a project. The controller checks this permission before calling `JBPrices.addPriceFeedFor`. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accounting contexts (accepted tokens) to a terminal for a project. |
 | 21 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Set a project token's name and symbol. Checked against the project owner. |
 
