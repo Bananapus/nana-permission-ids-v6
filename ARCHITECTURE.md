@@ -13,7 +13,7 @@ These IDs plug into `JBPermissions` in nana-core, which stores permissions as a 
 `JBPermissions.setPermissionsFor` enforces three guard rules:
 
 - **Permission 0 is reserved.** Setting bit 0 always reverts (`JBPermissions_NoZeroPermission`). This prevents accidental misuse of an uninitialized permission ID.
-- **ROOT cannot be set via wildcard.** An operator with ROOT on a specific project cannot use `setPermissionsFor` with `projectId = 0` (wildcard). This prevents a single-project ROOT operator from escalating to all-project access (`JBPermissions_CantSetRootPermissionForWildcardProject`).
+- **Wildcard scope requires the account itself.** An operator with ROOT on a specific project cannot use `setPermissionsFor` with `projectId = 0` (wildcard). This prevents a single-project ROOT operator from escalating to all-project access. Reverts with `JBPermissions_Unauthorized`.
 - **ROOT operators cannot grant ROOT to others.** Only the account itself can include `ROOT` (ID 1) in a `setPermissionsFor` call. A ROOT operator calling on behalf of the account will revert if the new permission set includes ROOT.
 
 ## Contract Map
@@ -45,7 +45,7 @@ src/
 | 16 | `SET_PRIMARY_TERMINAL` | nana-core | `JBDirectory.setPrimaryTerminalOf` |
 | 17 | `USE_ALLOWANCE` | nana-core | `JBMultiTerminal.useAllowanceOf` |
 | 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` |
-| 19 | `ADD_PRICE_FEED` | nana-core | `JBController.addPriceFeed` |
+| 19 | `ADD_PRICE_FEED` | nana-core | `JBController.addPriceFeedFor` |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` |
 | 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenMetadataOf` |
 | 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
