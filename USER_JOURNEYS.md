@@ -193,8 +193,9 @@ Since this is a constants-only library with no runtime behavior, these journeys 
    - Configures the buyback hook for project 5
    - This is a reversible operation (can be called again with a different hook)
 
-2. **Same operator calls `JBBuybackHookRegistry.lockHookFor(5)`**
+2. **Same operator calls `JBBuybackHookRegistry.lockHookFor(5, hookAddress)`**
 
+   - The `expectedHook` parameter is a race-condition guard: the call reverts with `JBBuybackHookRegistry_HookMismatch` if the on-chain hook differs from `expectedHook` at execution time
    - Permanently locks the hook configuration for project 5
    - No one can change the hook after locking -- not even the project owner
 
@@ -219,14 +220,14 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 
 **Parameters** (vary by operation):
 - `projectId` -- The project managing cross-chain infrastructure
-- `configs` -- Sucker deployment configurations (for `deploySuckersFor`)
+- `configurations` -- Sucker deployment configurations (for `deploySuckersFor`)
 - `map` -- A `JBTokenMapping` struct (for `mapToken`)
 - `tokens` -- Token addresses (`address[]`) for emergency recovery (for `enableEmergencyHatchFor`)
 - `timestamp` -- The timestamp after which the sucker is deprecated (for `setDeprecation`)
 
 ### Steps
 
-1. **Deploy suckers: `JBSuckerRegistry.deploySuckersFor(5, salt, configs)`**
+1. **Deploy suckers: `JBSuckerRegistry.deploySuckersFor(5, salt, configurations)`**
    - Permission: `DEPLOY_SUCKERS` (ID 31)
    - Creates sucker contracts for cross-chain bridging
 
@@ -246,8 +247,9 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 **State changes** (per step):
 1. `JBSuckerRegistry` -- deploys new sucker contracts, registers them for the project
 2. `JBSucker._remoteTokenFor[localToken]` -- set to the remote token mapping (immutable once outbox tree populated)
-3. `JBSucker._remoteTokenFor[token].emergencyHatch` -- set to `true`
-4. `JBSucker._deprecationState` -- advanced to the next lifecycle stage
+3. `JBSucker._remoteTokenFor[token].enabled` -- set to `false` (bridging disabled for this token)
+4. `JBSucker._remoteTokenFor[token].emergencyHatch` -- set to `true`
+5. `JBSucker.deprecatedAfter` -- set to `timestamp` (the time after which the sucker is deprecated, or `0` to cancel a pending deprecation)
 
 **Events**: Events are emitted by `JBSuckerRegistry` and `JBSucker` (in nana-suckers-v6), not this library.
 
