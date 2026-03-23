@@ -65,7 +65,7 @@ Permissions are stored as 256-bit packed integers in `JBPermissions`, keyed by `
 | ID | Name | Checked in | Permission scope |
 |----|------|------------|-----------------|
 | 26 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Set the TWAP oracle window duration. Checked against project owner. |
-| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHook.initializePoolFor`, `JBBuybackHook.setTwapWindowOf`, `JBBuybackHookRegistry.initializePoolFor`, `JBBuybackHookRegistry.setTwapWindowFor` | Set the Uniswap pool and TWAP window for a project's buyback. Checked against project owner. |
+| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHook.initializePoolFor`, `JBBuybackHookRegistry.initializePoolFor` | Set the Uniswap pool for a project's buyback. Checked against project owner. |
 | 28 | `SET_BUYBACK_HOOK` | `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set or lock the buyback hook implementation for a project. Checked against project owner. Also granted by `REVDeployer` as an operator permission. |
 
 ### nana-router-terminal-v6
@@ -130,7 +130,7 @@ N/A -- no structs or enums. All values are `uint8 internal constant`.
 - **SET_TERMINALS (ID 15) can break a project.** Replacing the terminal list without including the current primary terminal will remove it, breaking payments and cashouts until a new primary is set.
 - **LAUNCH_RULESETS (ID 3) requires both IDs 3 and 15.** The function enforces two separate permission checks because it configures terminals in addition to launching rulesets.
 - **Holder-scoped permissions.** IDs 4 (`CASH_OUT_TOKENS`), 11 (`BURN_TOKENS`), 12 (`CLAIM_TOKENS`), and 13 (`TRANSFER_CREDITS`) are checked against the **token holder**, not the project owner. This means a holder grants an operator permission to act on the holder's own tokens.
-- **SET_BUYBACK_POOL (ID 27) vs SET_BUYBACK_HOOK (ID 28) — different scopes.** ID 27 guards pool/TWAP configuration (`setPoolFor`, `initializePoolFor`, `setTwapWindowOf`). ID 28 guards hook selection (`setHookFor`, `lockHookFor`). Grant both if the operator needs full buyback management.
+- **SET_BUYBACK_POOL (ID 27) vs SET_BUYBACK_HOOK (ID 28) — different scopes.** ID 27 guards pool configuration (`setPoolFor`, `initializePoolFor`). ID 28 guards hook selection (`setHookFor`, `lockHookFor`). `setTwapWindowOf` uses ID 26 (`SET_BUYBACK_TWAP`). Grant all three if the operator needs full buyback management.
 - **ADD_PRICE_FEED (ID 19) is checked on JBController, not JBPrices.** The permission gate is on `JBController.addPriceFeed`, which then calls `JBPrices.addPriceFeedFor` internally.
 - **uint8 range.** IDs are `uint8` (0--255) but the packed storage is `uint256`, so the system supports up to 256 permission bits. Currently 33 are defined (1--33).
 
