@@ -27,7 +27,16 @@ Note: The library pragma is `^0.8.0` rather than a fixed version, since consumin
 
 ## Previous Audit Findings
 
-No prior formal audit with finding IDs has been conducted for `nana-permission-ids-v6`. This library has been reviewed informally as part of broader Juicebox V6 ecosystem reviews, but no standalone audit report exists.
+A Nemesis audit (Feynman + State Inconsistency methodology) was conducted on 2026-03-17. Full results are in [`.audit/findings/nemesis-verified.md`](./.audit/findings/nemesis-verified.md).
+
+**Result: 0 Critical | 0 High | 0 Medium | 2 Low (comment inaccuracies)**
+
+| ID | Severity | Summary | Status |
+|----|----------|---------|--------|
+| NM-001 | LOW | `ADD_PRICE_FEED` comment misidentifies gated contract (`JBPrices.addPriceFeedFor` vs actual `JBController.addPriceFeedFor`) | Fixed |
+| NM-002 | LOW | `SET_TOKEN_METADATA` comment uses wrong function name (`setMetadataOf` vs actual `setTokenMetadataOf`) | Fixed |
+
+Both findings were comment-only inaccuracies with no security impact. All 5 invariants (uniqueness, completeness, type consistency, no ID 0, sequential assignment) passed. Cross-repo verification confirmed correct usage across 7 consuming repos.
 
 ## Scope
 
@@ -110,8 +119,6 @@ Each constant's doc comment claims it gates a specific function. Verify against 
 - **nana-buyback-hook-v6**: IDs 26-28 should match permission checks in `JBBuybackHook` and `JBBuybackHookRegistry`.
 - **nana-router-terminal-v6**: ID 29 should match permission checks in `JBRouterTerminalRegistry`.
 - **nana-suckers-v6**: IDs 30-33 should match permission checks in `JBSucker` and `JBSuckerRegistry`.
-
-Verified: **SET_BUYBACK_HOOK (ID 28)** correctly gates both `JBBuybackHookRegistry.setHookFor` and `lockHookFor`. Both functions check `SET_BUYBACK_HOOK` (ID 28), not `SET_BUYBACK_POOL` (ID 27). The table above is accurate.
 
 ### 3. Holder-Scoped vs Owner-Scoped Permissions
 

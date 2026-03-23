@@ -32,7 +32,7 @@ All 33 defined permission IDs and what they control:
 | 16 | `SET_PRIMARY_TERMINAL` | nana-core (`JBDirectory`) | `JBDirectory.setPrimaryTerminalOf` -- set the primary terminal for a token. |
 | 17 | `USE_ALLOWANCE` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.useAllowanceOf` -- spend surplus allowance to an arbitrary address. |
 | 18 | `SET_SPLIT_GROUPS` | nana-core (`JBController`) | `JBController.setSplitGroupsOf` -- configure payout and reserved token splits. |
-| 19 | `ADD_PRICE_FEED` | nana-core (`JBController`) | `JBController.addPriceFeed` (which internally calls `JBPrices.addPriceFeedFor`) -- add a price feed for a project. |
+| 19 | `ADD_PRICE_FEED` | nana-core (`JBController`) | `JBController.addPriceFeedFor` (which internally calls `JBPrices.addPriceFeedFor`) -- add a price feed for a project. |
 | 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.addAccountingContextsFor` -- add accepted tokens to a terminal. |
 | 21 | `SET_TOKEN_METADATA` | nana-core (`JBController`) | `JBController.setTokenMetadataOf` -- set a project token's name and symbol. |
 | 22 | `ADJUST_721_TIERS` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
@@ -74,11 +74,14 @@ Permissions are stored in `JBPermissions` as a 256-bit packed integer per (opera
 permissionsOf[operator][account][projectId] => uint256 (packed bits)
 ```
 
-Each bit position corresponds to a permission ID. When a contract checks whether an operator has a permission, it calls `JBPermissions.hasPermission(operator, account, projectId, permissionId)`, which:
+Each bit position corresponds to a permission ID. When a contract checks whether an operator has a permission, it calls `JBPermissions.hasPermission(operator, account, projectId, permissionId, includeRoot, includeWildcardProjectId)`, which:
 
 1. Checks whether the operator has ROOT (bit 1) for the specific project -- if so, returns true.
-2. Checks whether the specific permission bit is set for the project.
-3. Falls back to checking the wildcard `projectId = 0` for both ROOT and the specific permission.
+2. If `includeWildcardProjectId`, checks whether the operator has ROOT (bit 1) for the wildcard project (`projectId = 0`) -- if so, returns true.
+3. Checks whether the specific permission bit is set for the specific project -- if so, returns true.
+4. If `includeWildcardProjectId`, checks whether the specific permission bit is set for the wildcard project (`projectId = 0`) -- if so, returns true.
+
+Steps 1-2 are skipped if `includeRoot` is false. Steps 2 and 4 are skipped if `includeWildcardProjectId` is false.
 
 Contracts that use this system inherit from `JBPermissioned`, which provides the `_requirePermissionFrom(account, projectId, permissionId)` modifier. This modifier passes if the caller is the account itself or has the required permission via `JBPermissions`.
 
