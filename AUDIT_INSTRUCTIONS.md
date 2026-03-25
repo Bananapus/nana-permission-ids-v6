@@ -18,12 +18,12 @@ From `foundry.toml`:
 
 | Setting | Value |
 |---------|-------|
-| Solidity version | `^0.8.26` |
+| Solidity version | `^0.8.28` |
 | EVM target | `cancun` |
 | Optimizer | Enabled, 200 runs |
-| Pragma in source | `^0.8.0` (flexible, compiled with ^0.8.26) |
+| Pragma in source | `^0.8.0` (flexible, compiled with ^0.8.28) |
 
-Note: The library pragma is `^0.8.0` rather than a fixed version, since consuming contracts may compile it with their own Solidity version. The `foundry.toml` pins `^0.8.26` for local builds.
+Note: The library pragma is `^0.8.0` rather than a fixed version, since consuming contracts may compile it with their own Solidity version. The `foundry.toml` pins `^0.8.28` for local builds.
 
 ## Previous Audit Findings
 
