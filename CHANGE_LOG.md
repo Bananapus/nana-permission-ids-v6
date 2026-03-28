@@ -9,6 +9,17 @@ This document describes all changes between `nana-permission-ids` (v5) and `nana
 - **5 new permissions** added: `LAUNCH_RULESETS` (3), `SET_TOKEN_METADATA` (21), `SET_BUYBACK_HOOK` (28), `SET_ROUTER_TERMINAL` (29), `SET_SUCKER_DEPRECATION` (33).
 - **2 swap terminal permissions removed**: `ADD_SWAP_TERMINAL_POOL` and `ADD_SWAP_TERMINAL_TWAP_PARAMS` (swap terminal replaced by router terminal).
 
+## ABI Status
+
+This repo does not introduce a runtime contract ABI migration in the same way the protocol repos do.
+
+What changed instead:
+- the exported constants set changed;
+- numeric meanings shifted;
+- downstream contracts now gate functions using different permission IDs.
+
+So the migration work here is at compile-time and application-logic level, not at the level of emitted runtime events or callable function selectors.
+
 > **⚠️ WARNING: All numeric permission IDs have shifted.** If your contracts, scripts, or frontends hardcode permission ID numbers (e.g., `permissions.setPermissionsFor(..., 3, ...)` for `CASH_OUT_TOKENS`), they MUST be updated. `CASH_OUT_TOKENS` moved from 3 → 4, `SEND_PAYOUTS` from 4 → 5, and so on. Always reference the named constants from `JBPermissionIds` rather than raw numbers.
 
 ---
@@ -114,7 +125,27 @@ New permission split from `SUCKER_SAFETY`. Gates `JBSucker.setDeprecation` indep
 
 ---
 
-## 3. Migration Table
+## 3. What Integrators Should Change
+
+In practice, permission-ID migrations usually fail in one of four places:
+- Solidity code that passes raw numeric arrays into `setPermissionsFor(...)`
+- deployment scripts that serialize permission IDs as literals
+- frontends that label permissions by number instead of by constant name
+- indexers/admin tools that assume the old operator-capability mapping
+
+Search targets worth checking:
+- `setPermissionsFor`
+- `hasPermission`
+- raw arrays like `[2,3,4]`
+- literals previously used for swap-terminal permissions (`26`, `27`)
+- any custom admin UI copy that still says `swap terminal` instead of `router terminal`
+
+High-risk behavioral changes:
+- `QUEUE_RULESETS` no longer implies launch permission; launch now needs `LAUNCH_RULESETS`.
+- `SUCKER_SAFETY` no longer implies deprecation permission; deprecation now needs `SET_SUCKER_DEPRECATION`.
+- There is no direct numeric replacement for `ADD_SWAP_TERMINAL_POOL` / `ADD_SWAP_TERMINAL_TWAP_PARAMS`; the admin model changed with router-terminal registry control.
+
+## 4. Migration Table
 
 | v5 Name | v5 ID | v6 Name | v6 ID | Change |
 |---|---|---|---|---|
