@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-// slither-disable-next-line solc-version
-pragma solidity ^0.8.0;
+pragma solidity 0.8.28;
 
 /// @notice Permission IDs for `JBPermissions`, used throughout the Bananapus ecosystem. See
 /// [`JBPermissions`](https://github.com/Bananapus/nana-core/blob/main/src/JBPermissions.sol)
