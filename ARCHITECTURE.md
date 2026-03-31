@@ -42,24 +42,25 @@ src/
 | 13 | `TRANSFER_CREDITS` | nana-core | `JBController.transferCreditsFrom` |
 | 14 | `SET_CONTROLLER` | nana-core | `JBDirectory.setControllerOf` |
 | 15 | `SET_TERMINALS` | nana-core | `JBDirectory.setTerminalsOf` |
-| 16 | `SET_PRIMARY_TERMINAL` | nana-core | `JBDirectory.setPrimaryTerminalOf` |
-| 17 | `USE_ALLOWANCE` | nana-core | `JBMultiTerminal.useAllowanceOf` |
-| 18 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` |
-| 19 | `ADD_PRICE_FEED` | nana-core | `JBController.addPriceFeedFor` |
-| 20 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` |
-| 21 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenMetadataOf` |
-| 22 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
-| 23 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` |
-| 24 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` |
-| 25 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` |
-| 26 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` |
-| 27 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` |
-| 28 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` |
-| 29 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` |
-| 30 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` |
-| 31 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` |
-| 32 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` |
-| 33 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` |
+| 16 | `ADD_TERMINALS` | nana-core | `JBDirectory.setPrimaryTerminalOf` (implicit add) |
+| 17 | `SET_PRIMARY_TERMINAL` | nana-core | `JBDirectory.setPrimaryTerminalOf` |
+| 18 | `USE_ALLOWANCE` | nana-core | `JBMultiTerminal.useAllowanceOf` |
+| 19 | `SET_SPLIT_GROUPS` | nana-core | `JBController.setSplitGroupsOf` |
+| 20 | `ADD_PRICE_FEED` | nana-core | `JBController.addPriceFeedFor` |
+| 21 | `ADD_ACCOUNTING_CONTEXTS` | nana-core | `JBMultiTerminal.addAccountingContextsFor` |
+| 22 | `SET_TOKEN_METADATA` | nana-core | `JBController.setTokenMetadataOf` |
+| 23 | `ADJUST_721_TIERS` | nana-721-hook | `JB721TiersHook.adjustTiers` |
+| 24 | `SET_721_METADATA` | nana-721-hook | `JB721TiersHook.setMetadata` |
+| 25 | `MINT_721` | nana-721-hook | `JB721TiersHook.mintFor` |
+| 26 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook | `JB721TiersHook.setDiscountPercentOf` |
+| 27 | `SET_BUYBACK_TWAP` | nana-buyback-hook | `JBBuybackHook.setTwapWindowOf` |
+| 28 | `SET_BUYBACK_POOL` | nana-buyback-hook | `JBBuybackHook.setPoolFor` |
+| 29 | `SET_BUYBACK_HOOK` | nana-buyback-hook | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` |
+| 30 | `SET_ROUTER_TERMINAL` | nana-router-terminal | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` |
+| 31 | `MAP_SUCKER_TOKEN` | nana-suckers | `JBSucker.mapToken` |
+| 32 | `DEPLOY_SUCKERS` | nana-suckers | `JBSuckerRegistry.deploySuckersFor` |
+| 33 | `SUCKER_SAFETY` | nana-suckers | `JBSucker.enableEmergencyHatchFor` |
+| 34 | `SET_SUCKER_DEPRECATION` | nana-suckers | `JBSucker.setDeprecation` |
 
 ## Dependencies
 

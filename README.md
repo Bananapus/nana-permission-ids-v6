@@ -1,6 +1,6 @@
 # Juicebox Permission IDs
 
-The single source of truth for access control across the Juicebox V6 ecosystem. This library defines 33 `uint8` constants -- one for each permission ID used with [`JBPermissions`](https://github.com/Bananapus/nana-core-v6/blob/main/src/JBPermissions.sol) -- ensuring every contract references the same IDs.
+The single source of truth for access control across the Juicebox V6 ecosystem. This library defines 34 `uint8` constants -- one for each permission ID used with [`JBPermissions`](https://github.com/Bananapus/nana-core-v6/blob/main/src/JBPermissions.sol) -- ensuring every contract references the same IDs.
 
 ## How permissions work
 
@@ -16,13 +16,13 @@ permissionsOf[operator][account][projectId] => uint256 (packed bits)
 
 | Contract | Description |
 |----------|-------------|
-| `JBPermissionIds` | Solidity library with 33 `uint8 internal constant` permission IDs (values 1--33). No state, no functions, no dependencies. Pragma `^0.8.0` for maximum compatibility. |
+| `JBPermissionIds` | Solidity library with 34 `uint8 internal constant` permission IDs (values 1--34). No state, no functions, no dependencies. Pragma `^0.8.0` for maximum compatibility. |
 
 ## Repository Layout
 
 ```
 src/
-└── JBPermissionIds.sol  ── 33 uint8 constants (the only source file)
+└── JBPermissionIds.sol  ── 34 uint8 constants (the only source file)
 ```
 
 No tests, interfaces, or deployment scripts -- this repo is a pure constant library.
@@ -35,7 +35,7 @@ No tests, interfaces, or deployment scripts -- this repo is a pure constant libr
 |----|------|-------------|
 | 1 | `ROOT` | Grants **all** permissions across every contract. An operator with ROOT can call any permissioned function on behalf of the account. Must be granted with extreme care. See [Gotchas](#gotchas) for restrictions. |
 
-### Core (IDs 2--21) -- [nana-core-v6](https://github.com/Bananapus/nana-core-v6)
+### Core (IDs 2--22) -- [nana-core-v6](https://github.com/Bananapus/nana-core-v6)
 
 | ID | Name | Checked in | Description |
 |----|------|------------|-------------|
@@ -53,44 +53,45 @@ No tests, interfaces, or deployment scripts -- this repo is a pure constant libr
 | 13 | `TRANSFER_CREDITS` | `JBController.transferCreditsFrom` | Transfer a holder's internal credit balance to another address. Checked against the **token holder**. |
 | 14 | `SET_CONTROLLER` | `JBDirectory.setControllerOf` | Set a project's controller in the directory. |
 | 15 | `SET_TERMINALS` | `JBDirectory.setTerminalsOf` | Set a project's terminals. **Warning:** can remove the primary terminal. Also required by `LAUNCH_RULESETS` (ID 3). |
-| 16 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` | Set a project's primary terminal for a given token. |
-| 17 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` | Use a project's surplus allowance to send funds to an arbitrary address. |
-| 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set a project's split groups (how payouts and reserved tokens are distributed). |
-| 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeedFor` | Add a price feed for a project. The controller checks this permission before calling `JBPrices.addPriceFeedFor`. |
-| 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accounting contexts (accepted tokens) to a terminal for a project. |
-| 21 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Set a project token's name and symbol. Checked against the project owner. |
+| 16 | `ADD_TERMINALS` | `JBDirectory.setPrimaryTerminalOf` | Add a new terminal to a project when `setPrimaryTerminalOf` implicitly adds it. |
+| 17 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` | Set a project's primary terminal for a given token. |
+| 18 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` | Use a project's surplus allowance to send funds to an arbitrary address. |
+| 19 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Set a project's split groups (how payouts and reserved tokens are distributed). |
+| 20 | `ADD_PRICE_FEED` | `JBController.addPriceFeedFor` | Add a price feed for a project. The controller checks this permission before calling `JBPrices.addPriceFeedFor`. |
+| 21 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Add accounting contexts (accepted tokens) to a terminal for a project. |
+| 22 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Set a project token's name and symbol. Checked against the project owner. |
 
-### 721 Hook (IDs 22--25) -- [nana-721-hook-v6](https://github.com/Bananapus/nana-721-hook-v6)
-
-| ID | Name | Checked in | Description |
-|----|------|------------|-------------|
-| 22 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Add or remove NFT tiers. Also used by `CTPublisher` and `CTProjectOwner` in croptop-core-v6. |
-| 23 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` | Set the metadata (base URI, contract URI, token URI resolver) for a 721 hook. |
-| 24 | `MINT_721` | `JB721TiersHook.mintFor` | Manually mint NFTs from specific tiers to a beneficiary. |
-| 25 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` | Set the discount percent for one or more NFT tiers. |
-
-### Buyback Hook (IDs 26--28) -- [nana-buyback-hook-v6](https://github.com/Bananapus/nana-buyback-hook-v6)
+### 721 Hook (IDs 23--26) -- [nana-721-hook-v6](https://github.com/Bananapus/nana-721-hook-v6)
 
 | ID | Name | Checked in | Description |
 |----|------|------------|-------------|
-| 26 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Set the TWAP (time-weighted average price) oracle window for a project's buyback hook. |
-| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHook.initializePoolFor`, `JBBuybackHookRegistry.setPoolFor`, `JBBuybackHookRegistry.initializePoolFor` | Set the Uniswap pool for a project's buyback hook. |
-| 28 | `SET_BUYBACK_HOOK` | `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set or lock the buyback hook in the registry. Also used by `REVDeployer` as an operator permission grant. |
+| 23 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Add or remove NFT tiers. Also used by `CTPublisher` and `CTProjectOwner` in croptop-core-v6. |
+| 24 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` | Set the metadata (base URI, contract URI, token URI resolver) for a 721 hook. |
+| 25 | `MINT_721` | `JB721TiersHook.mintFor` | Manually mint NFTs from specific tiers to a beneficiary. |
+| 26 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` | Set the discount percent for one or more NFT tiers. |
 
-### Router Terminal (ID 29) -- [nana-router-terminal-v6](https://github.com/Bananapus/nana-router-terminal-v6)
-
-| ID | Name | Checked in | Description |
-|----|------|------------|-------------|
-| 29 | `SET_ROUTER_TERMINAL` | `JBRouterTerminalRegistry.setTerminalFor`, `JBRouterTerminalRegistry.lockTerminalFor` | Set or lock the router terminal for a project. |
-
-### Suckers / Omnichain (IDs 30--33) -- [nana-suckers-v6](https://github.com/Bananapus/nana-suckers-v6)
+### Buyback Hook (IDs 27--29) -- [nana-buyback-hook-v6](https://github.com/Bananapus/nana-buyback-hook-v6)
 
 | ID | Name | Checked in | Description |
 |----|------|------------|-------------|
-| 30 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` | Map an ERC-20 token to its remote chain counterpart in a sucker. Mapping is immutable once the outbox tree has entries. |
-| 31 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` | Deploy new sucker contracts for a project. Also checked by `JBOmnichainDeployer` and `CTDeployer`. |
-| 32 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Enable the emergency hatch for a sucker, allowing the project owner to recover stuck tokens. |
-| 33 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Set the deprecation status of a sucker (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
+| 27 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Set the TWAP (time-weighted average price) oracle window for a project's buyback hook. |
+| 28 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor`, `JBBuybackHook.initializePoolFor`, `JBBuybackHookRegistry.setPoolFor`, `JBBuybackHookRegistry.initializePoolFor` | Set the Uniswap pool for a project's buyback hook. |
+| 29 | `SET_BUYBACK_HOOK` | `JBBuybackHookRegistry.setHookFor`, `JBBuybackHookRegistry.lockHookFor` | Set or lock the buyback hook in the registry. Also used by `REVDeployer` as an operator permission grant. |
+
+### Router Terminal (ID 30) -- [nana-router-terminal-v6](https://github.com/Bananapus/nana-router-terminal-v6)
+
+| ID | Name | Checked in | Description |
+|----|------|------------|-------------|
+| 30 | `SET_ROUTER_TERMINAL` | `JBRouterTerminalRegistry.setTerminalFor`, `JBRouterTerminalRegistry.lockTerminalFor` | Set or lock the router terminal for a project. |
+
+### Suckers / Omnichain (IDs 31--34) -- [nana-suckers-v6](https://github.com/Bananapus/nana-suckers-v6)
+
+| ID | Name | Checked in | Description |
+|----|------|------------|-------------|
+| 31 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` | Map an ERC-20 token to its remote chain counterpart in a sucker. Mapping is immutable once the outbox tree has entries. |
+| 32 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` | Deploy new sucker contracts for a project. Also checked by `JBOmnichainDeployer` and `CTDeployer`. |
+| 33 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Enable the emergency hatch for a sucker, allowing the project owner to recover stuck tokens. |
+| 34 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Set the deprecation status of a sucker (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
 
 ## Gotchas
 
@@ -102,7 +103,8 @@ No tests, interfaces, or deployment scripts -- this repo is a pure constant libr
 - **SET_TERMINALS can remove the primary terminal.** The source code warns about this. Replacing the terminal list can drop the primary terminal, breaking payments and cashouts.
 - **LAUNCH_RULESETS requires SET_TERMINALS.** `launchRulesetsFor` enforces both `LAUNCH_RULESETS` and `SET_TERMINALS` because it configures terminals as part of the launch.
 - **Holder vs. owner permissions.** Most permissions are checked against the project owner, but `CASH_OUT_TOKENS`, `BURN_TOKENS`, `CLAIM_TOKENS`, and `TRANSFER_CREDITS` are checked against the **token holder**. This means a holder can grant an operator permission to cash out or burn their own tokens.
-- **The uint8 type limits IDs to 0--255.** Currently 33 are defined (1--33), leaving room for future extensions.
+- **ADD_TERMINALS (16) vs SET_TERMINALS (15).** `SET_TERMINALS` replaces the entire terminal list and can remove the primary terminal. `ADD_TERMINALS` is a narrower permission checked when `setPrimaryTerminalOf` implicitly adds a new terminal that is not already in the project's terminal list.
+- **The uint8 type limits IDs to 0--255.** Currently 34 are defined (1--34), leaving room for future extensions.
 
 ## Install
 
