@@ -180,7 +180,7 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 - `JBBuybackHookRegistry.setHookFor(uint256 projectId, IJBRulesetDataHook hook)` -- configures the hook
 - `JBBuybackHookRegistry.lockHookFor(uint256 projectId, IJBRulesetDataHook expectedHook)` -- permanently locks the configuration
 
-**Who can call**: The project owner, or an address with the owner's `SET_BUYBACK_HOOK` (ID 28) permission for that project. A single permission ID gates both operations.
+**Who can call**: The project owner, or an address with the owner's `SET_BUYBACK_HOOK` (ID 29) permission for that project. A single permission ID gates both operations.
 
 **Parameters**:
 - `projectId` -- The project whose buyback hook is being configured or locked
@@ -188,7 +188,7 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 
 ### Steps (SET_BUYBACK_HOOK example)
 
-1. **Operator with SET_BUYBACK_HOOK (ID 28) calls `JBBuybackHookRegistry.setHookFor(5, hookAddress)`**
+1. **Operator with SET_BUYBACK_HOOK (ID 29) calls `JBBuybackHookRegistry.setHookFor(5, hookAddress)`**
 
    - Configures the buyback hook for project 5
    - This is a reversible operation (can be called again with a different hook)
@@ -206,9 +206,9 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 **Events**: Events are emitted by `JBBuybackHookRegistry` (in nana-buyback-hook-v6), not this library.
 
 **Edge cases**:
-- A single permission ID (28 or 29) gates BOTH the "set" and "lock" operations. Granting the permission implicitly trusts the operator to potentially lock the configuration.
+- A single permission ID (29 or 30) gates BOTH the "set" and "lock" operations. Granting the permission implicitly trusts the operator to potentially lock the configuration.
 - The locking is permanent (no unlock mechanism in the registry).
-- Project owners should only grant SET_BUYBACK_HOOK (28) or SET_ROUTER_TERMINAL (29) to operators they trust not to lock prematurely.
+- Project owners should only grant SET_BUYBACK_HOOK (29) or SET_ROUTER_TERMINAL (30) to operators they trust not to lock prematurely.
 
 ---
 
@@ -228,20 +228,20 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 ### Steps
 
 1. **Deploy suckers: `JBSuckerRegistry.deploySuckersFor(5, salt, configurations)`**
-   - Permission: `DEPLOY_SUCKERS` (ID 31)
+   - Permission: `DEPLOY_SUCKERS` (ID 32)
    - Creates sucker contracts for cross-chain bridging
 
 2. **Map tokens: `JBSucker.mapToken(map)`** where `map` is a `JBTokenMapping` struct
-   - Permission: `MAP_SUCKER_TOKEN` (ID 30)
+   - Permission: `MAP_SUCKER_TOKEN` (ID 31)
    - Maps a local ERC-20 to its remote chain counterpart
    - CAUTION: once the outbox merkle tree has entries, the mapping is immutable (can only be disabled, not remapped)
 
 3. **Enable emergency hatch: `JBSucker.enableEmergencyHatchFor(tokens)`**
-   - Permission: `SUCKER_SAFETY` (ID 32)
+   - Permission: `SUCKER_SAFETY` (ID 33)
    - Allows recovery of stuck tokens via the emergency hatch
 
 4. **Deprecate sucker: `JBSucker.setDeprecation(timestamp)`**
-   - Permission: `SET_SUCKER_DEPRECATION` (ID 33)
+   - Permission: `SET_SUCKER_DEPRECATION` (ID 34)
    - The timestamp after which the sucker is deprecated.
 
 **State changes** (per step):
@@ -280,21 +280,22 @@ Since this is a constants-only library with no runtime behavior, these journeys 
 | 13 | `TRANSFER_CREDITS` | `JBController.transferCreditsFrom` | Token holder |
 | 14 | `SET_CONTROLLER` | `JBDirectory.setControllerOf` | Project owner |
 | 15 | `SET_TERMINALS` | `JBDirectory.setTerminalsOf` | Project owner |
-| 16 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` | Project owner |
-| 17 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` | Project owner |
-| 18 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Project owner |
-| 19 | `ADD_PRICE_FEED` | `JBController.addPriceFeedFor` | Project owner |
-| 20 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Project owner |
-| 21 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Project owner |
-| 22 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Project owner |
-| 23 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` | Project owner |
-| 24 | `MINT_721` | `JB721TiersHook.mintFor` | Project owner |
-| 25 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` | Project owner |
-| 26 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Project owner |
-| 27 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor` | Project owner |
-| 28 | `SET_BUYBACK_HOOK` | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` | Project owner |
-| 29 | `SET_ROUTER_TERMINAL` | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` | Project owner |
-| 30 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` | Project owner |
-| 31 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` | Project owner |
-| 32 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Project owner |
-| 33 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Project owner |
+| 16 | `ADD_TERMINALS` | `JBDirectory.setPrimaryTerminalOf` (implicit add) | Project owner |
+| 17 | `SET_PRIMARY_TERMINAL` | `JBDirectory.setPrimaryTerminalOf` | Project owner |
+| 18 | `USE_ALLOWANCE` | `JBMultiTerminal.useAllowanceOf` | Project owner |
+| 19 | `SET_SPLIT_GROUPS` | `JBController.setSplitGroupsOf` | Project owner |
+| 20 | `ADD_PRICE_FEED` | `JBController.addPriceFeedFor` | Project owner |
+| 21 | `ADD_ACCOUNTING_CONTEXTS` | `JBMultiTerminal.addAccountingContextsFor` | Project owner |
+| 22 | `SET_TOKEN_METADATA` | `JBController.setTokenMetadataOf` | Project owner |
+| 23 | `ADJUST_721_TIERS` | `JB721TiersHook.adjustTiers` | Project owner |
+| 24 | `SET_721_METADATA` | `JB721TiersHook.setMetadata` | Project owner |
+| 25 | `MINT_721` | `JB721TiersHook.mintFor` | Project owner |
+| 26 | `SET_721_DISCOUNT_PERCENT` | `JB721TiersHook.setDiscountPercentOf` | Project owner |
+| 27 | `SET_BUYBACK_TWAP` | `JBBuybackHook.setTwapWindowOf` | Project owner |
+| 28 | `SET_BUYBACK_POOL` | `JBBuybackHook.setPoolFor` | Project owner |
+| 29 | `SET_BUYBACK_HOOK` | `JBBuybackHookRegistry.setHookFor` + `lockHookFor` | Project owner |
+| 30 | `SET_ROUTER_TERMINAL` | `JBRouterTerminalRegistry.setTerminalFor` + `lockTerminalFor` | Project owner |
+| 31 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` | Project owner |
+| 32 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` | Project owner |
+| 33 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` | Project owner |
+| 34 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` | Project owner |
