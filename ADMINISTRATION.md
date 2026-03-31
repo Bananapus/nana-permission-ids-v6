@@ -2,6 +2,31 @@
 
 Admin privileges and their scope in nana-permission-ids-v6.
 
+## At A Glance
+
+| Item | Details |
+|------|---------|
+| Scope | Reference library for the permission IDs consumed across the Juicebox V6 ecosystem. No contract in this repo has mutable runtime state. |
+| Operators | Maintainers who change the constant list in source and downstream repos that consume those constants. |
+| Highest-risk actions | Renumbering or repurposing a permission ID that downstream contracts already depend on. |
+| Recovery posture | Runtime admin recovery does not apply here. If the constants are wrong, downstream code and docs have to be updated and redeployed against the corrected source. |
+
+## Routine Operations
+
+- Treat `JBPermissionIds.sol` as a coordination artifact across repos, not a place for casual edits.
+- When adding a new permission, update the source library and the dependent repo docs together so operator guidance does not drift from code.
+- Re-check downstream permission assumptions after any change because multiple repos gate admin behavior through this single numbering scheme.
+
+## One-Way Or High-Risk Actions
+
+- Changing an existing numeric assignment can silently invalidate permission checks in dependent repos.
+- The library itself has no admin keys, but stale docs around it can mislead operators about real powers elsewhere in the ecosystem.
+
+## Recovery Notes
+
+- If the permission map drifts from deployed contracts, the fix is coordinated source and documentation updates in the dependent repos, plus redeployment where the old numeric assumptions are already live.
+- There is no on-chain migration knob in this repo because it only ships compile-time constants.
+
 ## Overview
 
 This repo defines permission ID constants. It contains no admin functions itself -- it is a reference library for the permission system used across the Juicebox V6 ecosystem. The constants in `JBPermissionIds` are consumed by contracts in nana-core-v6, nana-721-hook-v6, nana-buyback-hook-v6, nana-router-terminal-v6, and nana-suckers-v6 to gate privileged operations.

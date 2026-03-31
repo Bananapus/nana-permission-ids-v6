@@ -1,6 +1,20 @@
-# RISKS.md -- nana-permission-ids-v6
+# Permission IDs Risk Register
 
-Constants-only library defining permission ID values used throughout the Bananapus ecosystem. Contains no logic, no state, and no external calls.
+Constants-only library defining permission ID values used throughout the Juicebox V6 ecosystem. The main failure mode is not local arithmetic; it is ecosystem-wide semantic drift if contracts disagree on what a permission ID means.
+
+## How to use this file
+
+- Read `Priority risks` first; these are the ways a tiny library can create very large blast radius.
+- Use the design notes to understand why stability and coordination matter more here than contract complexity.
+- Treat any change in this repo as an ecosystem migration event, not a routine edit.
+
+## Priority risks
+
+| Priority | Risk | Why it matters | Primary controls |
+|----------|------|----------------|------------------|
+| P0 | Semantic drift across repos | If two repos interpret the same `uint8` differently, access control breaks silently across the ecosystem. | Single source of truth, strict review, and synchronized downstream updates. |
+| P1 | Reordering or repurposing existing IDs | Changing established IDs can create backward-incompatible authority bugs without any contract-level revert. | Append-only discipline and explicit migration communication. |
+| P2 | Incomplete ecosystem adoption | A new permission ID is only safe if every dependent repo and deploy script understands it. | Cross-repo review and deployment coordination. |
 
 ## 1. Known Risks
 
