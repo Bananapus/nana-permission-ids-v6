@@ -19,6 +19,7 @@ In scope:
 1. Each permission semantic has one stable numeric ID.
 2. No two distinct permissions share an ID.
 3. IDs match the expectations of all dependent repos in this workspace.
+4. IDs 35-39 (revnet-core delegation: `HIDE_TOKENS`, `OPEN_LOAN`, `REALLOCATE_LOAN`, `REPAY_LOAN`, `REVEAL_TOKENS`) are consumed by `revnet-core-v6` — verify they match the values used in `REVHiddenTokens` and `REVLoans`.
 
 ## Threat Model
 

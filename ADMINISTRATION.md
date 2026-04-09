@@ -35,7 +35,7 @@ There are no ownable contracts, no upgrade mechanisms, and no mutable state. The
 
 ## Permission IDs
 
-All 34 defined permission IDs and what they control:
+All 39 defined permission IDs and what they control:
 
 | ID | Constant | Used By | What It Controls |
 |----|----------|---------|-----------------|
@@ -73,8 +73,13 @@ All 34 defined permission IDs and what they control:
 | 32 | `DEPLOY_SUCKERS` | nana-suckers (`JBSuckerRegistry`) | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
 | 33 | `SUCKER_SAFETY` | nana-suckers (`JBSucker`) | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
 | 34 | `SET_SUCKER_DEPRECATION` | nana-suckers (`JBSucker`) | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
+| 35 | `HIDE_TOKENS` | revnet-core (`REVHiddenTokens`) | `REVHiddenTokens.hideTokensOf` -- hide (burn) tokens on behalf of a holder. Checked against the **token holder**. |
+| 36 | `OPEN_LOAN` | revnet-core (`REVLoans`) | `REVLoans.borrowFrom` -- open a loan on behalf of a token holder. Checked against the **token holder**. |
+| 37 | `REALLOCATE_LOAN` | revnet-core (`REVLoans`) | `REVLoans.reallocateCollateralFromLoan` -- reallocate loan collateral on behalf of a loan NFT owner. Checked against the **loan NFT owner**. |
+| 38 | `REPAY_LOAN` | revnet-core (`REVLoans`) | `REVLoans.repayLoan` -- repay a loan on behalf of a loan NFT owner. Checked against the **loan NFT owner**. |
+| 39 | `REVEAL_TOKENS` | revnet-core (`REVHiddenTokens`) | `REVHiddenTokens.revealTokensOf` -- reveal (re-mint) hidden tokens on behalf of a holder. Checked against the **token holder**. |
 
-IDs 0 and 35-255 are unused. ID 0 is reserved and cannot be set. IDs 35-255 are available for future ecosystem extensions.
+IDs 0 and 40-255 are unused. ID 0 is reserved and cannot be set. IDs 40-255 are available for future ecosystem extensions.
 
 ## ROOT Permission
 
@@ -124,7 +129,7 @@ Some permissions warrant extra caution when granting:
 
 ## Holder vs. Owner Permissions
 
-Most permissions are checked against the **project owner** (the account that owns the project NFT). Four permissions are instead checked against the **token holder**:
+Most permissions are checked against the **project owner** (the account that owns the project NFT). Several permissions are instead checked against the **token holder** or **loan NFT owner**:
 
 | Permission | Checked Against |
 |-----------|----------------|
@@ -132,5 +137,10 @@ Most permissions are checked against the **project owner** (the account that own
 | `BURN_TOKENS` (11) | Token holder |
 | `CLAIM_TOKENS` (12) | Token holder |
 | `TRANSFER_CREDITS` (13) | Token holder |
+| `HIDE_TOKENS` (35) | Token holder |
+| `OPEN_LOAN` (36) | Token holder |
+| `REALLOCATE_LOAN` (37) | Loan NFT owner |
+| `REPAY_LOAN` (38) | Loan NFT owner |
+| `REVEAL_TOKENS` (39) | Token holder |
 
-This means a token holder can grant an operator permission to cash out, burn, claim, or transfer their own tokens -- independent of the project owner's permissions.
+This means a token holder can grant an operator permission to cash out, burn, claim, transfer, hide, reveal, or borrow against their own tokens -- independent of the project owner's permissions. Loan NFT owners can similarly grant operators permission to repay or reallocate their loans.

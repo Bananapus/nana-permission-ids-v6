@@ -24,6 +24,7 @@ If the question is "who can do this action?" you will still need `JBPermissions`
 | `27-29` | buyback hook permissions |
 | `30` | router terminal permission |
 | `31-34` | sucker and omnichain permissions |
+| `35-39` | revnet-core permissions (hidden tokens, loans) |
 
 The exact constants live in `src/JBPermissionIds.sol`.
 
