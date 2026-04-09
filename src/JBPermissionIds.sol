@@ -74,4 +74,8 @@ library JBPermissionIds {
     /// @notice Permission to reallocate loan collateral on behalf of a loan owner via
     /// `REVLoans.reallocateCollateralFromLoan`.
     uint8 internal constant REALLOCATE_LOAN = 37;
+    /// @notice Permission to repay a loan on behalf of a loan owner via `REVLoans.repayLoan`.
+    uint8 internal constant REPAY_LOAN = 38;
+    /// @notice Permission to reveal hidden tokens on behalf of a holder via `REVHiddenTokens`.
+    uint8 internal constant REVEAL_TOKENS = 39;
 }
