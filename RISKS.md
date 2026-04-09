@@ -29,7 +29,7 @@ Constants-only library defining permission ID values used throughout the Juicebo
 ## 2. Design Notes
 
 - Permission 0 is reserved and cannot be set.
-- IDs are `uint8` (0-255), with 1-34 currently assigned.
-- IDs 35-255 are available for future ecosystem extensions.
-- IDs 35-255 are available for ecosystem extensions. Third-party contracts can define their own permission IDs in this range, but must coordinate to avoid collisions. No on-chain registry exists for custom IDs — collision detection is purely social.
+- IDs are `uint8` (0-255), with 1-39 currently assigned.
+- IDs 35-39 are used by `revnet-core-v6` for operator delegation: `HIDE_TOKENS` (35), `OPEN_LOAN` (36), `REALLOCATE_LOAN` (37), `REPAY_LOAN` (38), `REVEAL_TOKENS` (39).
+- IDs 40-255 are available for ecosystem extensions. Third-party contracts can define their own permission IDs in this range, but must coordinate to avoid collisions. No on-chain registry exists for custom IDs — collision detection is purely social.
 - This library has zero dependencies -- it is the leaf of the dependency graph.

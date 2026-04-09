@@ -65,4 +65,17 @@ library JBPermissionIds {
     uint8 internal constant DEPLOY_SUCKERS = 32; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
     uint8 internal constant SUCKER_SAFETY = 33; // Permission to call `JBSucker.enableEmergencyHatchFor`.
     uint8 internal constant SET_SUCKER_DEPRECATION = 34; // Permission to call `JBSucker.setDeprecation`.
+
+    /* Used by `revnet-core`: https://github.com/Bananapus/revnet-core */
+    /// @notice Permission to hide or reveal tokens on behalf of a holder via `REVHiddenTokens`.
+    uint8 internal constant HIDE_TOKENS = 35;
+    /// @notice Permission to open a loan on behalf of a token holder via `REVLoans.borrowFrom`.
+    uint8 internal constant OPEN_LOAN = 36;
+    /// @notice Permission to reallocate loan collateral on behalf of a loan owner via
+    /// `REVLoans.reallocateCollateralFromLoan`.
+    uint8 internal constant REALLOCATE_LOAN = 37;
+    /// @notice Permission to repay a loan on behalf of a loan owner via `REVLoans.repayLoan`.
+    uint8 internal constant REPAY_LOAN = 38;
+    /// @notice Permission to reveal hidden tokens on behalf of a holder via `REVHiddenTokens`.
+    uint8 internal constant REVEAL_TOKENS = 39;
 }

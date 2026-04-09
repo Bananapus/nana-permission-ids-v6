@@ -15,6 +15,16 @@ This file describes the verified change from `nana-permission-ids-v5` to the cur
 - The old swap-terminal-specific permissions are gone because the deployed ecosystem no longer centers on `nana-swap-terminal-v5`.
 - `SUCKER_SAFETY` no longer covers every safety action by itself. `SET_SUCKER_DEPRECATION` is its own permission in v6.
 
+## v6 additions: revnet-core delegation (IDs 35–39)
+
+- `HIDE_TOKENS` (35) — hide tokens on behalf of a holder via `REVHiddenTokens.hideTokensOf`. Checked against the token holder.
+- `OPEN_LOAN` (36) — open a loan on behalf of a token holder via `REVLoans.borrowFrom`. Checked against the token holder.
+- `REALLOCATE_LOAN` (37) — reallocate loan collateral on behalf of a loan NFT owner via `REVLoans.reallocateCollateralFromLoan`. Checked against the loan NFT owner.
+- `REPAY_LOAN` (38) — repay a loan on behalf of a loan NFT owner via `REVLoans.repayLoan`. Checked against the loan NFT owner.
+- `REVEAL_TOKENS` (39) — reveal hidden tokens on behalf of a holder via `REVHiddenTokens.revealTokensOf`. Checked against the token holder.
+
+These are consumed by `revnet-core-v6` and checked via `JBPermissioned._requirePermissionFrom` (for `REVHiddenTokens`) or inline `PERMISSIONS.hasPermission` calls (for `REVLoans`).
+
 ## Verified deltas
 
 - `QUEUE_RULESETS` no longer also covers `launchRulesetsFor`; `LAUNCH_RULESETS` is its own constant.
