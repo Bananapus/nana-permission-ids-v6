@@ -19,12 +19,12 @@ If the question is "who can do this action?" you will still need `JBPermissions`
 | Range | Area |
 | --- | --- |
 | `1` | global `ROOT` permission |
-| `2-22` | core protocol permissions |
-| `23-26` | 721 hook permissions |
-| `27-29` | buyback hook permissions |
-| `30` | router terminal permission |
-| `31-34` | sucker and omnichain permissions |
-| `35-39` | revnet-core permissions (hidden tokens, loans) |
+| `2-23` | core protocol permissions |
+| `24-27` | 721 hook permissions |
+| `28-30` | buyback hook permissions |
+| `31` | router terminal permission |
+| `32-35` | sucker and omnichain permissions |
+| `36-40` | revnet-core permissions (hidden tokens, loans) |
 
 The exact constants live in `src/JBPermissionIds.sol`.
 
