@@ -35,7 +35,7 @@ There are no ownable contracts, no upgrade mechanisms, and no mutable state. The
 
 ## Permission IDs
 
-All 39 defined permission IDs and what they control:
+All 40 defined permission IDs and what they control:
 
 | ID | Constant | Used By | What It Controls |
 |----|----------|---------|-----------------|
@@ -61,25 +61,26 @@ All 39 defined permission IDs and what they control:
 | 20 | `ADD_PRICE_FEED` | nana-core (`JBController`) | `JBController.addPriceFeedFor` (which internally calls `JBPrices.addPriceFeedFor`) -- add a price feed for a project. |
 | 21 | `ADD_ACCOUNTING_CONTEXTS` | nana-core (`JBMultiTerminal`) | `JBMultiTerminal.addAccountingContextsFor` -- add accepted tokens to a terminal. |
 | 22 | `SET_TOKEN_METADATA` | nana-core (`JBController`) | `JBController.setTokenMetadataOf` -- set a project token's name and symbol. |
-| 23 | `ADJUST_721_TIERS` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
-| 24 | `SET_721_METADATA` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
-| 25 | `MINT_721` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
-| 26 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.setDiscountPercentOf` -- set discount percent on NFT tiers. |
-| 27 | `SET_BUYBACK_TWAP` | nana-buyback-hook (`JBBuybackHook`) | `JBBuybackHook.setTwapWindowOf` -- configure the TWAP oracle window. |
-| 28 | `SET_BUYBACK_POOL` | nana-buyback-hook (`JBBuybackHook`) | `JBBuybackHook.setPoolFor` -- set the Uniswap pool for buybacks. |
-| 29 | `SET_BUYBACK_HOOK` | nana-buyback-hook (`JBBuybackHookRegistry`) | `JBBuybackHookRegistry.setHookFor` and `lockHookFor` -- configure and permanently lock the buyback hook. |
-| 30 | `SET_ROUTER_TERMINAL` | nana-router-terminal (`JBRouterTerminalRegistry`) | `JBRouterTerminalRegistry.setTerminalFor` and `lockTerminalFor` -- configure and permanently lock the router terminal. |
-| 31 | `MAP_SUCKER_TOKEN` | nana-suckers (`JBSucker`) | `JBSucker.mapToken` -- map an ERC-20 to its remote chain counterpart. Immutable once the outbox tree has entries. |
-| 32 | `DEPLOY_SUCKERS` | nana-suckers (`JBSuckerRegistry`) | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
-| 33 | `SUCKER_SAFETY` | nana-suckers (`JBSucker`) | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
-| 34 | `SET_SUCKER_DEPRECATION` | nana-suckers (`JBSucker`) | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
-| 35 | `HIDE_TOKENS` | revnet-core (`REVHiddenTokens`) | `REVHiddenTokens.hideTokensOf` -- hide (burn) tokens on behalf of a holder. Checked against the **token holder**. |
-| 36 | `OPEN_LOAN` | revnet-core (`REVLoans`) | `REVLoans.borrowFrom` -- open a loan on behalf of a token holder. Checked against the **token holder**. |
-| 37 | `REALLOCATE_LOAN` | revnet-core (`REVLoans`) | `REVLoans.reallocateCollateralFromLoan` -- reallocate loan collateral on behalf of a loan NFT owner. Checked against the **loan NFT owner**. |
-| 38 | `REPAY_LOAN` | revnet-core (`REVLoans`) | `REVLoans.repayLoan` -- repay a loan on behalf of a loan NFT owner. Checked against the **loan NFT owner**. |
-| 39 | `REVEAL_TOKENS` | revnet-core (`REVHiddenTokens`) | `REVHiddenTokens.revealTokensOf` -- reveal (re-mint) hidden tokens on behalf of a holder. Checked against the **token holder**. |
+| 23 | `SIGN_FOR_ERC20` | nana-core (`JBERC20`) | Sign messages on behalf of a project's ERC-20 token via ERC-1271. Used for Etherscan contract verification and other off-chain signature validation. |
+| 24 | `ADJUST_721_TIERS` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.adjustTiers` -- add or remove NFT tiers. |
+| 25 | `SET_721_METADATA` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.setMetadata` -- set NFT metadata URIs. |
+| 26 | `MINT_721` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.mintFor` -- manually mint NFTs to a beneficiary. |
+| 27 | `SET_721_DISCOUNT_PERCENT` | nana-721-hook (`JB721TiersHook`) | `JB721TiersHook.setDiscountPercentOf` -- set discount percent on NFT tiers. |
+| 28 | `SET_BUYBACK_TWAP` | nana-buyback-hook (`JBBuybackHook`) | `JBBuybackHook.setTwapWindowOf` -- configure the TWAP oracle window. |
+| 29 | `SET_BUYBACK_POOL` | nana-buyback-hook (`JBBuybackHook`) | `JBBuybackHook.setPoolFor` -- set the Uniswap pool for buybacks. |
+| 30 | `SET_BUYBACK_HOOK` | nana-buyback-hook (`JBBuybackHookRegistry`) | `JBBuybackHookRegistry.setHookFor` and `lockHookFor` -- configure and permanently lock the buyback hook. |
+| 31 | `SET_ROUTER_TERMINAL` | nana-router-terminal (`JBRouterTerminalRegistry`) | `JBRouterTerminalRegistry.setTerminalFor` and `lockTerminalFor` -- configure and permanently lock the router terminal. |
+| 32 | `MAP_SUCKER_TOKEN` | nana-suckers (`JBSucker`) | `JBSucker.mapToken` -- map an ERC-20 to its remote chain counterpart. Immutable once the outbox tree has entries. |
+| 33 | `DEPLOY_SUCKERS` | nana-suckers (`JBSuckerRegistry`) | `JBSuckerRegistry.deploySuckersFor` -- deploy sucker contracts for cross-chain bridging. |
+| 34 | `SUCKER_SAFETY` | nana-suckers (`JBSucker`) | `JBSucker.enableEmergencyHatchFor` -- enable the emergency hatch to recover stuck tokens. |
+| 35 | `SET_SUCKER_DEPRECATION` | nana-suckers (`JBSucker`) | `JBSucker.setDeprecation` -- set deprecation status (ENABLED, DEPRECATION_PENDING, SENDING_DISABLED, DEPRECATED). |
+| 36 | `HIDE_TOKENS` | revnet-core (`REVHiddenTokens`) | `REVHiddenTokens.hideTokensOf` -- hide (burn) tokens on behalf of a holder. Checked against the **token holder**. |
+| 37 | `OPEN_LOAN` | revnet-core (`REVLoans`) | `REVLoans.borrowFrom` -- open a loan on behalf of a token holder. Checked against the **token holder**. |
+| 38 | `REALLOCATE_LOAN` | revnet-core (`REVLoans`) | `REVLoans.reallocateCollateralFromLoan` -- reallocate loan collateral on behalf of a loan NFT owner. Checked against the **loan NFT owner**. |
+| 39 | `REPAY_LOAN` | revnet-core (`REVLoans`) | `REVLoans.repayLoan` -- repay a loan on behalf of a loan NFT owner. Checked against the **loan NFT owner**. |
+| 40 | `REVEAL_TOKENS` | revnet-core (`REVHiddenTokens`) | `REVHiddenTokens.revealTokensOf` -- reveal (re-mint) hidden tokens on behalf of a holder. Checked against the **token holder**. |
 
-IDs 0 and 40-255 are unused. ID 0 is reserved and cannot be set. IDs 40-255 are available for future ecosystem extensions.
+IDs 0 and 41-255 are unused. ID 0 is reserved and cannot be set. IDs 41-255 are available for future ecosystem extensions.
 
 ## ROOT Permission
 
@@ -123,8 +124,8 @@ Some permissions warrant extra caution when granting:
 - **`ROOT` (1):** Full access to all gated functions for a project.
 - **`SET_TERMINALS` (15):** Can remove the primary terminal, breaking payments and cashouts.
 - **`USE_ALLOWANCE` (18):** Can send surplus funds to any address.
-- **`SET_BUYBACK_HOOK` (29):** Can permanently lock the buyback hook configuration.
-- **`SET_ROUTER_TERMINAL` (30):** Can permanently lock the router terminal configuration.
+- **`SET_BUYBACK_HOOK` (30):** Can permanently lock the buyback hook configuration.
+- **`SET_ROUTER_TERMINAL` (31):** Can permanently lock the router terminal configuration.
 - **`MINT_TOKENS` (10):** Can inflate token supply (subject to ruleset allowing owner minting).
 
 ## Holder vs. Owner Permissions
@@ -137,10 +138,10 @@ Most permissions are checked against the **project owner** (the account that own
 | `BURN_TOKENS` (11) | Token holder |
 | `CLAIM_TOKENS` (12) | Token holder |
 | `TRANSFER_CREDITS` (13) | Token holder |
-| `HIDE_TOKENS` (35) | Token holder |
-| `OPEN_LOAN` (36) | Token holder |
-| `REALLOCATE_LOAN` (37) | Loan NFT owner |
-| `REPAY_LOAN` (38) | Loan NFT owner |
-| `REVEAL_TOKENS` (39) | Token holder |
+| `HIDE_TOKENS` (36) | Token holder |
+| `OPEN_LOAN` (37) | Token holder |
+| `REALLOCATE_LOAN` (38) | Loan NFT owner |
+| `REPAY_LOAN` (39) | Loan NFT owner |
+| `REVEAL_TOKENS` (40) | Token holder |
 
 This means a token holder can grant an operator permission to cash out, burn, claim, transfer, hide, reveal, or borrow against their own tokens -- independent of the project owner's permissions. Loan NFT owners can similarly grant operators permission to repay or reallocate their loans.
