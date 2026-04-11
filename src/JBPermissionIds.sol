@@ -78,4 +78,9 @@ library JBPermissionIds {
     uint8 internal constant REPAY_LOAN = 38;
     /// @notice Permission to reveal hidden tokens on behalf of a holder via `REVHiddenTokens`.
     uint8 internal constant REVEAL_TOKENS = 39;
+
+    /* Used by `nana-core` (JBERC20): https://github.com/Bananapus/nana-core */
+    /// @notice Permission to sign messages on behalf of a project's ERC-20 token via ERC-1271.
+    /// @dev Used for Etherscan contract verification and other off-chain signature validation.
+    uint8 internal constant SIGN_FOR_ERC20 = 40;
 }
