@@ -2,9 +2,7 @@
 
 ## Repo Purpose
 
-This repo is the shared permission vocabulary for the V6 ecosystem.
-It does not store permissions or enforce them at runtime. It defines the constants downstream repos should import so
-permissioned behavior stays legible and consistent.
+This repo is the shared permission vocabulary for the V6 ecosystem. It does not store permissions or enforce them at runtime. It defines the constants that downstream repos should import so permissioned behavior stays clear and consistent.
 
 ## Primary Actors
 
@@ -15,7 +13,7 @@ permissioned behavior stays legible and consistent.
 ## Key Surfaces
 
 - `JBPermissionIds`: library of canonical permission constants used across V6 repos
-- grouped constants for core, 721, router, buyback, sucker, Revnet, and related ecosystem actions
+- grouped constants for core, 721, router, buyback, sucker, revnet, and related actions
 - reserved ranges documented in `README.md`, including `ROOT = 1`, ecosystem-managed IDs through `40`, and socially coordinated extension space above that
 
 ## Journey 1: Map A Product Action To The Right Permission
@@ -37,15 +35,15 @@ permissioned behavior stays legible and consistent.
 **Failure Modes**
 - the repo hardcodes a number locally and drifts from the shared vocabulary
 - a repo picks the wrong existing constant because the action sounds similar but is not actually equivalent
-- a team grants `ROOT` or wildcard project permissions without appreciating that future IDs inherit that blast radius
-- docs and tests describe a permission by nickname rather than the imported constant
+- a team grants `ROOT` or wildcard permissions without appreciating the blast radius
+- docs and tests describe a permission by nickname instead of the imported constant
 
 **Postconditions**
 - the downstream action is guarded by the shared permission vocabulary instead of a local numeric convention
 
 ## Journey 2: Review An Existing Operator Setup
 
-**Actor:** auditor, operator, or curious integrator.
+**Actor:** auditor, operator, or integrator.
 
 **Intent:** decode opaque permission bits into named actions.
 
@@ -56,13 +54,13 @@ permissioned behavior stays legible and consistent.
 **Main Flow**
 1. Start with the permission bits granted on the project.
 2. Map each bit to its named constant here.
-3. Confirm the downstream repo still uses that constant consistently at its authorization checks and docs.
-4. Check whether any granted IDs are effectively funds-moving, routing, locking, or loan-management powers rather than low-risk admin toggles.
+3. Confirm the downstream repo still uses that constant consistently in authorization checks and docs.
+4. Check whether any granted IDs are really funds-moving, routing, locking, or loan-management powers rather than low-risk admin toggles.
 
 **Failure Modes**
 - downstream code reuses a permission ID for a different meaning
-- reviewers decode the bit correctly but underestimate what the downstream repo lets that permission do in practice
-- reviewers assume this repo alone is enough and skip the actual guarded code
+- reviewers decode the bit correctly but underestimate what the downstream repo lets that permission do
+- reviewers rely on this repo alone and skip the guarded code
 
 **Postconditions**
 - the reviewer has a named permission map and knows which downstream repos still need inspection
@@ -71,7 +69,7 @@ permissioned behavior stays legible and consistent.
 
 **Actor:** maintainer extending the permission vocabulary.
 
-**Intent:** add one new permission constant in a way the rest of the ecosystem can reuse.
+**Intent:** add a new permission constant that the rest of the ecosystem can reuse.
 
 **Preconditions**
 - no existing constant already matches the new action
@@ -95,10 +93,11 @@ permissioned behavior stays legible and consistent.
 
 ## Trust Boundaries
 
-- this repo is trusted only as shared vocabulary; actual storage and enforcement live elsewhere
+- this repo is trusted only as shared vocabulary
+- actual storage and enforcement live elsewhere
 - downstream repos can still misuse a constant even when they import the right one
 
 ## Hand-Offs
 
 - Use [nana-core-v6](../nana-core-v6/USER_JOURNEYS.md) for the runtime permission registry that stores and checks these IDs.
-- Use the relevant downstream repo when the question is about what a permissioned action actually does after authorization succeeds.
+- Use the relevant downstream repo when the question is about what a permissioned action does after authorization succeeds.

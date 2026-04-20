@@ -1,17 +1,19 @@
 # Audit Instructions
 
-This repo is only permission ID constants, but the constants are security-critical because many repos key access control off them.
+This repo is only permission ID constants, but those constants are security-critical because many repos key access control off them.
 
 ## Audit Objective
 
 Find issues that:
-- assign duplicate IDs to different semantic permissions
+
+- assign duplicate IDs to different permissions
 - mismatch IDs that downstream repos assume are canonical
 - create ordering or collision hazards for future permission additions
 
 ## Scope
 
 In scope:
+
 - `src/JBPermissionIds.sol`
 
 ## Start Here
@@ -22,6 +24,7 @@ In scope:
 ## Security Model
 
 This repo defines canonical numeric IDs that other repos treat as part of their permission model.
+
 - the file is small, but stale renumbering or collisions can silently widen or break access control elsewhere
 - correctness depends on cross-repo alignment, not local logic alone
 
@@ -37,8 +40,8 @@ This repo defines canonical numeric IDs that other repos treat as part of their 
 1. Each permission semantic has one stable numeric ID.
 2. No two distinct permissions share an ID.
 3. IDs match the expectations of all dependent repos in this workspace.
-4. ID 23 (`SIGN_FOR_ERC20`) is consumed by `nana-core-v6` (`JBERC20`) — verify it matches the value used for ERC-1271 signature delegation.
-5. IDs 36-40 (revnet-core delegation: `HIDE_TOKENS`, `OPEN_LOAN`, `REALLOCATE_LOAN`, `REPAY_LOAN`, `REVEAL_TOKENS`) are consumed by `revnet-core-v6` — verify they match the values used in `REVHiddenTokens` and `REVLoans`.
+4. ID `23` (`SIGN_FOR_ERC20`) matches the value used by `nana-core-v6` for ERC-1271 signature delegation.
+5. IDs `36-40` used by `revnet-core-v6` match the values used in `REVHiddenTokens` and `REVLoans`.
 
 ## Attack Surfaces
 

@@ -11,13 +11,13 @@ Audit instructions: [AUDIT_INSTRUCTIONS.md](./AUDIT_INSTRUCTIONS.md)
 
 ## Overview
 
-The library is intentionally simple: one Solidity file, no storage, no deployment, and no runtime logic. Its value comes from consistency.
+This library is intentionally simple: one Solidity file, no storage, no deployment, and no runtime logic. Its value is consistency.
 
-`JBPermissions` stores operator permissions as packed bits. This package names the bit positions so integrations do not drift across repos.
+`JBPermissions` stores operator permissions as packed bits. This package names those bit positions so integrations do not drift across repos.
 
 Use this repo as the single source of truth for permission numbers. Do not redefine permission IDs locally in downstream repos.
 
-If the question is "who can do this action?" you will still need `JBPermissions` in `nana-core-v6`. This repo only tells you what the numeric labels mean.
+If the question is "who can do this action?" you still need `JBPermissions` in `nana-core-v6`. This repo only tells you what the numbers mean.
 
 ## Current Permission Ranges
 
@@ -28,19 +28,19 @@ If the question is "who can do this action?" you will still need `JBPermissions`
 | `24-27` | 721 hook permissions |
 | `28-30` | buyback hook and registry permissions |
 | `31` | router terminal registry permission |
-| `32-35` | sucker and omnichain-deployment permissions |
-| `36-40` | revnet-core permissions (hidden tokens, loans) |
+| `32-35` | sucker and omnichain deployment permissions |
+| `36-40` | revnet-core permissions |
 
 The exact constants live in `src/JBPermissionIds.sol`.
 
-Two IDs deserve special attention:
+Two IDs deserve extra attention:
 
 - `SET_BUYBACK_HOOK` covers both setting and permanently locking the configured buyback hook
 - `SET_ROUTER_TERMINAL` covers both setting and permanently locking the configured router terminal
 
 ## Mental Model
 
-This repo is a coordination artifact, not a behavior repo. Its value is that every other package can import the same names and mean the same thing.
+This repo is a naming registry, not a behavior repo. Its job is to make every other package use the same permission names for the same bit positions.
 
 ## Read This File First
 
@@ -48,15 +48,15 @@ This repo is a coordination artifact, not a behavior repo. Its value is that eve
 
 ## Integration Traps
 
-- changing an existing numeric constant is a breaking ecosystem change, not an internal refactor
-- adding a new permission ID without coordinating downstream repos creates semantic drift even if the code still compiles
-- wildcard project permissions remain dangerous even when the numeric IDs themselves are correct
+- changing an existing numeric constant is an ecosystem breaking change
+- adding a new permission ID without coordinating downstream repos creates semantic drift even if code still compiles
+- wildcard project permissions are still dangerous even when the numeric IDs are correct
 
 ## Where Meaning Lives
 
-- numeric permission labels live in `JBPermissionIds.sol`
-- runtime permission checks live in `nana-core-v6/src/JBPermissions.sol`
-- repo-specific uses of those IDs live in the downstream package that imports them
+- numeric permission labels: `JBPermissionIds.sol`
+- runtime permission checks: `nana-core-v6/src/JBPermissions.sol`
+- repo-specific uses of those IDs: the downstream repo that imports them
 
 ## For AI Agents
 
@@ -86,6 +86,6 @@ src/
 ## Risks And Notes
 
 - `ROOT` is intentionally powerful and should be granted sparingly
-- wildcard project scope is convenient but easy to misuse operationally
-- some IDs intentionally bundle configuration and irreversible locking authority, so their blast radius is larger than their names first suggest
-- any change to this file has ecosystem-wide consequences because other repos assume the values are stable
+- wildcard project scope is convenient but easy to misuse
+- some IDs bundle configuration and irreversible locking authority, so their blast radius is larger than the short name suggests
+- any change to this file has ecosystem-wide consequences because other repos assume the values stay stable

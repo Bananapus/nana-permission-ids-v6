@@ -1,28 +1,28 @@
 # Permission IDs Risk Register
 
-This file focuses on the coordination risks in `JBPermissionIds`. The contract surface is tiny, but any semantic drift here can corrupt access control across the entire V6 ecosystem.
+This file covers the coordination risks in `JBPermissionIds`. The contract surface is tiny, but drift here can corrupt access control across the V6 ecosystem.
 
-## How to use this file
+## How To Use This File
 
-- Read `Priority risks` first; the main danger is cross-repo disagreement, not local bugs.
+- Read `Priority risks` first. The main danger is cross-repo disagreement, not a local code bug.
 - Treat every ID change as an ecosystem migration event.
-- Use `Invariants to Verify` to keep append-only discipline explicit.
+- Use `Invariants to verify` to keep append-only discipline explicit.
 
-## Priority risks
+## Priority Risks
 
 | Priority | Risk | Why it matters | Primary controls |
 |----------|------|----------------|------------------|
-| P0 | Semantic drift across repos | If two packages assign different meanings to the same numeric ID, permission checks silently authorize the wrong actions. | Single source of truth, append-only changes, and synchronized downstream updates. |
-| P1 | Reusing or reordering existing IDs | Renumbering breaks already-deployed contracts and off-chain tooling without any on-chain migration safety. | Never repurpose an assigned ID. Append only. |
-| P1 | Over-trusting high-impact IDs | Some IDs directly control funds, terminal routing, hook locking, or wildcard authority. Misgrants are catastrophic. | Explicit operator review and narrow-scoped permission grants. |
+| P0 | Semantic drift across repos | If two packages assign different meanings to the same ID, permission checks can silently authorize the wrong actions. | Single source of truth, append-only changes, and synchronized downstream updates. |
+| P1 | Reusing or reordering existing IDs | Renumbering breaks deployed contracts and off-chain tooling without any on-chain migration safety. | Never repurpose an assigned ID. Append only. |
+| P1 | Over-trusting high-impact IDs | Some IDs directly control funds, routing, locking, or loan state. Misgrants are dangerous. | Explicit operator review and narrow-scoped grants. |
 
 ## 1. Known Risks
 
 - **No runtime enforcement here.** This library only defines constants. Safety depends on every consuming repo checking the intended ID.
-- **`ROOT` is ecosystem-wide god mode.** `ROOT` (ID `1`) grants all permissions, including permissions added in the future.
-- **Wildcard grants amplify blast radius.** Any permission granted with `projectId = 0` applies to all projects owned by that account. System contracts may need this, but operator mistakes become ecosystem-wide.
-- **Hook and router lock powers are bundled.** `SET_BUYBACK_HOOK` (ID `30`) controls both hook selection and hook locking. `SET_ROUTER_TERMINAL` (ID `31`) controls both terminal selection and terminal locking.
-- **No on-chain namespace for third-party extensions.** IDs `41-255` are socially available, not registry-managed. External packages can collide unless teams coordinate out of band.
+- **`ROOT` is broad authority.** `ROOT` (ID `1`) grants all permissions, including permissions added in the future.
+- **Wildcard grants increase blast radius.** Any permission granted with `projectId = 0` applies to all projects owned by that account.
+- **Hook and router lock powers are bundled.** `SET_BUYBACK_HOOK` (`30`) and `SET_ROUTER_TERMINAL` (`31`) both cover setting and locking.
+- **Third-party extensions do not have an on-chain namespace.** IDs `41-255` are only socially coordinated, so external packages can collide without coordination.
 
 ## 2. High-Impact IDs
 
@@ -32,19 +32,19 @@ This file focuses on the coordination risks in `JBPermissionIds`. The contract s
 
 ## 3. Integration Risks
 
-- **Docs can lag deployed assumptions.** Off-chain tooling, UIs, and auditors often rely on human-readable permission names. A stale doc can be almost as dangerous as a stale constant if operators grant the wrong ID.
-- **Cross-package imports must remain canonical.** Downstream repos should import this library instead of redefining numeric literals locally.
-- **Future IDs inherit current trust assumptions.** Because `ROOT` covers future IDs, any new permission expands the capability of existing ROOT operators immediately after deployment.
+- **Docs can lag deployed assumptions.** Off-chain tooling, UIs, and audits often rely on human-readable permission names.
+- **Cross-package imports must stay canonical.** Downstream repos should import this library instead of redefining numeric literals locally.
+- **Future IDs expand current `ROOT` power.** Any new permission automatically becomes available to existing `ROOT` operators.
 
-## 4. Invariants to Verify
+## 4. Invariants To Verify
 
 - Assigned IDs are append-only and never repurposed.
-- `0` remains unused as a permission ID.
-- Every documented ID in this repo matches the numeric checks in downstream consuming contracts.
+- `0` stays unused as a permission ID.
+- Every documented ID in this repo matches the numeric checks in downstream contracts.
 - New IDs added after `40` do not collide with existing ecosystem assignments.
 
 ## 5. Accepted Behaviors
 
 ### 5.1 This repo is coordination infrastructure, not an enforcement layer
 
-`JBPermissionIds` intentionally has no access control, storage, or runtime checks. The value of the repo is that every other package can import the same constants and mean the same thing.
+`JBPermissionIds` intentionally has no access control, storage, or runtime checks. The repo matters because every other package can import the same constants and mean the same thing.

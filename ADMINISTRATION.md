@@ -11,20 +11,20 @@
 
 ## Purpose
 
-`nana-permission-ids-v6` has no runtime admin surface. Its control significance is source-level: it defines the shared permission namespace used by the rest of the ecosystem.
+`nana-permission-ids-v6` has no runtime admin surface. Its control significance is at the source level: it defines the shared permission namespace used by the rest of the ecosystem.
 
 ## Control Model
 
 - No owner
 - No runtime governance
 - No mutable onchain state
-- Source-code level coordination only
+- Source-level coordination only
 
 ## Roles
 
 | Role | How Assigned | Scope | Notes |
 | --- | --- | --- | --- |
-| Maintainer | Source-code author | Ecosystem-wide | Can add or reorder constants only by editing and redeploying dependent code |
+| Maintainer | Source-code author | Ecosystem-wide | Can add or reorder constants only by editing code and updating dependent deployments |
 
 ## Privileged Surfaces
 
@@ -45,7 +45,7 @@ There are no privileged runtime functions. The only meaningful changes are sourc
 
 - Do not infer semantic compatibility from matching names if numeric IDs changed.
 - Treat `src/JBPermissionIds.sol` as append-only unless a breaking ecosystem-wide migration is intentional.
-- If docs and code disagree on a permission number, trust the code and update the docs before further admin review.
+- If docs and code disagree on a permission number, trust the code and update the docs before further review.
 
 ## Recovery
 
