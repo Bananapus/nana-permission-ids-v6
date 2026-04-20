@@ -2,41 +2,52 @@
 
 ## Purpose
 
-`nana-permission-ids-v6` is the shared permission namespace for the ecosystem. It exists so every repo can agree on what permission bit means what.
+`nana-permission-ids-v6` is the shared permission namespace for the V6 ecosystem. It ensures every repo agrees on what each permission bit means when interacting with `JBPermissions`.
 
-## Boundaries
+## System Overview
 
-- This repo intentionally contains almost no logic.
-- Its value is stability, not sophistication.
-- The constants here are coupled to checks spread across many sibling repos.
+The repo intentionally contains almost no logic. Its value is stable coordination across the stack. Other repos import `JBPermissionIds` and compare permission bits against these constants.
 
-## Main Components
+## Core Invariants
 
-| Component | Responsibility |
-| --- | --- |
-| `JBPermissionIds` | Defines the canonical `uint8` IDs used with `JBPermissions` |
+- Existing IDs must remain stable once consumed by deployed contracts or integrations.
+- New IDs should be appended intentionally, not reused or repurposed.
+- Numeric stability matters more than naming convenience; changing a value while keeping a familiar name is still a protocol break.
+- `ROOT` must stay aligned with `JBPermissions` expectations in `nana-core-v6`.
 
-## Runtime Model
+## Modules
 
-There is no runtime state. Other repos import this library and compare permission bits against these constants.
+| Module | Responsibility | Notes |
+| --- | --- | --- |
+| `JBPermissionIds` | Defines canonical `uint8` permission IDs | Entire repo value |
 
-## Critical Invariants
+## Trust Boundaries
 
-- Existing IDs must remain stable once consumed by deployed contracts and integrations.
-- New IDs should only be appended intentionally; repurposing an old ID is ecosystem-breaking.
-- `ROOT` stays special and must remain consistent with `JBPermissions` expectations.
+- This repo has no runtime authority by itself.
+- It is semantically coupled to `nana-core-v6` and every repo that performs permission checks.
 
-## Where Complexity Lives
+## Critical Flows
 
-- The code is trivial; the coordination burden is not.
-- Mistakes here look like harmless renames until they land in downstream permission checks.
+There is no runtime flow. Other repos import the library and use the constants in permission checks.
 
-## Dependencies
+## Accounting Model
 
-- Semantically coupled to `nana-core-v6` and every repo that performs permission checks
+No accounting lives here.
+
+## Security Model
+
+- The code is trivial, but the coordination burden is not.
+- A seemingly harmless rename or reorder here can silently break permissions across the ecosystem.
+- This repo's real blast radius comes from deployed contracts that have already baked these values into their runtime behavior.
+- There is no meaningful local runtime test surface in this repo today; correctness is mostly enforced by downstream compatibility and reviewer discipline.
 
 ## Safe Change Guide
 
-- Treat every ID change as a cross-repo protocol change.
-- When adding a permission, update the docs and downstream repos in the same change set.
-- Do not add convenience aliases that obscure the one-to-one mapping between bit position and meaning.
+- Treat any ID change as a cross-repo protocol change.
+- When adding a permission, update downstream repos and docs in the same change set.
+- Do not add aliases that obscure the one-to-one mapping between bit position and meaning.
+
+## Source Map
+
+- `src/JBPermissionIds.sol`
+- `references/runtime.md`
