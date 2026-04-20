@@ -1,36 +1,50 @@
 # Permission IDs Risk Register
 
-Constants-only library defining permission ID values used throughout the Juicebox V6 ecosystem. The main failure mode is not local arithmetic; it is ecosystem-wide semantic drift if contracts disagree on what a permission ID means.
+This file focuses on the coordination risks in `JBPermissionIds`. The contract surface is tiny, but any semantic drift here can corrupt access control across the entire V6 ecosystem.
 
 ## How to use this file
 
-- Read `Priority risks` first; these are the ways a tiny library can create very large blast radius.
-- Use the design notes to understand why stability and coordination matter more here than contract complexity.
-- Treat any change in this repo as an ecosystem migration event, not a routine edit.
+- Read `Priority risks` first; the main danger is cross-repo disagreement, not local bugs.
+- Treat every ID change as an ecosystem migration event.
+- Use `Invariants to Verify` to keep append-only discipline explicit.
 
 ## Priority risks
 
 | Priority | Risk | Why it matters | Primary controls |
 |----------|------|----------------|------------------|
-| P0 | Semantic drift across repos | If two repos interpret the same `uint8` differently, access control breaks silently across the ecosystem. | Single source of truth, strict review, and synchronized downstream updates. |
-| P1 | Reordering or repurposing existing IDs | Changing established IDs can create backward-incompatible authority bugs without any contract-level revert. | Append-only discipline and explicit migration communication. |
-| P2 | Incomplete ecosystem adoption | A new permission ID is only safe if every dependent repo and deploy script understands it. | Cross-repo review and deployment coordination. |
+| P0 | Semantic drift across repos | If two packages assign different meanings to the same numeric ID, permission checks silently authorize the wrong actions. | Single source of truth, append-only changes, and synchronized downstream updates. |
+| P1 | Reusing or reordering existing IDs | Renumbering breaks already-deployed contracts and off-chain tooling without any on-chain migration safety. | Never repurpose an assigned ID. Append only. |
+| P1 | Over-trusting high-impact IDs | Some IDs directly control funds, terminal routing, hook locking, or wildcard authority. Misgrants are catastrophic. | Explicit operator review and narrow-scoped permission grants. |
 
 ## 1. Known Risks
 
-- **ROOT permission (ID 1).** ROOT grants all permissions across every contract. Any address granted ROOT can perform any permissioned operation on any project. Should never be granted to untrusted addresses.
-- **SET_BUYBACK_HOOK includes lock (ID 30).** Gates both `setHookFor` and `lockHookFor`. An operator with this permission can permanently lock the buyback hook configuration.
-- **SET_ROUTER_TERMINAL includes lock (ID 31).** Gates both `setTerminalFor` and `lockTerminalFor`. An operator can permanently lock the router terminal.
-- **ID collision risk.** Permission IDs are manually assigned sequential uint8 values. Adding new IDs requires coordination to avoid collision. Library is append-only.
-- **No runtime enforcement.** This library only defines constants. Enforcement happens in consuming contracts. A mismatch between the ID used here and the ID checked in a consumer would silently fail.
-- **High-impact permission IDs (fund-moving).** IDs that control fund flow should receive the most audit scrutiny: `ROOT` (1, grants everything), `CASH_OUT_TOKENS` (4, triggers withdrawals), `SEND_PAYOUTS` (5, triggers payout distribution), `MIGRATE_TERMINAL` (6, moves balances), `SET_TERMINALS` (15, redirects all fund flows), `USE_ALLOWANCE` (18, draws from surplus), `SET_SPLIT_GROUPS` (19, controls where payouts go). Of these, ROOT + SET_TERMINALS + MIGRATE_TERMINAL are the most dangerous — they can redirect all of a project's funds.
-- **SIGN_FOR_ERC20 (ID 23).** Grants permission to sign messages on behalf of a project's ERC-20 token via ERC-1271. Used for Etherscan contract verification and other off-chain signature validation. Should only be granted to trusted addresses since it controls the token's signing authority.
-- **Wildcard `projectId=0` semantics.** When a permission is granted with `projectId=0`, it applies to ALL projects. This is used by system contracts (e.g., `REVLoans` gets `USE_ALLOWANCE` with `projectId=0`). A bug in a contract holding wildcard permissions affects every project in the ecosystem, not just one. Only system-level contracts should hold wildcard permissions.
+- **No runtime enforcement here.** This library only defines constants. Safety depends on every consuming repo checking the intended ID.
+- **`ROOT` is ecosystem-wide god mode.** `ROOT` (ID `1`) grants all permissions, including permissions added in the future.
+- **Wildcard grants amplify blast radius.** Any permission granted with `projectId = 0` applies to all projects owned by that account. System contracts may need this, but operator mistakes become ecosystem-wide.
+- **Hook and router lock powers are bundled.** `SET_BUYBACK_HOOK` (ID `30`) controls both hook selection and hook locking. `SET_ROUTER_TERMINAL` (ID `31`) controls both terminal selection and terminal locking.
+- **No on-chain namespace for third-party extensions.** IDs `41-255` are socially available, not registry-managed. External packages can collide unless teams coordinate out of band.
 
-## 2. Design Notes
+## 2. High-Impact IDs
 
-- Permission 0 is reserved and cannot be set.
-- IDs are `uint8` (0-255), with 1-40 currently assigned.
-- IDs 36-40 are used by `revnet-core-v6` for operator delegation: `HIDE_TOKENS` (36), `OPEN_LOAN` (37), `REALLOCATE_LOAN` (38), `REPAY_LOAN` (39), `REVEAL_TOKENS` (40).
-- IDs 41-255 are available for ecosystem extensions. Third-party contracts can define their own permission IDs in this range, but must coordinate to avoid collisions. No on-chain registry exists for custom IDs — collision detection is purely social.
-- This library has zero dependencies -- it is the leaf of the dependency graph.
+- **Fund-moving IDs.** `CASH_OUT_TOKENS` (`4`), `SEND_PAYOUTS` (`5`), `MIGRATE_TERMINAL` (`6`), `SET_TERMINALS` (`15`), `USE_ALLOWANCE` (`18`), and `SET_SPLIT_GROUPS` (`19`) can redirect or release value.
+- **Hook-routing IDs.** `SET_BUYBACK_POOL` (`28`), `SET_BUYBACK_HOOK` (`30`), and `SET_ROUTER_TERMINAL` (`31`) materially control execution routes and can lock those routes permanently.
+- **Revnet loan IDs.** `OPEN_LOAN` (`37`), `REALLOCATE_LOAN` (`38`), and `REPAY_LOAN` (`39`) are operationally powerful because they move collateral and debt state.
+
+## 3. Integration Risks
+
+- **Docs can lag deployed assumptions.** Off-chain tooling, UIs, and auditors often rely on human-readable permission names. A stale doc can be almost as dangerous as a stale constant if operators grant the wrong ID.
+- **Cross-package imports must remain canonical.** Downstream repos should import this library instead of redefining numeric literals locally.
+- **Future IDs inherit current trust assumptions.** Because `ROOT` covers future IDs, any new permission expands the capability of existing ROOT operators immediately after deployment.
+
+## 4. Invariants to Verify
+
+- Assigned IDs are append-only and never repurposed.
+- `0` remains unused as a permission ID.
+- Every documented ID in this repo matches the numeric checks in downstream consuming contracts.
+- New IDs added after `40` do not collide with existing ecosystem assignments.
+
+## 5. Accepted Behaviors
+
+### 5.1 This repo is coordination infrastructure, not an enforcement layer
+
+`JBPermissionIds` intentionally has no access control, storage, or runtime checks. The value of the repo is that every other package can import the same constants and mean the same thing.

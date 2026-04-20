@@ -2,7 +2,7 @@
 
 This repo is only permission ID constants, but the constants are security-critical because many repos key access control off them.
 
-## Objective
+## Audit Objective
 
 Find issues that:
 - assign duplicate IDs to different semantic permissions
@@ -14,6 +14,24 @@ Find issues that:
 In scope:
 - `src/JBPermissionIds.sol`
 
+## Start Here
+
+1. `src/JBPermissionIds.sol`
+2. downstream consumers in `nana-core-v6` and `revnet-core-v6`
+
+## Security Model
+
+This repo defines canonical numeric IDs that other repos treat as part of their permission model.
+- the file is small, but stale renumbering or collisions can silently widen or break access control elsewhere
+- correctness depends on cross-repo alignment, not local logic alone
+
+## Integration Assumptions
+
+| Dependency | Assumption | What breaks if wrong |
+|------------|------------|----------------------|
+| `nana-core-v6` | ERC-20 signature delegation still uses the documented ID | Signature authority checks mismatch |
+| `revnet-core-v6` | Loan and hidden-token permissions still use the documented IDs | Delegated actions widen, fail, or misroute |
+
 ## Critical Invariants
 
 1. Each permission semantic has one stable numeric ID.
@@ -22,14 +40,13 @@ In scope:
 4. ID 23 (`SIGN_FOR_ERC20`) is consumed by `nana-core-v6` (`JBERC20`) — verify it matches the value used for ERC-1271 signature delegation.
 5. IDs 36-40 (revnet-core delegation: `HIDE_TOKENS`, `OPEN_LOAN`, `REALLOCATE_LOAN`, `REPAY_LOAN`, `REVEAL_TOKENS`) are consumed by `revnet-core-v6` — verify they match the values used in `REVHiddenTokens` and `REVLoans`.
 
-## Threat Model
+## Attack Surfaces
 
-Prioritize stale or inconsistent constants, especially where wildcard grants or deployer permissions depend on a specific numeric value.
+- duplicate or reordered constants
+- stale cross-repo assumptions
+- permission additions that collide with previously assigned meanings
 
-## Build And Verification
+## Verification
 
-Standard workflow:
 - `npm install`
 - `forge build`
-
-A meaningful finding here should show a real downstream permission check becoming broader, narrower, or mismatched because of the constant set.

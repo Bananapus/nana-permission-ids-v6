@@ -1,44 +1,102 @@
 # User Journeys
 
-## Who This Repo Serves
+## Repo Purpose
 
-- protocol and product engineers mapping actions to the right operator permission
-- auditors checking whether a downstream repo reused or drifted from the shared permission vocabulary
-- maintainers adding new permission surfaces without colliding with existing meaning
+This repo is the shared permission vocabulary for the V6 ecosystem.
+It does not store permissions or enforce them at runtime. It defines the constants downstream repos should import so
+permissioned behavior stays legible and consistent.
+
+## Primary Actors
+
+- engineers choosing which permission constant should guard a feature
+- auditors checking whether a repo drifted from the shared vocabulary
+- maintainers extending the permission map without numeric collisions
+
+## Key Surfaces
+
+- `JBPermissionIds`: library of canonical permission constants used across V6 repos
+- grouped constants for core, 721, router, buyback, sucker, Revnet, and related ecosystem actions
+- reserved ranges documented in `README.md`, including `ROOT = 1`, ecosystem-managed IDs through `40`, and socially coordinated extension space above that
 
 ## Journey 1: Map A Product Action To The Right Permission
 
-**Starting state:** a repo needs to guard an action with `JBPermissions`.
+**Actor:** downstream engineer.
 
-**Success:** the code imports the canonical constant instead of inventing a local numeric meaning.
+**Intent:** protect an action with the canonical permission constant instead of inventing a local number.
 
-**Flow**
-1. Find the action's domain in `JBPermissionIds`, such as core, 721 hook, buyback, router, or sucker permissions.
-2. Import the shared constant into the downstream repo.
-3. Check the relevant caller against that constant through `JBPermissions`.
+**Preconditions**
+- the action is governed by `JBPermissions`
+- the engineer knows which repo or domain owns the action
+
+**Main Flow**
+1. Find the action domain in `JBPermissionIds`, such as core, 721, router, buyback, or sucker permissions.
+2. Import the constant into the downstream repo.
+3. Use that constant in the runtime authorization check.
+4. Treat bundled high-impact IDs like `SET_BUYBACK_HOOK` and `SET_ROUTER_TERMINAL` as broader powers than their short names suggest because they also gate locking.
+
+**Failure Modes**
+- the repo hardcodes a number locally and drifts from the shared vocabulary
+- a repo picks the wrong existing constant because the action sounds similar but is not actually equivalent
+- a team grants `ROOT` or wildcard project permissions without appreciating that future IDs inherit that blast radius
+- docs and tests describe a permission by nickname rather than the imported constant
+
+**Postconditions**
+- the downstream action is guarded by the shared permission vocabulary instead of a local numeric convention
 
 ## Journey 2: Review An Existing Operator Setup
 
-**Starting state:** a project or audit needs to understand what a granted permission actually means.
+**Actor:** auditor, operator, or curious integrator.
 
-**Success:** the operator bitset can be read as named product actions instead of opaque integers.
+**Intent:** decode opaque permission bits into named actions.
 
-**Flow**
+**Preconditions**
+- the operator bitset or granted permission IDs are already known
+- the reviewer understands that this repo names permissions but does not prove how each repo uses them
+
+**Main Flow**
 1. Start with the permission bits granted on the project.
-2. Map each bit back to the shared constant defined here.
-3. Confirm that the downstream repo still uses that constant consistently at its authorization checks.
+2. Map each bit to its named constant here.
+3. Confirm the downstream repo still uses that constant consistently at its authorization checks and docs.
+4. Check whether any granted IDs are effectively funds-moving, routing, locking, or loan-management powers rather than low-risk admin toggles.
+
+**Failure Modes**
+- downstream code reuses a permission ID for a different meaning
+- reviewers decode the bit correctly but underestimate what the downstream repo lets that permission do in practice
+- reviewers assume this repo alone is enough and skip the actual guarded code
+
+**Postconditions**
+- the reviewer has a named permission map and knows which downstream repos still need inspection
 
 ## Journey 3: Add A New Ecosystem Surface Without Permission Drift
 
-**Starting state:** a new repo or feature needs a permission that does not fit any existing constant.
+**Actor:** maintainer extending the permission vocabulary.
 
-**Success:** the new constant is added once, in the right numeric range, and downstream packages can reuse it without ambiguity.
+**Intent:** add one new permission constant in a way the rest of the ecosystem can reuse.
 
-**Flow**
-1. Pick the next unused ID in the relevant ecosystem range.
+**Preconditions**
+- no existing constant already matches the new action
+- the maintainer understands the numeric ranges already in use
+
+**Main Flow**
+1. Choose the next unused ID in the relevant range.
 2. Add the named constant in `JBPermissionIds.sol`.
-3. Update downstream repos to import that constant instead of duplicating the number.
-4. Re-audit any docs or tests that explain the meaning of that permission.
+3. Update downstream repos to import the constant instead of duplicating the number.
+4. Refresh docs and tests that explain the permission.
+5. If the new ID goes above the ecosystem-managed range, coordinate externally so third-party packages do not collide on the same number.
+
+**Failure Modes**
+- a new repo defines its own numeric constant first and creates drift
+- a new constant is added in the wrong semantic range, making later review harder
+- a new ID silently expands what existing `ROOT` operators can do without that blast radius being reviewed
+- documentation updates lag behind the code change
+
+**Postconditions**
+- the new ecosystem surface has a reusable canonical permission ID with coordinated downstream adoption
+
+## Trust Boundaries
+
+- this repo is trusted only as shared vocabulary; actual storage and enforcement live elsewhere
+- downstream repos can still misuse a constant even when they import the right one
 
 ## Hand-Offs
 
