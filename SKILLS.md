@@ -2,8 +2,8 @@
 
 ## Use This File For
 
-- Use this file when you need the canonical numeric meaning of a Juicebox V6 permission constant or when reviewing changes that would affect permission numbering across the ecosystem.
-- Start here, then open the constant file directly.
+- Use this file when you need the canonical numeric meaning of a Juicebox V6 permission constant.
+- Start here when reviewing changes that could affect permission numbering across the ecosystem.
 
 ## Read This Next
 
@@ -20,11 +20,11 @@
 
 ## Purpose
 
-Single source of truth for Juicebox V6 permission ID constants. This repo has no runtime behavior; its value is ecosystem-wide coordination.
+This repo is the single source of truth for Juicebox V6 permission ID constants. It has no runtime behavior. Its value is ecosystem-wide coordination.
 
 ## Reference Files
 
-- Open [`references/runtime.md`](./references/runtime.md) when you need the stability expectations and why changes here are ecosystem-wide.
+- Open [`references/runtime.md`](./references/runtime.md) when you need the stability expectations and why changes here affect the whole ecosystem.
 
 ## Working Rules
 
