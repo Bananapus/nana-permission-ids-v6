@@ -1,84 +1,185 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.28;
 
-/// @notice Permission IDs for `JBPermissions`, used throughout the Bananapus ecosystem. See
-/// [`JBPermissions`](https://github.com/Bananapus/nana-core-v6/blob/main/src/JBPermissions.sol)
-/// @dev `JBPermissions` allows one address to grant another address permission to call functions in Juicebox contracts
-/// on their behalf. Each ID in `JBPermissionIds` grants access to a specific set of these functions.
+/// @notice Permission IDs used across the Juicebox ecosystem.
+/// @dev Projects can grant permissions to other addresses (called "operators") through `JBPermissions`. Each permission
+/// ID here authorizes the operator to call specific functions on behalf of the project owner or token holder. See
+/// https://github.com/Bananapus/nana-core-v6/blob/main/src/JBPermissions.sol
 library JBPermissionIds {
-    uint8 internal constant ROOT = 1; // All permissions across every contract. Very dangerous. BE CAREFUL!
+    /// @notice Grants all permissions across every Juicebox contract. An operator with ROOT can do anything the
+    /// project owner can do. Use with extreme caution.
+    uint8 internal constant ROOT = 1;
 
-    /* Used by `nana-core-v6`: https://github.com/Bananapus/nana-core-v6 */
-    uint8 internal constant QUEUE_RULESETS = 2; // Permission to call `JBController.queueRulesetsOf`.
-    uint8 internal constant LAUNCH_RULESETS = 3; // Permission to call `JBController.launchRulesetsFor`.
-    uint8 internal constant CASH_OUT_TOKENS = 4; // Permission to call `JBMultiTerminal.cashOutTokensOf`.
-    uint8 internal constant SEND_PAYOUTS = 5; // Permission to call `JBMultiTerminal.sendPayoutsOf`.
-    uint8 internal constant MIGRATE_TERMINAL = 6; // Permission to call `JBMultiTerminal.migrateBalanceOf`.
-    uint8 internal constant SET_PROJECT_URI = 7; // Permission to call `JBController.setUriOf`.
-    uint8 internal constant DEPLOY_ERC20 = 8; // Permission to call `JBController.deployERC20For`.
-    uint8 internal constant SET_TOKEN = 9; // Permission to call `JBController.setTokenFor`.
-    uint8 internal constant MINT_TOKENS = 10; // Permission to call `JBController.mintTokensOf`.
-    uint8 internal constant BURN_TOKENS = 11; // Permission to call `JBController.burnTokensOf`.
-    uint8 internal constant CLAIM_TOKENS = 12; // Permission to call `JBController.claimTokensFor`.
-    uint8 internal constant TRANSFER_CREDITS = 13; // Permission to call `JBController.transferCreditsFrom`.
-    uint8 internal constant SET_CONTROLLER = 14; // Permission to call `JBDirectory.setControllerOf`.
-    uint8 internal constant SET_TERMINALS = 15; // Permission to call `JBDirectory.setTerminalsOf`.
-    // Be careful - `SET_TERMINALS` can be used to remove the primary terminal.
-    uint8 internal constant ADD_TERMINALS = 16; // Permission to call `JBDirectory.setPrimaryTerminalOf` when it
-    // implicitly adds a new terminal.
-    uint8 internal constant SET_PRIMARY_TERMINAL = 17; // Permission to call `JBDirectory.setPrimaryTerminalOf`.
-    uint8 internal constant USE_ALLOWANCE = 18; // Permission to call `JBMultiTerminal.useAllowanceOf`.
-    uint8 internal constant SET_SPLIT_GROUPS = 19; // Permission to call `JBController.setSplitGroupsOf`.
-    uint8 internal constant ADD_PRICE_FEED = 20; // Permission to call `JBController.addPriceFeedFor`.
-    uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 21; // Permission to call
-    // `JBMultiTerminal.addAccountingContextsFor`.
-    uint8 internal constant SET_TOKEN_METADATA = 22; // Permission to call
-    // `JBController.setTokenMetadataOf`.
-    /// @notice Permission to sign messages on behalf of a project's ERC-20 token via ERC-1271.
+    /* ── nana-core-v6 ─────────────────────────────────────────────────── */
+
+    /// @notice Queue new rulesets for a project, scheduling future changes to its funding cycles, payouts, and rules
+    /// (`JBController.queueRulesetsOf`).
+    uint8 internal constant QUEUE_RULESETS = 2;
+
+    /// @notice Launch a project's first rulesets, initializing its funding cycles and configuration
+    /// (`JBController.launchRulesetsFor`).
+    uint8 internal constant LAUNCH_RULESETS = 3;
+
+    /// @notice Cash out (redeem) project tokens from the treasury on behalf of a token holder
+    /// (`JBMultiTerminal.cashOutTokensOf`).
+    uint8 internal constant CASH_OUT_TOKENS = 4;
+
+    /// @notice Send a project's payouts to its split recipients, distributing funds from the treasury
+    /// (`JBMultiTerminal.sendPayoutsOf`).
+    uint8 internal constant SEND_PAYOUTS = 5;
+
+    /// @notice Migrate a project's terminal balance to a different terminal
+    /// (`JBMultiTerminal.migrateBalanceOf`).
+    uint8 internal constant MIGRATE_TERMINAL = 6;
+
+    /// @notice Set or update a project's metadata URI, e.g. its name, description, and logo
+    /// (`JBController.setUriOf`).
+    uint8 internal constant SET_PROJECT_URI = 7;
+
+    /// @notice Deploy a new ERC-20 token for a project, allowing token holders to claim transferable tokens
+    /// (`JBController.deployERC20For`).
+    uint8 internal constant DEPLOY_ERC20 = 8;
+
+    /// @notice Set a project's token to an existing ERC-20 contract (`JBController.setTokenFor`).
+    uint8 internal constant SET_TOKEN = 9;
+
+    /// @notice Mint new project tokens and allocate them to a beneficiary (`JBController.mintTokensOf`).
+    /// @dev Only works if the project's ruleset allows owner minting.
+    uint8 internal constant MINT_TOKENS = 10;
+
+    /// @notice Burn project tokens on behalf of a token holder, reducing the total supply
+    /// (`JBController.burnTokensOf`).
+    uint8 internal constant BURN_TOKENS = 11;
+
+    /// @notice Claim internal token credits as ERC-20 tokens on behalf of a holder
+    /// (`JBController.claimTokensFor`).
+    uint8 internal constant CLAIM_TOKENS = 12;
+
+    /// @notice Transfer internal token credits (unclaimed tokens) to another address
+    /// (`JBController.transferCreditsFrom`).
+    uint8 internal constant TRANSFER_CREDITS = 13;
+
+    /// @notice Set a project's controller — the contract that manages its rulesets and token issuance
+    /// (`JBDirectory.setControllerOf`).
+    /// @dev Changing the controller is a significant governance action.
+    uint8 internal constant SET_CONTROLLER = 14;
+
+    /// @notice Replace a project's full list of payment terminals, which can add or remove terminals
+    /// (`JBDirectory.setTerminalsOf`).
+    /// @dev This can remove the primary terminal — use with caution.
+    uint8 internal constant SET_TERMINALS = 15;
+
+    /// @notice Add a new terminal to a project when setting a primary terminal for a token
+    /// (`JBDirectory.setPrimaryTerminalOf`, when it implicitly adds a new terminal).
+    uint8 internal constant ADD_TERMINALS = 16;
+
+    /// @notice Set which terminal is the primary one for receiving a specific token
+    /// (`JBDirectory.setPrimaryTerminalOf`).
+    uint8 internal constant SET_PRIMARY_TERMINAL = 17;
+
+    /// @notice Spend funds from a project's surplus allowance — discretionary funds beyond payout limits
+    /// (`JBMultiTerminal.useAllowanceOf`).
+    uint8 internal constant USE_ALLOWANCE = 18;
+
+    /// @notice Configure how a project's payouts and reserved tokens are split among recipients
+    /// (`JBController.setSplitGroupsOf`).
+    uint8 internal constant SET_SPLIT_GROUPS = 19;
+
+    /// @notice Add a price feed that converts between two currencies for a project's accounting
+    /// (`JBController.addPriceFeedFor`).
+    uint8 internal constant ADD_PRICE_FEED = 20;
+
+    /// @notice Register new token types that a project's terminal can accept as payment
+    /// (`JBMultiTerminal.addAccountingContextsFor`).
+    uint8 internal constant ADD_ACCOUNTING_CONTEXTS = 21;
+
+    /// @notice Update the on-chain metadata (name, symbol, etc.) of a project's ERC-20 token
+    /// (`JBController.setTokenMetadataOf`).
+    uint8 internal constant SET_TOKEN_METADATA = 22;
+
+    /// @notice Sign messages on behalf of a project's ERC-20 token via ERC-1271
+    /// (`JBERC20.isValidSignature`).
     /// @dev Used for Etherscan contract verification and other off-chain signature validation.
     uint8 internal constant SIGN_FOR_ERC20 = 23;
 
-    /* Used by `nana-721-hook-v6`: https://github.com/Bananapus/nana-721-hook-v6 */
-    uint8 internal constant ADJUST_721_TIERS = 24; // Permission to call `JB721TiersHook.adjustTiers`.
-    uint8 internal constant SET_721_METADATA = 25; // Permission to call `JB721TiersHook.setMetadata`.
-    uint8 internal constant MINT_721 = 26; // Permission to call `JB721TiersHook.mintFor`.
-    uint8 internal constant SET_721_DISCOUNT_PERCENT = 27; // Permission to call `JB721TiersHook.setDiscountPercentOf`.
+    /* ── nana-721-hook-v6 ─────────────────────────────────────────────── */
 
-    /* Used by `nana-buyback-hook-v6`: https://github.com/Bananapus/nana-buyback-hook-v6 */
-    uint8 internal constant SET_BUYBACK_TWAP = 28; // Permission to call `JBBuybackHook.setTwapWindowOf`.
-    uint8 internal constant SET_BUYBACK_POOL = 29; // Permission to call `JBBuybackHook.setPoolFor`.
-    /// @dev This single ID intentionally gates both setting and locking the buyback hook as a simplification.
-    /// Granting this permission allows the operator to call both `JBBuybackHookRegistry.setHookFor` (to configure the
-    /// hook) and `JBBuybackHookRegistry.lockHookFor` (to permanently lock the hook configuration). Project owners
-    /// should be aware that an operator with this permission can lock the hook, preventing future changes.
-    uint8 internal constant SET_BUYBACK_HOOK = 30; // Permission to call `JBBuybackHookRegistry.setHookFor` and
-    // `JBBuybackHookRegistry.lockHookFor`.
+    /// @notice Add, remove, or modify NFT tiers for a project's 721 hook
+    /// (`JB721TiersHook.adjustTiers`).
+    uint8 internal constant ADJUST_721_TIERS = 24;
 
-    /* Used by `nana-router-terminal`: https://github.com/Bananapus/nana-router-terminal-v6 */
-    /// @dev This single ID intentionally gates both setting and locking the router terminal as a simplification.
-    /// Granting this permission allows the operator to call both `JBRouterTerminalRegistry.setTerminalFor` (to
-    /// configure the terminal) and `JBRouterTerminalRegistry.lockTerminalFor` (to permanently lock the terminal
-    /// configuration). Project owners should be aware that an operator with this permission can lock the terminal,
-    /// preventing future changes.
-    uint8 internal constant SET_ROUTER_TERMINAL = 31; // Permission to call
-    // `JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`.
+    /// @notice Update the metadata (base URI, contract URI, token URI resolver) of a project's NFT collection
+    /// (`JB721TiersHook.setMetadata`).
+    uint8 internal constant SET_721_METADATA = 25;
 
-    /* Used by `nana-suckers-v6`: https://github.com/Bananapus/nana-suckers-v6 */
-    uint8 internal constant MAP_SUCKER_TOKEN = 32; // Permission to call `JBSucker.mapToken`.
-    uint8 internal constant DEPLOY_SUCKERS = 33; // Permission to call `JBSuckerRegistry.deploySuckersFor`.
-    uint8 internal constant SUCKER_SAFETY = 34; // Permission to call `JBSucker.enableEmergencyHatchFor`.
-    uint8 internal constant SET_SUCKER_DEPRECATION = 35; // Permission to call `JBSucker.setDeprecation`.
+    /// @notice Mint NFTs directly to a beneficiary without requiring payment, typically for reserved or promotional
+    /// NFTs (`JB721TiersHook.mintFor`).
+    uint8 internal constant MINT_721 = 26;
 
-    /* Used by `revnet-core-v6`: https://github.com/rev-net/revnet-core-v6 */
-    /// @notice Permission to hide or reveal tokens on behalf of a holder via `REVHiddenTokens`.
+    /// @notice Set a discount percentage for a specific NFT tier, reducing the payment required to mint
+    /// (`JB721TiersHook.setDiscountPercentOf`).
+    uint8 internal constant SET_721_DISCOUNT_PERCENT = 27;
+
+    /* ── nana-buyback-hook-v6 ─────────────────────────────────────────── */
+
+    /// @notice Set the TWAP (time-weighted average price) window used by a project's buyback hook to determine when
+    /// buying tokens on a DEX is cheaper than minting (`JBBuybackHook.setTwapWindowOf`).
+    uint8 internal constant SET_BUYBACK_TWAP = 28;
+
+    /// @notice Set which Uniswap V4 pool a project's buyback hook uses for token buybacks
+    /// (`JBBuybackHook.setPoolFor`).
+    uint8 internal constant SET_BUYBACK_POOL = 29;
+
+    /// @notice Configure or permanently lock a project's buyback hook
+    /// (`JBBuybackHookRegistry.setHookFor` and `JBBuybackHookRegistry.lockHookFor`).
+    /// @dev An operator with this permission can lock the hook, preventing future changes.
+    uint8 internal constant SET_BUYBACK_HOOK = 30;
+
+    /* ── nana-router-terminal-v6 ──────────────────────────────────────── */
+
+    /// @notice Configure or permanently lock a project's router terminal, which routes payments through a DEX
+    /// (`JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`).
+    /// @dev An operator with this permission can lock the terminal, preventing future changes.
+    uint8 internal constant SET_ROUTER_TERMINAL = 31;
+
+    /* ── nana-suckers-v6 ──────────────────────────────────────────────── */
+
+    /// @notice Map a token on one chain to its counterpart on another chain within a cross-chain sucker bridge
+    /// (`JBSucker.mapToken`).
+    uint8 internal constant MAP_SUCKER_TOKEN = 32;
+
+    /// @notice Deploy cross-chain sucker bridges for a project, enabling token bridging between chains
+    /// (`JBSuckerRegistry.deploySuckersFor`).
+    uint8 internal constant DEPLOY_SUCKERS = 33;
+
+    /// @notice Enable the emergency hatch on a cross-chain sucker, allowing stuck tokens to be recovered
+    /// (`JBSucker.enableEmergencyHatchFor`).
+    uint8 internal constant SUCKER_SAFETY = 34;
+
+    /// @notice Set the deprecation status of a cross-chain sucker, progressing it through its shutdown lifecycle
+    /// (`JBSucker.setDeprecation`).
+    uint8 internal constant SET_SUCKER_DEPRECATION = 35;
+
+    /* ── revnet-core-v6 ───────────────────────────────────────────────── */
+
+    /// @notice Hide tokens on behalf of a holder, removing them from public visibility
+    /// (`REVHiddenTokens.hideTokensFor`).
+    /// @dev Hidden tokens are still owned by the holder and can be revealed later.
     uint8 internal constant HIDE_TOKENS = 36;
-    /// @notice Permission to open a loan on behalf of a token holder via `REVLoans.borrowFrom`.
+
+    /// @notice Open a loan against project tokens as collateral on behalf of a token holder
+    /// (`REVLoans.borrowFrom`).
     uint8 internal constant OPEN_LOAN = 37;
-    /// @notice Permission to reallocate loan collateral on behalf of a loan owner via
-    /// `REVLoans.reallocateCollateralFromLoan`.
+
+    /// @notice Move loan collateral between projects on behalf of a loan owner
+    /// (`REVLoans.reallocateCollateralFromLoan`).
     uint8 internal constant REALLOCATE_LOAN = 38;
-    /// @notice Permission to repay a loan on behalf of a loan owner via `REVLoans.repayLoan`.
+
+    /// @notice Repay a loan on behalf of the loan owner, returning collateral tokens
+    /// (`REVLoans.repayLoan`).
     uint8 internal constant REPAY_LOAN = 39;
-    /// @notice Permission to reveal hidden tokens on behalf of a holder via `REVHiddenTokens`.
+
+    /// @notice Reveal previously hidden tokens on behalf of a holder, making them publicly visible again
+    /// (`REVHiddenTokens.revealTokensFor`).
     uint8 internal constant REVEAL_TOKENS = 40;
 }
