@@ -190,8 +190,4 @@ library JBPermissionIds {
     /// @notice Repay a loan on behalf of the loan owner, returning collateral tokens
     /// (`REVLoans.repayLoan`).
     uint8 internal constant REPAY_LOAN = 39;
-
-    /// @notice Reveal previously hidden tokens on behalf of a holder, making them publicly visible again
-    /// (`REVHiddenTokens.revealTokensFor`).
-    uint8 internal constant REVEAL_TOKENS = 40;
 }
