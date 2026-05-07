@@ -1,8 +1,8 @@
-# Review Guide
+# Audit Instructions
 
 This repo is only permission ID constants, but those constants are security-critical because many repos key access control off them.
 
-## Review Objective
+## Audit Objective
 
 Find issues that:
 

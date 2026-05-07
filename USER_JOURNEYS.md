@@ -7,7 +7,7 @@ This repo is the shared permission vocabulary for the V6 ecosystem. It does not 
 ## Primary Actors
 
 - engineers choosing which permission constant should guard a feature
-- reviewers checking whether a repo drifted from the shared vocabulary
+- auditors checking whether a repo drifted from the shared vocabulary
 - maintainers extending the permission map without numeric collisions
 
 ## Key Surfaces
@@ -43,7 +43,7 @@ This repo is the shared permission vocabulary for the V6 ecosystem. It does not 
 
 ## Journey 2: Review An Existing Operator Setup
 
-**Actor:** reviewer, operator, or integrator.
+**Actor:** auditor, operator, or integrator.
 
 **Intent:** decode opaque permission bits into named actions.
 
