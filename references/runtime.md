@@ -13,6 +13,6 @@ Use this file when you need to confirm the canonical numeric labels, not when yo
 
 ## Change Checklist
 
-- If you edit a constant, audit every dependent repo that imports it.
+- If you edit a constant, review every dependent repo that imports it.
 - If you need to know who can exercise a permission, follow the usage into the enforcing repo rather than stopping here.
-- There are no repo-local tests here, so downstream compile and behavior audits matter more than this package in isolation.
+- There are no repo-local tests here, so downstream compile and behavior reviews matter more than this package in isolation.
