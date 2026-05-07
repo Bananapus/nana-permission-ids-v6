@@ -32,7 +32,7 @@ This file covers the coordination risks in `JBPermissionIds`. The contract surfa
 
 ## 3. Integration Risks
 
-- **Docs can lag deployed assumptions.** Off-chain tooling, UIs, and audits often rely on human-readable permission names.
+- **Docs can lag deployed assumptions.** Off-chain tooling, UIs, and reviews often rely on human-readable permission names.
 - **Cross-package imports must stay canonical.** Downstream repos should import this library instead of redefining numeric literals locally.
 - **Future IDs expand current `ROOT` power.** Any new permission automatically becomes available to existing `ROOT` operators.
 
