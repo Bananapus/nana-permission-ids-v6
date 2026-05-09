@@ -174,11 +174,6 @@ library JBPermissionIds {
     ─────────────────────────────────────────────────
     */
 
-    /// @notice Hide tokens on behalf of a holder, removing them from public visibility
-    /// (`REVHiddenTokens.hideTokensFor`).
-    /// @dev Hidden tokens are still owned by the holder and can be revealed later.
-    uint8 internal constant HIDE_TOKENS = 36;
-
     /// @notice Open a loan against project tokens as collateral on behalf of a token holder
     /// (`REVLoans.borrowFrom`).
     uint8 internal constant OPEN_LOAN = 37;
