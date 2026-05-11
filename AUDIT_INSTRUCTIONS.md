@@ -35,7 +35,7 @@ This repo defines canonical numeric IDs that other repos treat as part of their 
 | Dependency | Assumption | What breaks if wrong |
 |------------|------------|----------------------|
 | `nana-core-v6` | ERC-20 signature delegation still uses the documented ID | Signature authority checks mismatch |
-| `revnet-core-v6` | Loan and hidden-token permissions still use the documented IDs | Delegated actions widen, fail, or misroute |
+| `revnet-core-v6` | Loan permissions still use the documented IDs | Delegated actions widen, fail, or misroute |
 
 ## Critical Invariants
 
@@ -43,7 +43,7 @@ This repo defines canonical numeric IDs that other repos treat as part of their 
 2. No two distinct permissions share an ID.
 3. IDs match the expectations of all dependent repos in this workspace.
 4. ID `23` (`SIGN_FOR_ERC20`) matches the value used by `nana-core-v6` for ERC-1271 signature delegation.
-5. IDs `36-40` used by `revnet-core-v6` match the values used in `REVHiddenTokens` and `REVLoans`.
+5. IDs used by `revnet-core-v6` match the values used in `REVLoans`.
 
 ## Attack Surfaces
 
