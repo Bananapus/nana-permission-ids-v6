@@ -176,13 +176,13 @@ library JBPermissionIds {
 
     /// @notice Open a loan against project tokens as collateral on behalf of a token holder
     /// (`REVLoans.borrowFrom`).
-    uint8 internal constant OPEN_LOAN = 37;
+    uint8 internal constant OPEN_LOAN = 36;
 
     /// @notice Move loan collateral between projects on behalf of a loan owner
     /// (`REVLoans.reallocateCollateralFromLoan`).
-    uint8 internal constant REALLOCATE_LOAN = 38;
+    uint8 internal constant REALLOCATE_LOAN = 37;
 
     /// @notice Repay a loan on behalf of the loan owner, returning collateral tokens
     /// (`REVLoans.repayLoan`).
-    uint8 internal constant REPAY_LOAN = 39;
+    uint8 internal constant REPAY_LOAN = 38;
 }

@@ -28,7 +28,7 @@ This file covers the coordination risks in `JBPermissionIds`. The contract surfa
 
 - **Fund-moving IDs.** `CASH_OUT_TOKENS` (`4`), `SEND_PAYOUTS` (`5`), `MIGRATE_TERMINAL` (`6`), `SET_TERMINALS` (`15`), `USE_ALLOWANCE` (`18`), and `SET_SPLIT_GROUPS` (`19`) can redirect or release value.
 - **Hook-routing IDs.** `SET_BUYBACK_POOL` (`28`), `SET_BUYBACK_HOOK` (`30`), and `SET_ROUTER_TERMINAL` (`31`) materially control execution routes and can lock those routes permanently.
-- **Revnet loan IDs.** `OPEN_LOAN` (`37`), `REALLOCATE_LOAN` (`38`), and `REPAY_LOAN` (`39`) are operationally powerful because they move collateral and debt state.
+- **Revnet loan IDs.** `OPEN_LOAN` (`36`), `REALLOCATE_LOAN` (`37`), and `REPAY_LOAN` (`38`) are operationally powerful because they move collateral and debt state.
 
 ## 3. Integration Risks
 
