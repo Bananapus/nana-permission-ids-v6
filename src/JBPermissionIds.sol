@@ -160,15 +160,24 @@ library JBPermissionIds {
 
     /// @notice Deploy cross-chain sucker bridges for a project, enabling token bridging between chains
     /// (`JBSuckerRegistry.deploySuckersFor`).
+    /// @dev When the configuration's `peer` is `address(0)` or `address(this)` (default symmetric-address peering),
+    /// `DEPLOY_SUCKERS` is sufficient. Registering a non-symmetric explicit peer also requires `SET_SUCKER_PEER`.
     uint8 internal constant DEPLOY_SUCKERS = 33;
+
+    /// @notice Register a non-symmetric explicit peer address when deploying a cross-chain sucker
+    /// (`JBSuckerRegistry.deploySuckersFor` with `configuration.peer` != 0 and != `address(this)`).
+    /// @dev The explicit-peer field bypasses the same-address peering invariant, so any operator that can set it
+    /// can authorize mint-from-arbitrary-roots. This permission is intentionally narrower than `DEPLOY_SUCKERS` so
+    /// that ops automation with `DEPLOY_SUCKERS` cannot register attacker-controlled peers.
+    uint8 internal constant SET_SUCKER_PEER = 34;
 
     /// @notice Enable the emergency hatch on a cross-chain sucker, allowing stuck tokens to be recovered
     /// (`JBSucker.enableEmergencyHatchFor`).
-    uint8 internal constant SUCKER_SAFETY = 34;
+    uint8 internal constant SUCKER_SAFETY = 35;
 
     /// @notice Set the deprecation status of a cross-chain sucker, progressing it through its shutdown lifecycle
     /// (`JBSucker.setDeprecation`).
-    uint8 internal constant SET_SUCKER_DEPRECATION = 35;
+    uint8 internal constant SET_SUCKER_DEPRECATION = 36;
 
     /* ── revnet-core-v6
     ─────────────────────────────────────────────────
@@ -176,13 +185,13 @@ library JBPermissionIds {
 
     /// @notice Open a loan against project tokens as collateral on behalf of a token holder
     /// (`REVLoans.borrowFrom`).
-    uint8 internal constant OPEN_LOAN = 36;
+    uint8 internal constant OPEN_LOAN = 37;
 
     /// @notice Move loan collateral between projects on behalf of a loan owner
     /// (`REVLoans.reallocateCollateralFromLoan`).
-    uint8 internal constant REALLOCATE_LOAN = 37;
+    uint8 internal constant REALLOCATE_LOAN = 38;
 
     /// @notice Repay a loan on behalf of the loan owner, returning collateral tokens
     /// (`REVLoans.repayLoan`).
-    uint8 internal constant REPAY_LOAN = 38;
+    uint8 internal constant REPAY_LOAN = 39;
 }
