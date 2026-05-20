@@ -22,13 +22,14 @@ This file covers the coordination risks in `JBPermissionIds`. The contract surfa
 - **`ROOT` is broad authority.** `ROOT` (ID `1`) grants all permissions, including permissions added in the future.
 - **Wildcard grants increase blast radius.** Any permission granted with `projectId = 0` applies to all projects owned by that account.
 - **Hook and router lock powers are bundled.** `SET_BUYBACK_HOOK` (`30`) and `SET_ROUTER_TERMINAL` (`31`) both cover setting and locking.
-- **Third-party extensions do not have an on-chain namespace.** IDs `41-255` are only socially coordinated, so external packages can collide without coordination.
+- **Third-party extensions do not have an on-chain namespace.** IDs `41-255` are only socially coordinated, so external packages can collide without coordination. ID `40` is not currently assigned in `JBPermissionIds.sol`.
 
 ## 2. High-Impact IDs
 
 - **Fund-moving IDs.** `CASH_OUT_TOKENS` (`4`), `SEND_PAYOUTS` (`5`), `MIGRATE_TERMINAL` (`6`), `SET_TERMINALS` (`15`), `USE_ALLOWANCE` (`18`), and `SET_SPLIT_GROUPS` (`19`) can redirect or release value.
 - **Hook-routing IDs.** `SET_BUYBACK_POOL` (`28`), `SET_BUYBACK_HOOK` (`30`), and `SET_ROUTER_TERMINAL` (`31`) materially control execution routes and can lock those routes permanently.
-- **Revnet loan IDs.** `OPEN_LOAN` (`36`), `REALLOCATE_LOAN` (`37`), and `REPAY_LOAN` (`38`) are operationally powerful because they move collateral and debt state.
+- **Sucker lifecycle IDs.** `SUCKER_SAFETY` (`35`) and `SET_SUCKER_DEPRECATION` (`36`) control emergency recovery and bridge shutdown state.
+- **Revnet loan IDs.** `OPEN_LOAN` (`37`), `REALLOCATE_LOAN` (`38`), and `REPAY_LOAN` (`39`) are operationally powerful because they move collateral and debt state.
 
 ## 3. Integration Risks
 
@@ -41,7 +42,7 @@ This file covers the coordination risks in `JBPermissionIds`. The contract surfa
 - Assigned IDs are append-only and never repurposed.
 - `0` stays unused as a permission ID.
 - Every documented ID in this repo matches the numeric checks in downstream contracts.
-- New IDs added after `40` do not collide with existing ecosystem assignments.
+- ID `40` remains unused until a named constant is appended, and all new IDs are added without colliding with existing ecosystem assignments.
 
 ## 5. Accepted Behaviors
 

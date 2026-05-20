@@ -14,7 +14,7 @@ This repo is the shared permission vocabulary for the V6 ecosystem. It does not 
 
 - `JBPermissionIds`: library of canonical permission constants used across V6 repos
 - grouped constants for core, 721, router, buyback, sucker, revnet, and related actions
-- reserved ranges documented in `README.md`, including `ROOT = 1`, ecosystem-managed IDs through `40`, and socially coordinated extension space above that
+- reserved ranges documented in `README.md`, including `ROOT = 1`, currently assigned ecosystem IDs through `39`, unassigned ID `40`, and socially coordinated extension space above that
 
 ## Journey 1: Map A Product Action To The Right Permission
 
