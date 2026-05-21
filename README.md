@@ -28,8 +28,9 @@ If the question is "who can do this action?" you still need `JBPermissions` in `
 | `24-27` | 721 hook permissions |
 | `28-30` | buyback hook and registry permissions |
 | `31` | router terminal registry permission |
-| `32-35` | sucker and omnichain deployment permissions |
-| `36-40` | revnet-core permissions |
+| `32-36` | sucker and omnichain deployment/lifecycle permissions |
+| `37-39` | revnet-core loan permissions |
+| `40` | currently unassigned; reserved for the next ecosystem permission |
 
 The exact constants live in `src/JBPermissionIds.sol`.
 
