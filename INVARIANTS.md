@@ -1,7 +1,5 @@
 # Invariants of `nana-permission-ids-v6`
 
-Last updated: 2026-05-28.
-
 Scope: the single constants-only library in `src/` — `JBPermissionIds.sol`. This package defines the canonical numbered permission IDs (`uint8`, 1–255) that `JBPermissions` (in `nana-core-v6`) packs into a `uint256` bitmask. It is a pure constants library — no state, no functions, no storage. **It is the single source of truth for permission IDs across every V6 package.**
 
 This file is the per-repo scoped invariants doc. The protocol-wide guarantees for the seven deployed revnets live in [`../INVARIANTS.md`](../INVARIANTS.md); the operator permission sets and bypass addresses there are derived from the constants enumerated below.

@@ -2,12 +2,17 @@
 
 `@bananapus/permission-ids-v6` is the shared constant library for Juicebox V6 operator permissions. It gives every repo in the ecosystem the same numeric meaning for the same permission name.
 
-Architecture: [ARCHITECTURE.md](./ARCHITECTURE.md)  
-User journeys: [USER_JOURNEYS.md](./USER_JOURNEYS.md)  
-Skills: [SKILLS.md](./SKILLS.md)  
-Risks: [RISKS.md](./RISKS.md)  
-Administration: [ADMINISTRATION.md](./ADMINISTRATION.md)  
-Audit instructions: [AUDIT_INSTRUCTIONS.md](./AUDIT_INSTRUCTIONS.md)
+## Documentation
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md) — how this library fits the V6 ecosystem
+- [INVARIANTS.md](./INVARIANTS.md) — guarantees to integrators, per-symbol inventory, and the numbering-stability proof
+- [USER_JOURNEYS.md](./USER_JOURNEYS.md) — how consumers (contracts, scripts, frontends) use the constants
+- [RISKS.md](./RISKS.md) — coordination risks across downstream repos
+- [ADMINISTRATION.md](./ADMINISTRATION.md) — release process and namespace governance
+- [AUDIT_INSTRUCTIONS.md](./AUDIT_INSTRUCTIONS.md) — what to verify when auditing this repo
+- [SKILLS.md](./SKILLS.md) — quick-reference index for AI agents
+- [STYLE_GUIDE.md](./STYLE_GUIDE.md) — V6 ecosystem Solidity conventions
+- [CHANGELOG.md](./CHANGELOG.md) — release-by-release diff from `nana-permission-ids-v5`
 
 ## Overview
 

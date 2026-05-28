@@ -21,7 +21,8 @@ In scope:
 ## Start Here
 
 1. `src/JBPermissionIds.sol`
-2. downstream consumers in `nana-core-v6` and `revnet-core-v6`
+2. [`INVARIANTS.md`](./INVARIANTS.md) — per-symbol inventory, enforcement sites, and the numbering-stability invariant
+3. downstream consumers in `nana-core-v6` and `revnet-core-v6`
 
 ## Security Model
 

@@ -10,6 +10,7 @@
 | If you need... | Open this next |
 |---|---|
 | Repo overview and scope | [`README.md`](./README.md), [`ARCHITECTURE.md`](./ARCHITECTURE.md) |
+| Per-symbol inventory and numbering-stability proof | [`INVARIANTS.md`](./INVARIANTS.md) |
 | The actual constants | [`src/JBPermissionIds.sol`](./src/JBPermissionIds.sol) |
 
 ## Repo Map

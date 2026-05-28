@@ -19,6 +19,10 @@ This file describes the verified change from `nana-permission-ids-v5` to the cur
 
 - `SIGN_FOR_ERC20` (23) — sign messages on behalf of a project's ERC-20 token via ERC-1271. Used for Etherscan contract verification and other off-chain signature validation.
 
+## v6 additions: nana-suckers explicit-peer permission (ID 34)
+
+- `SET_SUCKER_PEER` (34) — authorize registering a non-symmetric explicit `peer` address when calling `JBSuckerRegistry.deploySuckersFor`. Intentionally narrower than `DEPLOY_SUCKERS` so ops automation that holds `DEPLOY_SUCKERS` cannot register attacker-controlled peers. Loan IDs `OPEN_LOAN`, `REALLOCATE_LOAN`, and `REPAY_LOAN` shifted by one to `37`, `38`, `39`.
+
 ## v6 additions: revnet-core delegation
 
 - `OPEN_LOAN` — open a loan on behalf of a token holder via `REVLoans.borrowFrom`. Checked against the token holder.
