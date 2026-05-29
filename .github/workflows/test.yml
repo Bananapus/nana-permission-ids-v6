@@ -16,4 +16,6 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
       - name: Build
-        run: forge build
+        run: forge build --deny notes
+      - name: Check contract sizes
+        run: forge build --deny notes --sizes --skip "*/test/**" --skip "*/script/**" --skip SphinxUtils
