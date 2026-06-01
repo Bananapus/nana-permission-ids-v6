@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.29
+
+- Raise dependency floors to the latest published versions; document NatSpec, comment, and lint conventions in STYLE_GUIDE.
+
 ## Scope
 
 This file describes the verified change from `nana-permission-ids-v5` to the current `nana-permission-ids-v6` repo.
