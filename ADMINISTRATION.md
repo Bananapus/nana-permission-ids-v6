@@ -1,6 +1,6 @@
 # Administration
 
-## At A Glance
+## At a glance
 
 | Item | Details |
 | --- | --- |
@@ -13,7 +13,7 @@
 
 `nana-permission-ids-v6` has no runtime admin surface. Its control significance is at the source level: it defines the shared permission namespace used by the rest of the ecosystem.
 
-## Control Model
+## Control model
 
 - No owner
 - No runtime governance
@@ -26,22 +26,22 @@
 | --- | --- | --- | --- |
 | Maintainer | Source-code author | Ecosystem-wide | Can add or reorder constants only by editing code and updating dependent deployments |
 
-## Privileged Surfaces
+## Privileged surfaces
 
 There are no privileged runtime functions. The only meaningful changes are source changes to `JBPermissionIds.sol`.
 
-## Immutable And One-Way
+## Immutable and one-way
 
 - Once deployed contracts depend on a given ID mapping, that mapping is effectively immutable for those deployments.
 - Reusing or reordering IDs is a cross-repo breaking change.
 
-## Operational Notes
+## Operational notes
 
 - Add new permission IDs append-only.
 - Update downstream docs and call sites in the same change set.
 - Treat permission ID changes as protocol changes, not refactors.
 
-## Machine Notes
+## Machine notes
 
 - Do not infer semantic compatibility from matching names if numeric IDs changed.
 - Treat `src/JBPermissionIds.sol` as append-only unless a breaking ecosystem-wide migration is intentional.
@@ -52,11 +52,11 @@ There are no privileged runtime functions. The only meaningful changes are sourc
 - There is no runtime recovery surface.
 - A bad ID assignment is fixed only by downstream code changes and redeployments where needed.
 
-## Admin Boundaries
+## Admin boundaries
 
 - Nobody can patch deployed contracts to reinterpret old permission bits.
 - This repo cannot grant, revoke, or inspect permissions by itself.
 
-## Source Map
+## Source map
 
 - `src/JBPermissionIds.sol`

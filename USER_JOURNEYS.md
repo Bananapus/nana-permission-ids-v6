@@ -1,22 +1,22 @@
 # User Journeys
 
-## Repo Purpose
+## Repo purpose
 
 This repo is the shared permission vocabulary for the V6 ecosystem. It does not store permissions or enforce them at runtime. It defines the constants that downstream repos should import so permissioned behavior stays clear and consistent.
 
-## Primary Actors
+## Primary actors
 
 - engineers choosing which permission constant should guard a feature
 - auditors checking whether a repo drifted from the shared vocabulary
 - maintainers extending the permission map without numeric collisions
 
-## Key Surfaces
+## Key surfaces
 
 - `JBPermissionIds`: library of canonical permission constants used across V6 repos
 - grouped constants for core, 721, router, buyback, sucker, revnet, and related actions
 - reserved ranges documented in `README.md`, including `ROOT = 1`, currently assigned ecosystem IDs through `39`, unassigned ID `40`, and socially coordinated extension space above that
 
-## Journey 1: Map A Product Action To The Right Permission
+## Journey 1: Map a product action to the right permission
 
 **Actor:** downstream engineer.
 
@@ -41,7 +41,7 @@ This repo is the shared permission vocabulary for the V6 ecosystem. It does not 
 **Postconditions**
 - the downstream action is guarded by the shared permission vocabulary instead of a local numeric convention
 
-## Journey 2: Review An Existing Operator Setup
+## Journey 2: Review an existing operator setup
 
 **Actor:** auditor, operator, or integrator.
 
@@ -65,7 +65,7 @@ This repo is the shared permission vocabulary for the V6 ecosystem. It does not 
 **Postconditions**
 - the reviewer has a named permission map and knows which downstream repos still need inspection
 
-## Journey 3: Add A New Ecosystem Surface Without Permission Drift
+## Journey 3: Add a new ecosystem surface without permission drift
 
 **Actor:** maintainer extending the permission vocabulary.
 
@@ -91,13 +91,13 @@ This repo is the shared permission vocabulary for the V6 ecosystem. It does not 
 **Postconditions**
 - the new ecosystem surface has a reusable canonical permission ID with coordinated downstream adoption
 
-## Trust Boundaries
+## Trust boundaries
 
 - this repo is trusted only as shared vocabulary
 - actual storage and enforcement live elsewhere
 - downstream repos can still misuse a constant even when they import the right one
 
-## Hand-Offs
+## Hand-offs
 
 - Use [nana-core-v6](../nana-core-v6/USER_JOURNEYS.md) for the runtime permission registry that stores and checks these IDs.
 - Use the relevant downstream repo when the question is about what a permissioned action does after authorization succeeds.

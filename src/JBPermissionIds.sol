@@ -8,11 +8,13 @@ pragma solidity 0.8.28;
 library JBPermissionIds {
     /// @notice Grants all permissions across every Juicebox contract. An operator with ROOT can do anything the
     /// project owner can do. Use with extreme caution.
+    /// @dev When checked with `includeRoot` set to `true`, holding bit 1 short-circuits any permission check, so a ROOT
+    /// grant is equivalent to granting every present and future ID.
     uint8 internal constant ROOT = 1;
 
-    /* ── nana-core-v6
-    ───────────────────────────────────────────────────
-    */
+    //*********************************************************************//
+    // -------------------------- nana-core-v6 --------------------------- //
+    //*********************************************************************//
 
     /// @notice Queue new rulesets for a project, scheduling future changes to its funding cycles, payouts, and rules
     /// (`JBController.queueRulesetsOf`).
@@ -104,9 +106,9 @@ library JBPermissionIds {
     /// @dev Used for Etherscan contract verification and other off-chain signature validation.
     uint8 internal constant SIGN_FOR_ERC20 = 23;
 
-    /* ── nana-721-hook-v6
-    ───────────────────────────────────────────────
-    */
+    //*********************************************************************//
+    // ------------------------ nana-721-hook-v6 ------------------------- //
+    //*********************************************************************//
 
     /// @notice Add, remove, or modify NFT tiers for a project's 721 hook
     /// (`JB721TiersHook.adjustTiers`).
@@ -124,9 +126,9 @@ library JBPermissionIds {
     /// (`JB721TiersHook.setDiscountPercentOf`).
     uint8 internal constant SET_721_DISCOUNT_PERCENT = 27;
 
-    /* ── nana-buyback-hook-v6
-    ───────────────────────────────────────────
-    */
+    //*********************************************************************//
+    // ---------------------- nana-buyback-hook-v6 ----------------------- //
+    //*********************************************************************//
 
     /// @notice Set the TWAP (time-weighted average price) window used by a project's buyback hook to determine when
     /// buying tokens on a DEX is cheaper than minting (`JBBuybackHook.setTwapWindowOf`).
@@ -141,18 +143,18 @@ library JBPermissionIds {
     /// @dev An operator with this permission can lock the hook, preventing future changes.
     uint8 internal constant SET_BUYBACK_HOOK = 30;
 
-    /* ── nana-router-terminal-v6
-    ────────────────────────────────────────
-    */
+    //*********************************************************************//
+    // --------------------- nana-router-terminal-v6 --------------------- //
+    //*********************************************************************//
 
     /// @notice Configure or permanently lock a project's router terminal, which routes payments through a DEX
     /// (`JBRouterTerminalRegistry.setTerminalFor` and `JBRouterTerminalRegistry.lockTerminalFor`).
     /// @dev An operator with this permission can lock the terminal, preventing future changes.
     uint8 internal constant SET_ROUTER_TERMINAL = 31;
 
-    /* ── nana-suckers-v6
-    ────────────────────────────────────────────────
-    */
+    //*********************************************************************//
+    // ------------------------- nana-suckers-v6 ------------------------- //
+    //*********************************************************************//
 
     /// @notice Map a token on one chain to its counterpart on another chain within a cross-chain sucker bridge
     /// (`JBSucker.mapToken`).
@@ -179,9 +181,9 @@ library JBPermissionIds {
     /// (`JBSucker.setDeprecation`).
     uint8 internal constant SET_SUCKER_DEPRECATION = 36;
 
-    /* ── revnet-core-v6
-    ─────────────────────────────────────────────────
-    */
+    //*********************************************************************//
+    // ------------------------- revnet-core-v6 -------------------------- //
+    //*********************************************************************//
 
     /// @notice Open a loan against project tokens as collateral on behalf of a token holder
     /// (`REVLoans.borrowFrom`).

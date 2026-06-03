@@ -24,7 +24,7 @@ Use this repo as the single source of truth for permission numbers. Do not redef
 
 If the question is "who can do this action?" you still need `JBPermissions` in `nana-core-v6`. This repo only tells you what the numbers mean.
 
-## Current Permission Ranges
+## Current permission ranges
 
 | Range | Area |
 | --- | --- |
@@ -44,27 +44,27 @@ Two IDs deserve extra attention:
 - `SET_BUYBACK_HOOK` covers both setting and permanently locking the configured buyback hook
 - `SET_ROUTER_TERMINAL` covers both setting and permanently locking the configured router terminal
 
-## Mental Model
+## Mental model
 
 This repo is a naming registry, not a behavior repo. Its job is to make every other package use the same permission names for the same bit positions.
 
-## Read This File First
+## Read this file first
 
 1. `src/JBPermissionIds.sol`
 
-## Integration Traps
+## Integration traps
 
 - changing an existing numeric constant is an ecosystem breaking change
 - adding a new permission ID without coordinating downstream repos creates semantic drift even if code still compiles
 - wildcard project permissions are still dangerous even when the numeric IDs are correct
 
-## Where Meaning Lives
+## Where meaning lives
 
 - numeric permission labels: `JBPermissionIds.sol`
 - runtime permission checks: `nana-core-v6/src/JBPermissions.sol`
 - repo-specific uses of those IDs: the downstream repo that imports them
 
-## For AI Agents
+## For AI agents
 
 - Treat this repo as a naming registry for permission bits, not as the runtime permission engine.
 - If asked whether an action is allowed, inspect the downstream repo that checks the ID in addition to this file.
@@ -82,16 +82,18 @@ npm install
 forge build
 ```
 
-## Repository Layout
+## Repository layout
 
 ```text
 src/
   JBPermissionIds.sol
 ```
 
-## Risks And Notes
+## Risks and notes
 
 - `ROOT` is intentionally powerful and should be granted sparingly
 - wildcard project scope is convenient but easy to misuse
 - some IDs bundle configuration and irreversible locking authority, so their blast radius is larger than the short name suggests
 - any change to this file has ecosystem-wide consequences because other repos assume the values stay stable
+
+This repo is just numbers — but the numbers are load-bearing across every other V6 package.
