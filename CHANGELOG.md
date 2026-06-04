@@ -1,59 +1,52 @@
-# Changelog
-
-## 0.0.29
-
-- Raise dependency floors to the latest published versions; document NatSpec, comment, and lint conventions in STYLE_GUIDE.
+# V5 to V6 Changelog
 
 ## Scope
 
-This file describes the verified change from `nana-permission-ids-v5` to the current `nana-permission-ids-v6` repo.
+This is a V5-to-V6 migration changelog, not a package release log or commit history. It compares `nana-permission-ids-v5` in `../../v5/evm` with the current `nana-permission-ids-v6` repo.
 
-## Current v6 surface
+## Current V6 Surface
 
 - `JBPermissionIds`
 
 ## Summary
 
-- The numeric permission map shifted. `LAUNCH_RULESETS` was inserted near the top of the sequence and every downstream numeric value moved with it.
-- v6 adds permissions for capabilities that did not exist in the old map, including `LAUNCH_RULESETS`, `ADD_TERMINALS`, `SET_TOKEN_METADATA`, `SET_BUYBACK_HOOK`, `SET_ROUTER_TERMINAL`, and `SET_SUCKER_DEPRECATION`.
-- The old swap-terminal-specific permissions are gone because the deployed ecosystem no longer centers on `nana-swap-terminal-v5`.
-- `SUCKER_SAFETY` no longer covers every safety action by itself. `SET_SUCKER_DEPRECATION` is its own permission in v6.
+- The numeric permission map changed. Any V5 code that hardcodes IDs must be updated.
+- `QUEUE_RULESETS` no longer also authorizes `launchRulesetsFor`; V6 adds a dedicated `LAUNCH_RULESETS`.
+- Router terminal permissions replace the V5 swap-terminal permissions.
+- V6 adds permissions for token metadata, ERC-1271 signing, buyback-hook selection, explicit sucker peers, sucker deprecation, and revnet loan operators.
 
-## v6 additions: nana-core ERC-1271 delegation (ID 23)
+## ABI, Event, and Error Changes
 
-- `SIGN_FOR_ERC20` (23) — sign messages on behalf of a project's ERC-20 token via ERC-1271. Used for Etherscan contract verification and other off-chain signature validation.
+- This package is a Solidity library of constants; it has no runtime events or custom errors.
+- Migration-sensitive constant shifts:
+  - `QUEUE_RULESETS` remains ID `2`, but no longer covers launch.
+  - `LAUNCH_RULESETS` is new at ID `3`.
+  - Core permissions after ID `2` shifted up because of `LAUNCH_RULESETS`.
+  - `SET_TOKEN_METADATA` is ID `22`.
+  - `SIGN_FOR_ERC20` is ID `23`.
+  - 721 hook permissions now occupy IDs `24-27`.
+  - buyback permissions now occupy IDs `28-30`.
+  - `SET_ROUTER_TERMINAL` is ID `31`.
+  - sucker permissions now occupy IDs `32-36`.
+  - revnet loan operator permissions are `OPEN_LOAN` ID `37`, `REALLOCATE_LOAN` ID `38`, and `REPAY_LOAN` ID `39`.
+- Removed V5 swap-terminal constants:
+  - `ADD_SWAP_TERMINAL_POOL`
+  - `ADD_SWAP_TERMINAL_TWAP_PARAMS`
 
-## v6 additions: nana-suckers explicit-peer permission (ID 34)
+## Machine-Checked ABI Coverage
 
-- `SET_SUCKER_PEER` (34) — authorize registering a non-symmetric explicit `peer` address when calling `JBSuckerRegistry.deploySuckersFor`. Intentionally narrower than `DEPLOY_SUCKERS` so ops automation that holds `DEPLOY_SUCKERS` cannot register attacker-controlled peers. Loan IDs `OPEN_LOAN`, `REALLOCATE_LOAN`, and `REPAY_LOAN` shifted by one to `37`, `38`, `39`.
+Generated from Foundry `out/**/*.json` artifacts, filtered to this repo's own runtime source roots and excluding tests, scripts, and dependencies.
 
-## v6 additions: revnet-core delegation
+- V5 comparison package: `nana-permission-ids-v5`.
+- Own-source ABI artifacts compared: V6 `1`, V5 `1`.
+- Contract/interface coverage: `0` added, `0` removed, `0` shared names with ABI changes, `1` shared names ABI-identical.
+- Shared-name ABI item deltas: `0` added, `0` removed, `0` modified.
 
-- `OPEN_LOAN` — open a loan on behalf of a token holder via `REVLoans.borrowFrom`. Checked against the token holder.
-- `REALLOCATE_LOAN` — reallocate loan collateral on behalf of a loan NFT owner via `REVLoans.reallocateCollateralFromLoan`. Checked against the loan NFT owner.
-- `REPAY_LOAN` — repay a loan on behalf of a loan NFT owner via `REVLoans.repayLoan`. Checked against the loan NFT owner.
+Shared ABI artifacts checked with no ABI item changes:
+- `JBPermissionIds`.
 
-These are consumed by `revnet-core-v6` and checked via inline `PERMISSIONS.hasPermission` calls (for `REVLoans`).
+## Migration Notes
 
-## Verified deltas
-
-- `QUEUE_RULESETS` no longer also covers `launchRulesetsFor`; `LAUNCH_RULESETS` is its own constant.
-- `ADD_TERMINALS` was inserted between `SET_TERMINALS` and `SET_PRIMARY_TERMINAL`.
-- `SET_TOKEN_METADATA`, `SET_BUYBACK_HOOK`, `SET_ROUTER_TERMINAL`, and `SET_SUCKER_DEPRECATION` are new constants.
-- `ADD_SWAP_TERMINAL_POOL` and `ADD_SWAP_TERMINAL_TWAP_PARAMS` were removed.
-
-## Breaking ABI changes
-
-- There is no runtime contract ABI to port here.
-- The breaking surface is compile-time and application-logic-level: constant names, meanings, and numeric values changed.
-
-## Indexer impact
-
-- None directly from this repo.
-- Indirectly, any off-chain access-control model keyed to raw numeric IDs must be updated.
-
-## Migration notes
-
-- Hardcoded numeric permission IDs from v5 are stale and unsafe.
-- Rebuild every permission check from the named v6 constants.
-- Treat this repo as application-logic-critical even though it is not a large runtime surface.
+- Do not copy numeric constants from V5. Import `JBPermissionIds` from the V6 package.
+- Re-audit operator grants before migration. A numeric ID that meant one action in V5 can authorize a different action in V6.
+- Update launch automation to request `LAUNCH_RULESETS` where it previously relied on `QUEUE_RULESETS`.
