@@ -2,13 +2,13 @@
 
 This file covers the coordination risks in `JBPermissionIds`. The contract surface is tiny, but drift here can corrupt access control across the V6 ecosystem.
 
-## How To Use This File
+## How to use this file
 
 - Read `Priority risks` first. The main danger is cross-repo disagreement, not a local code bug.
 - Treat every ID change as an ecosystem migration event.
 - Use `Invariants to verify` to keep append-only discipline explicit.
 
-## Priority Risks
+## Priority risks
 
 | Priority | Risk | Why it matters | Primary controls |
 |----------|------|----------------|------------------|
@@ -16,7 +16,7 @@ This file covers the coordination risks in `JBPermissionIds`. The contract surfa
 | P1 | Reusing or reordering existing IDs | Renumbering breaks deployed contracts and off-chain tooling without any on-chain migration safety. | Never repurpose an assigned ID. Append only. |
 | P1 | Over-trusting high-impact IDs | Some IDs directly control funds, routing, locking, or loan state. Misgrants are dangerous. | Explicit operator review and narrow-scoped grants. |
 
-## 1. Known Risks
+## 1. Known risks
 
 - **No runtime enforcement here.** This library only defines constants. Safety depends on every consuming repo checking the intended ID.
 - **`ROOT` is broad authority.** `ROOT` (ID `1`) grants all permissions, including permissions added in the future.
@@ -24,27 +24,27 @@ This file covers the coordination risks in `JBPermissionIds`. The contract surfa
 - **Hook and router lock powers are bundled.** `SET_BUYBACK_HOOK` (`30`) and `SET_ROUTER_TERMINAL` (`31`) both cover setting and locking.
 - **Third-party extensions do not have an on-chain namespace.** IDs `41-255` are only socially coordinated, so external packages can collide without coordination. ID `40` is not currently assigned in `JBPermissionIds.sol`.
 
-## 2. High-Impact IDs
+## 2. High-impact IDs
 
 - **Fund-moving IDs.** `CASH_OUT_TOKENS` (`4`), `SEND_PAYOUTS` (`5`), `MIGRATE_TERMINAL` (`6`), `SET_TERMINALS` (`15`), `USE_ALLOWANCE` (`18`), and `SET_SPLIT_GROUPS` (`19`) can redirect or release value.
 - **Hook-routing IDs.** `SET_BUYBACK_POOL` (`28`), `SET_BUYBACK_HOOK` (`30`), and `SET_ROUTER_TERMINAL` (`31`) materially control execution routes and can lock those routes permanently.
 - **Sucker lifecycle IDs.** `SET_SUCKER_PEER` (`34`), `SUCKER_SAFETY` (`35`), and `SET_SUCKER_DEPRECATION` (`36`) control bridge peer registration, emergency recovery, and shutdown state. `SET_SUCKER_PEER` is the highest-impact of the three because non-symmetric peers can authorize mint-from-arbitrary-roots on the destination chain.
 - **Revnet loan IDs.** `OPEN_LOAN` (`37`), `REALLOCATE_LOAN` (`38`), and `REPAY_LOAN` (`39`) are operationally powerful because they move collateral and debt state.
 
-## 3. Integration Risks
+## 3. Integration risks
 
 - **Docs can lag deployed assumptions.** Off-chain tooling, UIs, and reviews often rely on human-readable permission names.
 - **Cross-package imports must stay canonical.** Downstream repos should import this library instead of redefining numeric literals locally.
 - **Future IDs expand current `ROOT` power.** Any new permission automatically becomes available to existing `ROOT` operators.
 
-## 4. Invariants To Verify
+## 4. Invariants to verify
 
 - Assigned IDs are append-only and never repurposed.
 - `0` stays unused as a permission ID.
 - Every documented ID in this repo matches the numeric checks in downstream contracts.
 - ID `40` remains unused until a named constant is appended, and all new IDs are added without colliding with existing ecosystem assignments.
 
-## 5. Accepted Behaviors
+## 5. Accepted behaviors
 
 ### 5.1 This repo is coordination infrastructure, not an enforcement layer
 

@@ -1,11 +1,11 @@
 # Juicebox Permission IDs
 
-## Use This File For
+## Use this file for
 
 - Use this file when you need the canonical numeric meaning of a Juicebox V6 permission constant.
 - Start here when reviewing changes that could affect permission numbering across the ecosystem.
 
-## Read This Next
+## Read this next
 
 | If you need... | Open this next |
 |---|---|
@@ -13,7 +13,7 @@
 | Per-symbol inventory and numbering-stability proof | [`INVARIANTS.md`](./INVARIANTS.md) |
 | The actual constants | [`src/JBPermissionIds.sol`](./src/JBPermissionIds.sol) |
 
-## Repo Map
+## Repo map
 
 | Area | Where to look |
 |---|---|
@@ -23,11 +23,11 @@
 
 This repo is the single source of truth for Juicebox V6 permission ID constants. It has no runtime behavior. Its value is ecosystem-wide coordination.
 
-## Reference Files
+## Reference files
 
 - Open [`references/runtime.md`](./references/runtime.md) when you need the stability expectations and why changes here affect the whole ecosystem.
 
-## Working Rules
+## Working rules
 
 - Start in [`src/JBPermissionIds.sol`](./src/JBPermissionIds.sol). The file itself is the product.
 - Treat any numeric change as a cross-repo breaking change until proven otherwise.
