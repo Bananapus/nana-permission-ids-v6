@@ -12,7 +12,7 @@
 - [AUDIT_INSTRUCTIONS.md](./AUDIT_INSTRUCTIONS.md) — what to verify when auditing this repo
 - [SKILLS.md](./SKILLS.md) — quick-reference index for AI agents
 - [STYLE_GUIDE.md](./STYLE_GUIDE.md) — V6 ecosystem Solidity conventions
-- [CHANGELOG.md](./CHANGELOG.md) — release-by-release diff from `nana-permission-ids-v5`
+- [CHANGELOG.md](./CHANGELOG.md) - V5 to V6 permission-map changelog
 
 ## Overview
 
