@@ -162,12 +162,12 @@ library JBPermissionIds {
 
     /// @notice Deploy cross-chain sucker bridges for a project, enabling token bridging between chains
     /// (`JBSuckerRegistry.deploySuckersFor`).
-    /// @dev When the configuration's `peer` is `address(0)` or `address(this)` (default symmetric-address peering),
-    /// `DEPLOY_SUCKERS` is sufficient. Registering a non-symmetric explicit peer also requires `SET_SUCKER_PEER`.
+    /// @dev When the configuration's `peer` is `bytes32(0)` (default same-address peering), `DEPLOY_SUCKERS` is
+    /// sufficient. Any non-zero `peer` is an explicit remote authority and also requires `SET_SUCKER_PEER`.
     uint8 internal constant DEPLOY_SUCKERS = 33;
 
-    /// @notice Register a non-symmetric explicit peer address when deploying a cross-chain sucker
-    /// (`JBSuckerRegistry.deploySuckersFor` with `configuration.peer` != 0 and != `address(this)`).
+    /// @notice Register an explicit peer address when deploying a cross-chain sucker
+    /// (`JBSuckerRegistry.deploySuckersFor` with any non-zero `configuration.peer`).
     /// @dev The explicit-peer field bypasses the same-address peering invariant, so any operator that can set it
     /// can authorize mint-from-arbitrary-roots. This permission is intentionally narrower than `DEPLOY_SUCKERS` so
     /// that ops automation with `DEPLOY_SUCKERS` cannot register attacker-controlled peers.
