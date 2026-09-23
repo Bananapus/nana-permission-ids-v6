@@ -105,8 +105,8 @@ For (2), see the `jb-v6-permission-id-renumbering` skill — V5 numbers do NOT c
 | ID | Symbol | Gates | Enforced in (file:line) |
 |---:|---|---|---|
 | 32 | `MAP_SUCKER_TOKEN` | `JBSucker.mapToken` — register a per-chain token mapping. | `nana-suckers-v6/src/JBSucker.sol`; passed through by `revnet-core-v6/src/REVOwner.sol`, `nana-omnichain-deployers-v6/src/JBOmnichainDeployer.sol` |
-| 33 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` — deploy bridges (sufficient for default symmetric-address peering). | `nana-suckers-v6/src/JBSuckerRegistry.sol`; passed through by `revnet-core-v6/src/REVOwner.sol`, `nana-omnichain-deployers-v6/src/JBOmnichainDeployer.sol`, `croptop-core-v6/src/CTDeployer.sol` |
-| 34 | `SET_SUCKER_PEER` | `JBSuckerRegistry.deploySuckersFor` with a non-symmetric explicit peer. Intentionally narrower than `DEPLOY_SUCKERS` so automation cannot register attacker-controlled peers. | `nana-suckers-v6/src/JBSuckerRegistry.sol`; passed through by `nana-omnichain-deployers-v6/src/JBOmnichainDeployer.sol`, `croptop-core-v6/src/CTDeployer.sol` |
+| 33 | `DEPLOY_SUCKERS` | `JBSuckerRegistry.deploySuckersFor` — deploy bridges (sufficient only when `peer` is `bytes32(0)`, the default same-address peering). | `nana-suckers-v6/src/JBSuckerRegistry.sol`; passed through by `revnet-core-v6/src/REVOwner.sol`, `nana-omnichain-deployers-v6/src/JBOmnichainDeployer.sol`, `croptop-core-v6/src/CTDeployer.sol` |
+| 34 | `SET_SUCKER_PEER` | `JBSuckerRegistry.deploySuckersFor` with any non-zero explicit `peer`. Intentionally narrower than `DEPLOY_SUCKERS` so automation cannot register attacker-controlled peers. | `nana-suckers-v6/src/JBSuckerRegistry.sol`; passed through by `nana-omnichain-deployers-v6/src/JBOmnichainDeployer.sol`, `croptop-core-v6/src/CTDeployer.sol` |
 | 35 | `SUCKER_SAFETY` | `JBSucker.enableEmergencyHatchFor` — emergency exit for stuck tokens. | `nana-suckers-v6/src/JBSucker.sol`; passed through by `revnet-core-v6/src/REVOwner.sol` |
 | 36 | `SET_SUCKER_DEPRECATION` | `JBSucker.setDeprecation` — advance a sucker through its 14-day deprecation lifecycle. | `nana-suckers-v6/src/JBSucker.sol` |
 
